@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.cashback.mapper.ICashbackDetailsMapper">
+
+    <!-- 查询字段列表 -->
+    <sql id="Base_Column_List">
+        detailsId, recordId,userId,cashbackSpecificDate,cashbackMoney,taxPayment,really,status,createTime
+    </sql>
+
+    <!-- 返利记录 -->
+    <resultMap id="detail" type="java.util.HashMap">
+        <result column="cashbackSpecificDate" property="cashbackSpecificDate"/>
+        <result column="recordCoding" property="recordCoding"/>
+        <result column="cashbackMoney" property="cashbackMoney"/>
+        <result column="really" property="really"/>
+        <result column="taxPayment" property="taxPayment"/>
+    </resultMap>
+    <select id="findByStatus" parameterType="hashmap" resultMap="detail">
+        -- 返利记录：返利时间、返利期号、返利金额、实际金额、扣税金额
+        SELECT
+            d.cashbackSpecificDate,
+            r.recordCoding,
+            d.cashbackMoney,
+            d.really,
+            d.taxPayment
+        FROM
+            gt_cashback_details AS d,
+            gt_cashback_record AS r
+        WHERE
+            d.recordId = r.recordId
+        AND d.status = #{cashDetails.status}
+        AND userId =  (SELECT userId FROM user_account WHERE token = #{token})
+        ORDER BY d.cashbackSpecificDate DESC LIMIT #{beginIndex},#{pageSize}
+    </select>
+
+    <!-- 返利记录的count,用于分页 -->
+    <select id="findStatusCount" parameterType="hashmap" resultType="java.lang.Integer">
+        -- 返利记录：返利时间、返利期号、返利金额、实际金额、扣税金额
+        SELECT
+        count(0)
+        FROM
+        gt_cashback_details AS d,
+        gt_cashback_record AS r
+        WHERE
+        d.recordId = r.recordId
+        AND d.status = #{cashDetails.status}
+        AND userId =  (SELECT userId FROM user_account WHERE token = #{token})
+    </select>
+
+
+    <!-- 累计返利金额 -->
+    <select id="countReally" parameterType="hashmap" resultType="java.math.BigDecimal">
+        SELECT
+            SUM(really) AS  accruing
+        FROM
+            gt_cashback_details
+        WHERE
+            `status` = #{cashDetails.status}
+        AND userId =  (SELECT userId FROM user_account WHERE token = #{token})
+    </select>
+    <!-- 待返利笔数 -->
+    <select id="countWaitCashback"  parameterType="hashmap" resultType="Integer">
+        SELECT
+            COUNT(STATUS) AS countReally
+        FROM
+            gt_cashback_details AS d
+        WHERE
+            `status` = 0
+        AND userId = (SELECT userId FROM user_account WHERE token = #{token})
+    </select>
+    
+    <!-- 查询冻结金额-->
+    <select id="findFreezeMoney" resultType="java.math.BigDecimal" parameterType="com.dadao.cashback.entity.CashbackDetailsPO">
+        select sum(cashbackMoney) as freezeMoney from gt_cashback_details where userId=#{userId} and `status`=0
+    </select>
+
+</mapper>

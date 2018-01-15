@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dadao.shop.mapper.ShopGoodsMapper">
+
+  <sql id="Base_Column_List">
+    id, goodsName, goodsImg, goodsPrice, description, browseLinks, browseKey, shopId, createTime, status, updateTime, payMode
+  </sql>
+
+  <select id="findById" parameterType="java.lang.Long" resultType="com.dadao.shop.entity.ShopGoodsPO">
+    select 
+    <include refid="Base_Column_List" />
+    from gt_shop_goods
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <insert id="save" parameterType="com.dadao.shop.entity.ShopGoodsPO">
+    insert into gt_shop_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="goodsName != null">
+        goodsName,
+      </if>
+      <if test="goodsImg != null">
+        goodsImg,
+      </if>
+      <if test="goodsPrice != null">
+        goodsPrice,
+      </if>
+      <if test="browseLinks != null">
+        browseLinks,
+      </if>
+      <if test="browseKey != null">
+        browseKey,
+      </if>
+      <if test="shopId != null">
+        shopId,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="updateTime != null">
+        updateTime,
+      </if>
+      <if test="payMode != null">
+        payMode,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImg != null">
+        #{goodsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null">
+        #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="browseLinks != null">
+        #{browseLinks,jdbcType=VARCHAR},
+      </if>
+      <if test="browseKey != null">
+        #{browseKey,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null">
+        #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payMode != null">
+        #{payMode,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.dadao.shop.entity.ShopGoodsPO">
+    update gt_shop_goods
+    <set>
+      <if test="goodsName != null">
+        goodsName = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImg != null">
+        goodsImg = #{goodsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null">
+        goodsPrice = #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="browseLinks != null">
+        browseLinks = #{browseLinks,jdbcType=VARCHAR},
+      </if>
+      <if test="browseKey != null">
+        browseKey = #{browseKey,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null">
+        shopId = #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payMode != null">
+        payMode = #{payMode,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="findByPage" parameterType="com.dadao.shop.entity.ShopGoodsPO" resultType="com.dadao.shop.entity.ShopGoodsPO">
+    SELECT
+      id, goodsName, goodsImg, goodsPrice, description, browseLinks, shopId, createTime, status, updateTime, payMode
+    <include refid="Base_Column_List" />
+      from gt_shop_goods
+    where shopId = #{shopId}
+    AND status != 3
+    LIMIT #{beginIndex},#{pageSize}
+  </select>
+
+  <select id="findCount"  parameterType="com.dadao.shop.entity.ShopGoodsPO" resultType="long">
+    SELECT COUNT(*)
+      FROM gt_shop_goods
+    where shopId = #{shopId}
+    AND status != 3
+    LIMIT #{beginIndex},#{pageSize}
+  </select>
+
+  <select id="goodsBelongToShop" resultType="boolean">
+    SELECT
+        COUNT(*)
+    FROM
+        gt_shop_goods
+    WHERE
+        id = #{goodsId}
+    AND shopId = (
+        SELECT
+            shopId
+        FROM
+            gt_shop
+        WHERE
+            fk_user_id = (
+                SELECT
+                    userId
+                FROM
+                    user_account
+                WHERE
+                    token = #{token}
+            )
+    )
+  </select>
+
+</mapper>

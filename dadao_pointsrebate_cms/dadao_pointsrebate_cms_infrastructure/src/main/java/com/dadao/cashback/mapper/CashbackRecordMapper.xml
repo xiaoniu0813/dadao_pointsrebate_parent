@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.cashback.mapper.CashbackRecordMapper">
+
+    <sql id="Base_Column_List">
+      recordId,recordCoding,marketID,currentIntegralUpper,cashbackSumMoney,cashbackNumber,cashbackMultiple,
+      cashbackPeriod,periodUnit,intervals,intervalsUnit,cashbackSpecificDate,status,createTime
+   </sql>
+    <select id="findById" parameterType="java.lang.Long" resultType="com.dadao.cashback.entity.CashbackRecordPO">
+
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_cashback_record WHERE recordId=#{recordId}
+
+    </select>
+
+    <insert id="save" parameterType="com.dadao.cashback.entity.CashbackRecordPO" keyProperty="recordId">
+        INSERT INTO gt_cashback_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="recordCoding!=null">
+                recordCoding,
+            </if>
+            <if test="marketID!=null">
+                marketID,
+            </if>
+            <if test="currentIntegralUpper!=null">
+                currentIntegralUpper,
+            </if>
+            <if test="cashbackSumMoney!=null">
+                cashbackSumMoney,
+            </if>
+            <if test="cashbackNumber!=null">
+                cashbackNumber,
+            </if>
+            <if test="cashbackMultiple!=null">
+                cashbackMultiple,
+            </if>
+            <if test="cashbackPeriod!=null">
+                cashbackPeriod,
+            </if>
+            <if test="periodUnit!=null">
+                periodUnit,
+            </if>
+            <if test="intervals!=null">
+                intervals,
+            </if>
+            <if test="intervalsUnit!=null">
+                intervalsUnit,
+            </if>
+            <if test="cashbackSpecificDate!=null">
+                cashbackSpecificDate,
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="recordCoding!=null">
+                #{recordCoding},
+            </if>
+            <if test="marketID!=null">
+                #{marketID},
+            </if>
+            <if test="currentIntegralUpper!=null">
+                #{currentIntegralUpper},
+            </if>
+            <if test="cashbackSumMoney!=null">
+                #{cashbackSumMoney},
+            </if>
+            <if test="cashbackNumber!=null">
+                #{cashbackNumber},
+            </if>
+            <if test="cashbackMultiple!=null">
+                #{cashbackMultiple},
+            </if>
+            <if test="cashbackPeriod!=null">
+                #{cashbackPeriod},
+            </if>
+            <if test="periodUnit!=null">
+                #{periodUnit},
+            </if>
+            <if test="intervals!=null">
+                #{intervals},
+            </if>
+            <if test="intervalsUnit!=null">
+                #{intervalsUnit},
+            </if>
+            <if test="cashbackSpecificDate!=null">
+                #{cashbackSpecificDate},
+            </if>
+            <if test="status!=null">
+                #{status},
+            </if>
+        </trim>
+    </insert>
+    <!--查询未开始的返利计划是否有当天开始的-->
+    <select id="findNotStartedCashback" resultType="com.dadao.cashback.entity.CashbackRecordVO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_cashback_record
+        WHERE DATE_FORMAT(cashbackSpecificDate,'%Y-%m-%d')=CURDATE() AND status=2
+    </select>
+    <update id="update" parameterType="com.dadao.cashback.entity.CashbackRecordPO">
+        UPDATE gt_cashback_record
+        <trim prefix="set" suffixOverrides=",">
+            <if test="cashbackSumMoney != null">
+                cashbackSumMoney=#{cashbackSumMoney},
+            </if>
+            <if test="cashbackNumber != null">
+                cashbackNumber=#{cashbackNumber},
+            </if>
+            <if test="cashbackMultiple != null">
+                cashbackMultiple=#{cashbackMultiple},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+        </trim>
+        WHERE recordId=#{recordId}
+    </update>
+    <update id="updateUserCashbackRecord" parameterType="com.dadao.cashback.entity.CashbackRecordPO">
+        UPDATE gt_cashback_record
+        <trim prefix="set" suffixOverrides=",">
+            <if test="cashbackSumMoney != null">
+                cashbackSumMoney=#{cashbackSumMoney},
+            </if>
+            <if test="currentIntegralUpper != null">
+                currentIntegralUpper=#{currentIntegralUpper},
+            </if>
+            <if test="cashbackPeriod != null">
+                cashbackPeriod=#{cashbackPeriod},
+            </if>
+            <if test="periodUnit != null">
+                periodUnit=#{periodUnit},
+            </if>
+            <if test="intervals != null">
+                intervals=#{intervals},
+            </if>
+            <if test="intervalsUnit != null">
+                intervalsUnit=#{intervalsUnit},
+            </if>
+        </trim>
+        WHERE recordId=#{recordId}
+    </update>
+    <select id="findLastRebateDate" resultType="java.lang.String">
+        SELECT
+        DATE_FORMAT(
+            cashbackSpecificDate,
+            '%Y-%m-%d'
+        )
+        FROM
+            gt_cashback_record
+        WHERE
+            marketID = 21
+        AND STATUS NOT IN (2, 5, 6, 7)
+        ORDER BY
+            cashbackSpecificDate DESC
+        LIMIT 1
+    </select>
+    <select id="findByPage" resultType="com.dadao.cashback.entity.CashbackRecordVO"
+            parameterType="com.dadao.cashback.entity.CashbackRecordPO">
+        SELECT * FROM gt_cashback_record
+        <where>
+            <trim prefixOverrides="and">
+                <if test="marketID!= null">
+                    AND marketID = #{marketID}
+                </if>
+                <if test="cashbackMultiple!= null">
+                    AND cashbackMultiple = #{cashbackMultiple}
+                </if>
+                <if test="status != null">
+                    AND status = #{status}
+                </if>
+            </trim>
+        </where>
+        order by createTime desc
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+    <select id="findCount" parameterType="com.dadao.cashback.entity.CashbackDetailsPO" resultType="java.lang.Long">
+        SELECT COUNT(0) FROM gt_cashback_record
+        <where>
+            <trim prefixOverrides="and">
+                <if test="marketID!= null">
+                    AND marketID = #{marketID}
+                </if>
+                <if test="cashbackMultiple!= null">
+                    AND cashbackMultiple = #{cashbackMultiple}
+                </if>
+                <if test="status != null">
+                    AND status = #{status}
+                </if>
+            </trim>
+        </where>
+    </select>
+</mapper>

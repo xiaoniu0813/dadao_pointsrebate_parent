@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.UserTransactionRecodMapper">
+    <sql id="Base_Column_List">
+        transactionId,otherAccount,transactionType,transactionAmount,transactionDetails,createtime,expenditureIncome,userId,payMethod,payCanalFee,serialNumber
+    </sql>
+    <select id="findByPage" resultType="com.dadao.user.entity.UserTransactionRecodPO"
+            parameterType="com.dadao.user.entity.UserTransactionRecodPO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user_transaction_recod
+        <where>
+            <if test="startTime!= null and endTime!=null">
+                createtime &gt;= #{startTime} AND createtime &lt;= #{endTime}
+            </if>
+            <if test="startTime!= null and endTime==null">
+                AND createtime &gt;= #{startTime}
+            </if>
+            <if test="startTime == null and endTime!=null">
+                AND createtime &lt;= #{endTime}
+            </if>
+            <if test="payMethod!=null">
+                AND payMethod=#{payMethod}
+            </if>
+
+            <if test="transactionType!=null">
+                AND transactionType=#{transactionType}
+            </if>
+            <if test="userId != null and userId!=''">
+                and userId=#{userId}
+            </if>
+        </where>
+        ORDER BY createTime desc
+        LIMIT #{beginIndex},#{pageSize}
+
+    </select>
+    <select id="findCount" parameterType="com.dadao.user.entity.UserTransactionRecodPO" resultType="java.lang.Long">
+        SELECT COUNT(0) FROM user_transaction_recod
+
+        <where>
+            <trim prefixOverrides="and">
+                <if test="startTime!= null and endTime!=null">
+                    AND createtime &gt;= #{startTime} AND createtime &lt;= #{endTime}
+                </if>
+                <if test="startTime!= null and endTime==null">
+                    AND createtime &gt;= #{startTime}
+                </if>
+                <if test="startTime == null and endTime!=null">
+                    AND createtime &lt;= #{endTime}
+                </if>
+                <if test="payMethod!=null">
+                    AND payMethod=#{payMethod}
+                </if>
+
+                <if test="transactionType!=null">
+                    AND transactionType=#{transactionType}
+                </if>
+            </trim>
+        </where>
+
+    </select>
+    <select id="findByEntity" parameterType="com.dadao.user.entity.UserTransactionRecodPO"
+            resultType="com.dadao.user.entity.UserTransactionRecodPO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user_transaction_recod
+        <where>
+            <if test="startTime!= null and endTime!=null">
+                createtime &gt;= #{startTime} AND createtime &lt;= #{endTime}
+            </if>
+            <if test="startTime!= null and endTime==null">
+                AND createtime &gt;= #{startTime}
+            </if>
+            <if test="startTime == null and endTime!=null">
+                AND createtime &lt;= #{endTime}
+            </if>
+            <if test="payMethod!=null">
+                AND payMethod=#{payMethod}
+            </if>
+
+            <if test="transactionType!=null">
+                AND transactionType=#{transactionType}
+            </if>
+        </where>
+        ORDER BY createTime desc
+
+
+    </select>
+    <insert id="save" parameterType="com.dadao.user.entity.UserTransactionRecodPO" keyProperty="transactionId">
+        INSERT INTO user_transaction_recod
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="otherAccount!=null">
+                otherAccount,
+            </if>
+            <if test="transactionType!=null">
+                transactionType,
+            </if>
+            <if test="transactionAmount!=null">
+                transactionAmount,
+            </if>
+            <if test="transactionDetails!=null">
+                transactionDetails,
+            </if>
+            <if test="expenditureIncome!=null">
+                expenditureIncome,
+            </if>
+            <if test="userId!=null">
+                userId,
+            </if>
+            <if test="payMethod!=null">
+                payMethod,
+            </if>
+            <if test="payCanalFee!=null">
+                payCanalFee,
+            </if>
+            <if test="serialNumber!=null">
+                serialNumber,
+            </if>
+            <if test="commission!=null">
+                commission,
+            </if>
+            <if test="actualIncome!=null">
+                actualIncome,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="otherAccount!=null">
+                #{otherAccount},
+            </if>
+            <if test="transactionType!=null">
+                #{transactionType},
+            </if>
+            <if test="transactionAmount!=null">
+                #{transactionAmount},
+            </if>
+            <if test="transactionDetails!=null">
+               #{transactionDetails},
+            </if>
+            <if test="expenditureIncome!=null">
+                #{expenditureIncome},
+            </if>
+            <if test="userId!=null">
+                #{userId},
+            </if>
+            <if test="payMethod!=null">
+                #{payMethod},
+            </if>
+            <if test="payCanalFee!=null">
+                #{payCanalFee},
+            </if>
+            <if test="serialNumber!=null">
+                #{serialNumber},
+            </if>
+            <if test="commission!=null">
+                #{commission},
+            </if>
+            <if test="actualIncome!=null">
+                #{actualIncome},
+            </if>
+        </trim>
+    </insert>
+</mapper>

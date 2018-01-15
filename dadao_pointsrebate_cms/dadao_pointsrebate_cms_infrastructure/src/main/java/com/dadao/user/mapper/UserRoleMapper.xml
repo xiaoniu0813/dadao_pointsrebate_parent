@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.UserRoleMapper">
+
+    <!-- 查询字段列表 -->
+    <sql id="Base_Column_List">
+        roleId,userId,roleName,roleStatus
+    </sql>
+
+    <select id="findByUserId" resultType="com.dadao.user.entity.UserRole"
+            parameterType="com.dadao.user.entity.UserRole">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM cms_user_role
+        WHERE userId=#{userId}
+    </select>
+
+    <insert id="save" parameterType="com.dadao.user.entity.UserRole">
+        INSERT INTO cms_user_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                userId,
+            </if>
+            <if test="roleName!=null">
+                roleName,
+            </if>
+            <if test="roleStatus!=null">
+                roleStatus,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                #{userId},
+            </if>
+            <if test="roleName!=null">
+                #{roleName},
+            </if>
+            <if test="roleStatus!=null">
+                #{roleStatus},
+            </if>
+        </trim>
+    </insert>
+
+
+</mapper>

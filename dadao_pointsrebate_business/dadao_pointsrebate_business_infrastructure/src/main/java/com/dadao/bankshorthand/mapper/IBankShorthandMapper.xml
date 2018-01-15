@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.bankshorthand.mapper.IBankShorthandMapper">
+    <!--根据英文缩写查找银行名称-->
+    <select id="findByShorthand" parameterType="java.lang.String"
+            resultType="com.dadao.bankshorthand.entity.BankShorthandVO">
+        SELECT * FROM bank_shorthand WHERE shorthand=#{shorthand}
+    </select>
+</mapper>

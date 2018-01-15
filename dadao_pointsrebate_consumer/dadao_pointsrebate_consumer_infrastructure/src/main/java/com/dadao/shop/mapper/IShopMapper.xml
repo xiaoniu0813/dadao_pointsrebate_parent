@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.shop.mapper.IShopMapper">
+    <sql id="BASE_COLUMN_LIST">
+        shopId,shopName,shopDescription,phone,picture,verticalVersionPicture,markPicture,longitude,latitude,address,integralRate,commissionRate,businessStartTime,businessEndTime,tags,createTime,perCapitaConsumption,fk_user_id,subMerchantNo,categoryId
+    </sql>
+    <!--附近商铺-->
+    <select id="listNear" resultType="com.dadao.shop.entity.vo.Shop"
+            parameterType="com.dadao.shop.entity.Shop">
+        select a.*,
+        (ACOS(SIN((#{latitude} * 3.1415) / 180 )
+        *SIN((a.latitude * 3.1415) / 180 ) +COS((#{latitude} * 3.1415) / 180 )
+        * COS((a.latitude * 3.1415) / 180 ) *COS((#{longitude}* 3.1415) /
+        180 -
+        (a.longitude * 3.1415) / 180 ) ) * 6380) AS distance from gt_shop a
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="categoryId != null and categoryType==2">
+                    and categoryId = #{categoryId}
+                </if>
+                <if test="categoryId != null and categoryType==1">
+                    and categoryId IN (select categoryId from gt_category where parentId=#{categoryId})
+                </if>
+                <if test="shopName!=null and shopName!=''">
+                    AND shopName LIKE concat('%',#{shopName},'%')
+                </if>
+                <if test="latitude!=null">
+                    and (ACOS(SIN((#{latitude} * 3.1415) / 180 )
+                    *SIN((a.latitude * 3.1415) / 180 ) +COS((#{latitude} * 3.1415) / 180 )
+                    * COS((a.latitude * 3.1415) / 180 ) *COS((#{longitude}* 3.1415) /
+                    180 -
+                    (a.longitude * 3.1415) / 180 ) ) * 6380) &lt; #{scope}
+                </if>
+            </trim>
+        </where>
+        order by distance ASC
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+
+    <select id="countNear" resultType="java.lang.Long" parameterType="com.dadao.shop.entity.Shop">
+        select COUNT(0) from gt_shop a
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="categoryId != null and categoryType==2">
+                    and categoryId = #{categoryId}
+                </if>
+                <if test="categoryId != null and categoryType==1">
+                    and categoryId IN (select categoryId from gt_category where parentId=#{categoryId})
+                </if>
+                <if test="shopName!=null and shopName!=''">
+                    AND shopName LIKE concat('%',#{shopName},'%')
+                </if>
+                <if test="latitude!=null">
+                    and (ACOS(SIN((#{latitude} * 3.1415) / 180 )
+                    *SIN((a.latitude * 3.1415) / 180 ) +COS((#{latitude} * 3.1415) / 180 )
+                    * COS((a.latitude * 3.1415) / 180 ) *COS((#{longitude}* 3.1415) /
+                    180 -
+                    (a.longitude * 3.1415) / 180 ) ) * 6380) &lt; #{scope}
+                </if>
+            </trim>
+        </where>
+
+    </select>
+
+    <select id="getById" resultType="com.dadao.shop.entity.vo.Shop" parameterType="java.lang.Integer">
+        SELECT
+            *
+        FROM
+            gt_shop
+        WHERE
+            shopId = #{shopId}
+    </select>
+    <select id="findById" resultType="com.dadao.shop.entity.Shop" parameterType="java.lang.Long">
+        SELECT
+        *
+        FROM
+        gt_shop
+        WHERE
+        shopId = #{shopId}
+    </select>
+
+    <select id="listNearByShop" resultType="com.dadao.shop.entity.vo.Shop"
+            parameterType="hashMap">
+        select a.*,
+        (ACOS(SIN((#{latitude} * 3.1415) / 180 )
+        *SIN((a.latitude * 3.1415) / 180 ) +COS((#{latitude} * 3.1415) / 180 )
+        * COS((a.latitude * 3.1415) / 180 ) *COS((#{longitude}* 3.1415) /
+        180 -
+        (a.longitude * 3.1415) / 180 ) ) * 6380) AS distance from gt_shop a,gt_category b
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                and a.categoryId = b.categoryId
+                <if test="categoryId != null">
+                    and b.parentId = #{categoryId}
+                </if>
+                <if test="shopName != null">
+                    and shopName like concat('%',#{shopName},'%')
+                </if>
+                <if test="latitude!=null">
+                    and (ACOS(SIN((#{latitude} * 3.1415) / 180 )
+                    *SIN((a.latitude * 3.1415) / 180 ) +COS((#{latitude} * 3.1415) / 180 )
+                    * COS((a.latitude * 3.1415) / 180 ) *COS((#{longitude}* 3.1415) /
+                    180 -
+                    (a.longitude * 3.1415) / 180 ) ) * 6380) &lt; #{scope}
+
+                </if>
+                <!-- [0,50]、[50,100]、[100,200]、[200,300]、[300,无限制] -->
+                <if test="perCapitaConsumption == 50">
+                    <![CDATA[  AND perCapitaConsumption <= 50  ]]>
+                </if>
+                <if test="perCapitaConsumption == 75">
+                    <![CDATA[  AND perCapitaConsumption >= 50 AND perCapitaConsumption <= 100  ]]>
+                </if>
+                <if test="perCapitaConsumption == 150">
+                    <![CDATA[  AND perCapitaConsumption >= 100 AND perCapitaConsumption <= 200  ]]>
+                </if>
+                <if test="perCapitaConsumption == 250">
+                    <![CDATA[  AND perCapitaConsumption >= 200 AND perCapitaConsumption <= 300  ]]>
+                </if>
+                <if test="perCapitaConsumption == 350">
+                    <![CDATA[  AND perCapitaConsumption >= 300 ]]>
+                </if>
+                <if test="isOnTime != null">
+                    AND
+                    (SELECT DATE_FORMAT((NOW()), '%H%i'))
+                    BETWEEN
+                    (SELECT DATE_FORMAT(a.businessStartTime,'%H%i'))
+                    AND
+                    (SELECT DATE_FORMAT(a.businessEndTime,'%H%i'))
+                </if>
+                <if test="tags != null">
+                    <foreach collection="tags" item="item">
+                        <if test="item != null and item != ''">
+                            AND tags LIKE CONCAT('%',#{item},'%')
+                        </if>
+                    </foreach>
+                </if>
+                <if test="type != null">
+                    AND b.categoryId = #{type}
+                </if>
+            </trim>
+        </where>
+        order by
+        <trim prefixOverrides=",">
+            <if test="perCapitaConsumption == 1">
+                ,perCapitaConsumption ASC
+            </if>
+            <if test="perCapitaConsumption == 2">
+                ,perCapitaConsumption DESC
+            </if>
+            <if test="integralRate == 1">
+                ,integralRate DESC
+            </if>
+            <if test="isNewShop != null and isNewShop == 1">
+                ,createTime DESC
+            </if>
+            ,distance ASC
+        </trim>
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+    <select id="countNearByShop" resultType="java.lang.Long"
+            parameterType="hashMap">
+        select COUNT(0) from gt_shop a,gt_category b
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                and a.categoryId = b.categoryId
+                <if test="categoryId != null">
+                    and b.parentId = #{categoryId}
+                </if>
+                <if test="shopName != null">
+                    and shopName like concat('%',#{shopName},'%')
+                </if>
+                <if test="latitude!=null">
+                    AND (ACOS(SIN((#{latitude} * 3.1415) / 180 )
+                    *SIN((a.latitude * 3.1415) / 180 ) +COS((#{latitude} * 3.1415) / 180 )
+                    * COS((a.latitude * 3.1415) / 180 ) *COS((#{longitude}* 3.1415) /
+                    180 -
+                    (a.longitude * 3.1415) / 180 ) ) * 6380) &lt; #{scope}
+
+                </if>
+                <!-- [0,50]、[50,100]、[100,200]、[200,300]、[300,无限制] -->
+                <if test="perCapitaConsumption == 50">
+                    <![CDATA[  AND perCapitaConsumption <= 50  ]]>
+                </if>
+                <if test="perCapitaConsumption == 75">
+                    <![CDATA[  AND perCapitaConsumption >= 50 AND perCapitaConsumption <= 100  ]]>
+                </if>
+                <if test="perCapitaConsumption == 150">
+                    <![CDATA[  AND perCapitaConsumption >= 100 AND perCapitaConsumption <= 200  ]]>
+                </if>
+                <if test="perCapitaConsumption == 250">
+                    <![CDATA[  AND perCapitaConsumption >= 200 AND perCapitaConsumption <= 300  ]]>
+                </if>
+                <if test="perCapitaConsumption == 350">
+                    <![CDATA[  AND perCapitaConsumption >= 300 ]]>
+                </if>
+                <if test="isOnTime != null">
+                    AND
+                    (SELECT DATE_FORMAT((NOW()), '%H%i'))
+                    BETWEEN
+                    (SELECT DATE_FORMAT(a.businessStartTime,'%H%i'))
+                    AND
+                    (SELECT DATE_FORMAT(a.businessEndTime,'%H%i'))
+                </if>
+                <if test="tags != null">
+                    <foreach collection="tags" item="item">
+                        <if test="item != null and item != ''">
+                            AND tags LIKE CONCAT('%',#{item},'%')
+                        </if>
+                    </foreach>
+                </if>
+                <if test="type != null">
+                    AND b.categoryId = #{type}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <!-- 根据一级分类，查询销量最高/积分率最高的商户 -->
+    <select id="findShopsByRankType" resultType="com.dadao.shop.entity.RankShop">
+        SELECT
+            gs.*,
+            <if test="rankType == 1">
+                COUNT(ddo.id) AS orderCount,
+            </if>
+            (ACOS(SIN((#{latitude} * 3.1415) / 180 )
+            *SIN((gs.latitude * 3.1415) / 180 ) +COS((#{latitude} * 3.1415) / 180 )
+            * COS((gs.latitude * 3.1415) / 180 ) *COS((#{longitude}* 3.1415) /
+            180 -(gs.longitude * 3.1415) / 180 ) ) * 6380) AS distance
+        FROM
+            gt_shop AS gs
+        LEFT JOIN dadao_order AS ddo ON gs.shopId = ddo.shopId
+        WHERE
+            gs.categoryId IN (
+                SELECT
+                    categoryId
+                FROM
+                    gt_category
+                WHERE
+                    parentId = #{categoryId}
+            )
+        GROUP BY
+            gs.shopId
+        ORDER BY
+            <if test="rankType == 1">
+                orderCount DESC,
+            </if>
+            <if test="rankType == 2">
+                gs.integralRate DESC,
+            </if>
+            distance ASC LIMIT #{beginIndex},#{pageSize};
+    </select>
+    <select id="countShopsByRankType" resultType="long">
+        SELECT
+            COUNT(*)
+        FROM
+            gt_shop AS gs
+        WHERE
+            gs.categoryId IN (
+                SELECT
+                    categoryId
+                FROM
+                    gt_category
+                WHERE
+                    parentId = #{categoryId}
+            );
+    </select>
+
+    <select id="list" parameterType="com.dadao.shop.entity.ShopPO" resultType="com.dadao.shop.entity.ShopPO">
+        SELECT <include refid="BASE_COLUMN_LIST"/> FROM gt_shop
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="fk_user_id!=null">
+                    AND fk_user_id = #{fk_user_id}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+</mapper>

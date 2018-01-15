@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dadao.push.mapper.InformationMapper">
+    <resultMap id="BaseResultMap" type="com.dadao.push.entity.InformationPO">
+        <id column="infoId" jdbcType="BIGINT" property="infoId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="notifyUrl" jdbcType="VARCHAR" property="notifyUrl"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="userId" jdbcType="BIGINT" property="userId"/>
+        <result column="haveRead" jdbcType="INTEGER" property="haveRead"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="endTime" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="objectId" jdbcType="BIGINT" property="objectId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    infoId, title, notifyUrl, image, content, userId, haveRead, status, createTime, endTime, objectId
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from gt_information
+        where infoId = #{infoId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from gt_information
+    where infoId = #{infoId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.dadao.push.entity.InformationPO">
+    insert into gt_information (infoId, title, notifyUrl, image, content,
+      userId, haveRead, status, 
+      createTime, endTime, objectId)
+    values (#{infoId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{notifyUrl,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
+      #{userId,jdbcType=BIGINT}, #{haveRead,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{objectId,jdbcType=BIGINT})
+  </insert>
+    <insert id="insertSelective" parameterType="com.dadao.push.entity.InformationPO">
+        insert into gt_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="infoId != null">
+                infoId,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="notifyUrl != null">
+                notifyUrl,
+            </if>
+            <if test="image != null">
+                image,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="haveRead != null">
+                haveRead,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="endTime != null">
+                endTime,
+            </if>
+            <if test="objectId != null">
+                objectId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="infoId != null">
+                #{infoId,jdbcType=BIGINT},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="notifyUrl != null">
+                #{notifyUrl, jdbcType=VARCHAR},
+            </if>
+            <if test="image != null">
+                #{image,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="haveRead != null">
+                #{haveRead,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="objectId != null">
+                #{objectId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dadao.push.entity.InformationPO">
+        update gt_information
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="image != null">
+                image = #{image,jdbcType=VARCHAR},
+            </if>
+            <if test="notifyUrl != null">
+                notifyUrl = #{notifyUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                userId = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="haveRead != null">
+                haveRead = #{haveRead,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                endTime = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="objectId != null">
+                objectId = #{objectId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where infoId = #{infoId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dadao.push.entity.InformationPO">
+    update gt_information
+    set title = #{title,jdbcType=VARCHAR},
+      notifyUrl = #{notifyUrl,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      userId = #{userId,jdbcType=BIGINT},
+      haveRead = #{haveRead,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      endTime = #{endTime,jdbcType=TIMESTAMP},
+      objectId = #{objectId,jdbcType=BIGINT}
+    where infoId = #{infoId,jdbcType=BIGINT}
+  </update>
+    <!--分页-->
+    <select id="selectByObject" parameterType="com.dadao.push.entity.InformationPO" resultType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_information
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="infoId != null">
+                    AND infoId=#{infoId}
+                </if>
+                <if test="title != null">
+                    AND title=#{title}
+                </if>
+                <if test="image != null">
+                    AND image=#{image}
+                </if>
+                <if test="content != null">
+                    AND content=#{content}
+                </if>
+                <if test="userId != null">
+                    AND userId=#{userId}
+                </if>
+                <if test="haveRead != null">
+                    AND haveRead=#{haveRead}
+                </if>
+                <if test="status != null">
+                    AND status=#{status}
+                </if>
+                <if test="createTime != null">
+                    AND createTime=#{createTime}
+                </if>
+                <if test="endTime != null">
+                    AND endTime=#{endTime}
+                </if>
+                <if test="objectId != null">
+                    AND objectId=#{objectId}
+                </if>
+            </trim>
+        </where>
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+    <select id="countRecordByObject" parameterType="com.dadao.merchants.entity.MerchantsInfo" resultType="long">
+        SELECT COUNT(*)
+        FROM gt_information
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="infoId != null">
+                    AND infoId=#{infoId}
+                </if>
+                <if test="title != null">
+                    AND title=#{title}
+                </if>
+                <if test="image != null">
+                    AND image=#{image}
+                </if>
+                <if test="content != null">
+                    AND content=#{content}
+                </if>
+                <if test="userId != null">
+                    AND userId=#{userId}
+                </if>
+                <if test="haveRead != null">
+                    AND haveRead=#{haveRead}
+                </if>
+                <if test="status != null">
+                    AND status=#{status}
+                </if>
+                <if test="createTime != null">
+                    AND createTime=#{createTime}
+                </if>
+                <if test="endTime != null">
+                    AND endTime=#{endTime}
+                </if>
+                <if test="objectId != null">
+                    AND objectId=#{objectId}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+  <select id="countMessageUnread" parameterType="com.dadao.push.entity.MessageCountPO" resultType="long">
+    SELECT
+        COUNT(*)
+    FROM
+        gt_information
+    WHERE
+        userId = #{userId}
+    AND status IN
+        <foreach collection="statusList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    AND haveRead = #{haveRead};
+  </select>
+
+    <select id="selectByMessageType" resultType="com.dadao.push.entity.InformationPO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_information
+        <where>
+            status IN
+            <foreach collection="statusList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            AND userId = #{userId}
+        </where>
+        ORDER BY createTime DESC
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+
+    <select id="countByMessageType" resultType="long">
+        SELECT
+        COUNT(*)
+        FROM gt_information
+        <where>
+            status IN
+            <foreach collection="statusList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            AND userId = #{userId}
+        </where>
+    </select>
+
+    <update id="updateMessageByType">
+        UPDATE gt_information
+        SET haveRead = 1
+        <where>
+            status IN
+            <foreach collection="statusList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            AND userId = #{userId}
+        </where>
+    </update>
+
+    <select id="selectMaxCreateTimeMessageByType" resultType="java.util.Date">
+        SELECT
+        MAX(createTime)
+        FROM gt_information
+        <where>
+            status IN
+            <foreach collection="statusList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+</mapper>

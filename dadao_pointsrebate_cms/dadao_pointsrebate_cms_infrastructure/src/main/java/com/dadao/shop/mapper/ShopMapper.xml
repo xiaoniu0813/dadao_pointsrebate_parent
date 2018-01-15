@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.shop.mapper.ShopMapper">
+
+    <!-- 查询字段列表 -->
+    <sql id="Base_Column_List">
+        shopId,shopName,shopDescription,phone,picture,verticalVersionPicture,markPicture,longitude,latitude,address,integralRate,commissionRate,businessStartTime,businessEndTime,tags,perCapitaConsumption,createTime,fk_user_id
+    </sql>
+
+    <select id="findById" resultType="com.dadao.shop.entity.Shop" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_shop
+        <where>
+            shopId = #{shopId}
+        </where>
+    </select>
+
+    <update id="update" parameterType="com.dadao.shop.entity.Shop">
+        update gt_shop
+
+        <set>
+            <trim  suffixOverrides=",">
+            <if test="shopName != null and shopName!=''">
+                shopName = #{shopName,jdbcType=VARCHAR},
+            </if>
+            <if test="shopDescription != null and shopDescription!=''">
+                shopDescription = #{shopDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="picture != null and picture!=''">
+                picture = #{picture,jdbcType=VARCHAR},
+            </if>
+            <if test="verticalVersionPicture != null and verticalVersionPicture!=''">
+                verticalVersionPicture = #{verticalVersionPicture,jdbcType=VARCHAR},
+            </if>
+            <if test="markPicture != null and markPicture!=''">
+                markPicture = #{markPicture,jdbcType=VARCHAR},
+            </if>
+            <if test="longitude != null and longitude!=''">
+                longitude = #{longitude,jdbcType=VARCHAR},
+            </if>
+            <if test="latitude != null and latitude!=''">
+                latitude = #{latitude,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null and address!=''">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="integralRate != null and integralRate != -2">
+                integralRate = #{integralRate,jdbcType=INTEGER},
+            </if>
+            <if test="commissionRate != null and commissionRate != -2">
+                commissionRate = #{commissionRate,jdbcType=INTEGER},
+            </if>
+            <if test="businessStartTime != null">
+                businessStartTime = #{businessStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="businessEndTime != null">
+                businessEndTime = #{businessEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="tags != null and tags != ''">
+                tags = #{tags,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            </trim>
+        </set>
+        where shopId = #{shopId,jdbcType=BIGINT}
+    </update>
+
+    <select id="findByPage" resultType="com.dadao.shop.entity.Shop"
+            parameterType="com.dadao.shop.entity.Shop">
+        select
+        <include refid="Base_Column_List"/>
+        from gt_shop
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="shopId != null and shopId!=''">
+                    and shopId =#{shopId}
+                </if>
+                <if test="shopName != null and shopName!=''">
+                    and shopName LIKE concat('%',#{shopName},'%')
+                </if>
+                <if test="shopDescription != null and shopDescription!=''">
+                    and shopDescription LIKE concat('%',#{shopDescription},'%')
+                </if>
+                <if test="phone != null and phone!=''">
+                    and phone=#{phone}
+                </if>
+                <if test="address != null and address!=''">
+                    and address LIKE concat('%',#{address},'%')
+                </if>
+                <if test="businessStartTime != null and businessStartTime != '' ">
+                    and createtime &gt; #{businessStartTime}
+                </if>
+
+                <if test="businessEndTime != null and businessEndTime != ''">
+                    and creatvetime &lt; #{businessEndTime}
+                </if>
+            </trim>
+            and 1 = 1
+        </where>
+        order by createTime desc
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long" parameterType="com.dadao.shop.entity.Shop">
+        select count(0) from gt_shop
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="shopId != null and shopId !=''">
+                    and shopId =#{shopId}
+                </if>
+                <if test="shopName != null and shopName !=''">
+                    and shopName LIKE concat('%',#{shopName},'%')
+                </if>
+                <if test="shopDescription != null and shopDescription!=''">
+                    and shopDescription LIKE concat('%',#{shopDescription},'%')
+                </if>
+                <if test="phone != null and phone!=''">
+                    and phone=#{phone}
+                </if>
+                <if test="address != null and address!=''">
+                    and address LIKE concat('%',#{address},'%')
+                </if>
+                <if test="businessStartTime != null and businessStartTime != '' ">
+                    and createtime &gt; #{businessStartTime}
+                </if>
+
+                <if test="businessEndTime != null and businessEndTime != ''">
+                    and createtime &lt; #{businessEndTime}
+                </if>
+            </trim>
+            and 1 = 1
+        </where>
+    </select>
+
+
+    <insert id="save" parameterType="com.dadao.shop.entity.Shop">
+
+        INSERT INTO gt_shop
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shopId!=null">
+                shopId,
+            </if>
+            <if test="shopName!=null">
+                shopName,
+            </if>
+            <if test="shopDescription!=null">
+                shopDescription,
+            </if>
+            <if test="phone!=null">
+                phone,
+            </if>
+            <if test="picture!=null">
+                picture,
+            </if>
+            <if test="verticalVersionPicture!=null">
+                verticalVersionPicture,
+            </if>
+            <if test="markPicture!=null">
+                markPicture,
+            </if>
+            <if test="longitude!=null">
+                longitude,
+            </if>
+            <if test="latitude!=null">
+                latitude,
+            </if>
+            <if test="address!=null">
+                address,
+            </if>
+            <if test="integralRate!=null">
+                integralRate,
+            </if>
+            <if test="commissionRate!=null">
+                commissionRate,
+            </if>
+            <if test="businessStartTime!=null">
+                businessStartTime,
+            </if>
+            <if test="businessEndTime!=null">
+                businessEndTime,
+            </if>
+            <if test="tags!=null">
+                tags,
+            </if>
+            <if test="perCapitaConsumption!=null">
+                perCapitaConsumption,
+            </if>
+            <if test="fk_user_id!=null">
+                fk_user_id,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shopId!=null">
+                #{shopId},
+            </if>
+            <if test="shopName!=null">
+                #{shopName},
+            </if>
+            <if test="shopDescription!=null">
+                #{shopDescription},
+            </if>
+            <if test="phone!=null">
+                #{phone},
+            </if>
+            <if test="picture!=null">
+                #{picture},
+            </if>
+            <if test="verticalVersionPicture!=null">
+                #{verticalVersionPicture},
+            </if>
+            <if test="markPicture!=null">
+                #{markPicture},
+            </if>
+            <if test="longitude!=null">
+                #{longitude},
+            </if>
+            <if test="latitude!=null">
+                #{latitude},
+            </if>
+            <if test="address!=null">
+                #{address},
+            </if>
+            <if test="integralRate!=null">
+                #{integralRate},
+            </if>
+            <if test="commissionRate!=null">
+                #{commissionRate},
+            </if>
+            <if test="businessStartTime!=null">
+                #{businessStartTime},
+            </if>
+            <if test="businessEndTime!=null">
+                #{businessEndTime},
+            </if>
+            <if test="tags!=null">
+                #{tags},
+            </if>
+            <if test="perCapitaConsumption!=null">
+                #{perCapitaConsumption},
+            </if>
+            <if test="fk_user_id!=null">
+                #{fk_user_id},
+            </if>
+
+        </trim>
+    </insert>
+    <select id="findByShopId" parameterType="java.lang.Long" resultType="com.dadao.shop.entity.ShopPO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_shop
+        WHERE fk_user_id = #{fk_user_id}
+    </select>
+
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.business.mapper.CmerchantMapper">
+
+    <select id="findByAll" parameterType="com.dadao.business.entity.Cmerchant"
+            resultType="com.dadao.business.entity.Cmerchant">
+      SELECT
+	  g.userId,g.nickname,g.phone,g.picture,g.createTime,u.status,u.merchant,u.token
+      FROM
+      gt_user_info g LEFT JOIN user_account u ON g.userId = u.userId
+      WHERE u.merchant = #{merchant} AND u.status = #{status} AND g.userId NOT IN (SELECT userId FROM business_apply)
+      LIMIT #{beginIndex},#{pageSize}
+    </select>
+    <select id="findTotal" parameterType="com.dadao.business.entity.Cmerchant" resultType="java.lang.Integer">
+      SELECT
+	        count(0)
+      FROM
+      gt_user_info g LEFT JOIN user_account u ON g.userId = u.userId
+      WHERE u.merchant = #{merchant} AND u.status = #{status} AND g.userId NOT IN (SELECT userId FROM business_apply)
+    </select>
+
+</mapper>

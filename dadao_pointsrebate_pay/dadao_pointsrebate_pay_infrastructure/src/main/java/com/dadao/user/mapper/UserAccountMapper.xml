@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.UserAccountMapper">
+    <select id="findById" resultType="com.dadao.user.entity.UserAccount" parameterType="java.lang.Long">
+        SELECT * FROM user_account WHERE userId=#{userId}
+    </select>
+    <select id="findUserByToken" resultType="com.dadao.user.entity.UserAccount" parameterType="java.lang.String">
+        SELECT * FROM user_account WHERE token=#{token}
+    </select>
+</mapper>

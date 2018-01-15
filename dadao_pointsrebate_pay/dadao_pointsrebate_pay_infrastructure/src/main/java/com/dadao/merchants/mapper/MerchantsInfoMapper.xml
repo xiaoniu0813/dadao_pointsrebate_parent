@@ -1,0 +1,1123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dadao.merchants.mapper.MerchantsInfoMapper">
+  <resultMap id="BaseResultMap" type="com.dadao.merchants.entity.MerchantsInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="merFullName" jdbcType="VARCHAR" property="merFullName" />
+    <result column="merShortName" jdbcType="VARCHAR" property="merShortName" />
+    <result column="merCertType" jdbcType="VARCHAR" property="merCertType" />
+    <result column="merCertNo" jdbcType="VARCHAR" property="merCertNo" />
+    <result column="legalName" jdbcType="VARCHAR" property="legalName" />
+    <result column="legalIdCard" jdbcType="VARCHAR" property="legalIdCard" />
+    <result column="merLegalPhone" jdbcType="VARCHAR" property="merLegalPhone" />
+    <result column="merLegalEmail" jdbcType="VARCHAR" property="merLegalEmail" />
+    <result column="merLevel1No" jdbcType="VARCHAR" property="merLevel1No" />
+    <result column="merLevel2No" jdbcType="VARCHAR" property="merLevel2No" />
+    <result column="merProvince" jdbcType="VARCHAR" property="merProvince" />
+    <result column="merCity" jdbcType="VARCHAR" property="merCity" />
+    <result column="merDistrict" jdbcType="VARCHAR" property="merDistrict" />
+    <result column="merAddress" jdbcType="VARCHAR" property="merAddress" />
+    <result column="merScope" jdbcType="VARCHAR" property="merScope" />
+    <result column="merContactPhone" jdbcType="VARCHAR" property="merContactPhone" />
+    <result column="merContactName" jdbcType="VARCHAR" property="merContactName" />
+    <result column="taxRegistCert" jdbcType="VARCHAR" property="taxRegistCert" />
+    <result column="accountLicense" jdbcType="VARCHAR" property="accountLicense" />
+    <result column="orgCode" jdbcType="VARCHAR" property="orgCode" />
+    <result column="isOrgCodeLong" jdbcType="VARCHAR" property="isOrgCodeLong" />
+    <result column="orgCodeExpiry" jdbcType="TIMESTAMP" property="orgCodeExpiry" />
+    <result column="cardNo" jdbcType="VARCHAR" property="cardNo" />
+    <result column="headBankCode" jdbcType="VARCHAR" property="headBankCode" />
+    <result column="bankProvince" jdbcType="VARCHAR" property="bankProvince" />
+    <result column="bankCity" jdbcType="VARCHAR" property="bankCity" />
+    <result column="bankCode" jdbcType="VARCHAR" property="bankCode" />
+    <result column="productInfo" jdbcType="VARCHAR" property="productInfo" />
+    <result column="fileInfo" jdbcType="VARCHAR" property="fileInfo" />
+    <result column="businessFunction" jdbcType="VARCHAR" property="businessFunction" />
+    <result column="notifyUrl" jdbcType="VARCHAR" property="notifyUrl" />
+    <result column="merAuthorizeType" jdbcType="VARCHAR" property="merAuthorizeType" />
+    <result column="merType" jdbcType="VARCHAR" property="merType" />
+    <result column="requestNo" jdbcType="VARCHAR" property="requestNo" />
+    <result column="merchantNo" jdbcType="VARCHAR" property="merchantNo" />
+    <result column="parentMerchantNo" jdbcType="VARCHAR" property="parentMerchantNo" />
+    <result column="externalId" jdbcType="VARCHAR" property="externalId" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.dadao.merchants.entity.MerchantsInfo">
+    <result column="agreementContent" jdbcType="LONGVARCHAR" property="agreementContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, merFullName, merShortName, merCertType, merCertNo, legalName, legalIdCard, merLegalPhone,
+    merLegalEmail, merLevel1No, merLevel2No, merProvince, merCity, merDistrict, merAddress,
+    merScope, merContactPhone, merContactName, taxRegistCert, accountLicense, orgCode,
+    isOrgCodeLong, orgCodeExpiry, cardNo, headBankCode, bankProvince, bankCity, bankCode,
+    productInfo, fileInfo, businessFunction, notifyUrl, merAuthorizeType, merType, requestNo,
+    merchantNo, parentMerchantNo, externalId, createTime
+  </sql>
+  <sql id="Blob_Column_List">
+    agreementContent
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from yb_merchants_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from yb_merchants_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dadao.merchants.entity.MerchantsInfo">
+    insert into yb_merchants_info (id, merFullName, merShortName,
+    merCertType, merCertNo, legalName,
+    legalIdCard, merLegalPhone, merLegalEmail,
+    merLevel1No, merLevel2No, merProvince,
+    merCity, merDistrict, merAddress,
+    merScope, merContactPhone, merContactName,
+    taxRegistCert, accountLicense, orgCode,
+    isOrgCodeLong, orgCodeExpiry, cardNo,
+    headBankCode, bankProvince, bankCity,
+    bankCode, productInfo, fileInfo,
+    businessFunction, notifyUrl, merAuthorizeType,
+    merType, requestNo, merchantNo,
+    parentMerchantNo, externalId, createTime,
+    agreementContent)
+    values (#{id,jdbcType=BIGINT}, #{merFullName,jdbcType=VARCHAR}, #{merShortName,jdbcType=VARCHAR},
+    #{merCertType,jdbcType=VARCHAR}, #{merCertNo,jdbcType=VARCHAR}, #{legalName,jdbcType=VARCHAR},
+    #{legalIdCard,jdbcType=VARCHAR}, #{merLegalPhone,jdbcType=VARCHAR}, #{merLegalEmail,jdbcType=VARCHAR},
+    #{merLevel1No,jdbcType=VARCHAR}, #{merLevel2No,jdbcType=VARCHAR}, #{merProvince,jdbcType=VARCHAR},
+    #{merCity,jdbcType=VARCHAR}, #{merDistrict,jdbcType=VARCHAR}, #{merAddress,jdbcType=VARCHAR},
+    #{merScope,jdbcType=VARCHAR}, #{merContactPhone,jdbcType=VARCHAR}, #{merContactName,jdbcType=VARCHAR},
+    #{taxRegistCert,jdbcType=VARCHAR}, #{accountLicense,jdbcType=VARCHAR}, #{orgCode,jdbcType=VARCHAR},
+    #{isOrgCodeLong,jdbcType=VARCHAR}, #{orgCodeExpiry,jdbcType=TIMESTAMP}, #{cardNo,jdbcType=VARCHAR},
+    #{headBankCode,jdbcType=VARCHAR}, #{bankProvince,jdbcType=VARCHAR}, #{bankCity,jdbcType=VARCHAR},
+    #{bankCode,jdbcType=VARCHAR}, #{productInfo,jdbcType=VARCHAR}, #{fileInfo,jdbcType=VARCHAR},
+    #{businessFunction,jdbcType=VARCHAR}, #{notifyUrl,jdbcType=VARCHAR}, #{merAuthorizeType,jdbcType=VARCHAR},
+    #{merType,jdbcType=VARCHAR}, #{requestNo,jdbcType=VARCHAR}, #{merchantNo,jdbcType=VARCHAR},
+    #{parentMerchantNo,jdbcType=VARCHAR}, #{externalId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+    #{agreementContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dadao.merchants.entity.MerchantsInfo">
+    insert into yb_merchants_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="merFullName != null">
+        merFullName,
+      </if>
+      <if test="merShortName != null">
+        merShortName,
+      </if>
+      <if test="merCertType != null">
+        merCertType,
+      </if>
+      <if test="merCertNo != null">
+        merCertNo,
+      </if>
+      <if test="legalName != null">
+        legalName,
+      </if>
+      <if test="legalIdCard != null">
+        legalIdCard,
+      </if>
+      <if test="merLegalPhone != null">
+        merLegalPhone,
+      </if>
+      <if test="merLegalEmail != null">
+        merLegalEmail,
+      </if>
+      <if test="merLevel1No != null">
+        merLevel1No,
+      </if>
+      <if test="merLevel2No != null">
+        merLevel2No,
+      </if>
+      <if test="merProvince != null">
+        merProvince,
+      </if>
+      <if test="merCity != null">
+        merCity,
+      </if>
+      <if test="merDistrict != null">
+        merDistrict,
+      </if>
+      <if test="merAddress != null">
+        merAddress,
+      </if>
+      <if test="merScope != null">
+        merScope,
+      </if>
+      <if test="merContactPhone != null">
+        merContactPhone,
+      </if>
+      <if test="merContactName != null">
+        merContactName,
+      </if>
+      <if test="taxRegistCert != null">
+        taxRegistCert,
+      </if>
+      <if test="accountLicense != null">
+        accountLicense,
+      </if>
+      <if test="orgCode != null">
+        orgCode,
+      </if>
+      <if test="isOrgCodeLong != null">
+        isOrgCodeLong,
+      </if>
+      <if test="orgCodeExpiry != null and orgCodeExpiry != ''">
+        orgCodeExpiry,
+      </if>
+      <if test="cardNo != null">
+        cardNo,
+      </if>
+      <if test="headBankCode != null">
+        headBankCode,
+      </if>
+      <if test="bankProvince != null">
+        bankProvince,
+      </if>
+      <if test="bankCity != null">
+        bankCity,
+      </if>
+      <if test="bankCode != null">
+        bankCode,
+      </if>
+      <if test="productInfo != null">
+        productInfo,
+      </if>
+      <if test="fileInfo != null">
+        fileInfo,
+      </if>
+      <if test="businessFunction != null">
+        businessFunction,
+      </if>
+      <if test="notifyUrl != null">
+        notifyUrl,
+      </if>
+      <if test="merAuthorizeType != null">
+        merAuthorizeType,
+      </if>
+      <if test="merType != null">
+        merType,
+      </if>
+      <if test="requestNo != null">
+        requestNo,
+      </if>
+      <if test="merchantNo != null">
+        merchantNo,
+      </if>
+      <if test="parentMerchantNo != null">
+        parentMerchantNo,
+      </if>
+      <if test="externalId != null">
+        externalId,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+      <if test="agreementContent != null">
+        agreementContent,
+      </if>
+    </trim>
+
+
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="merFullName != null">
+        #{merFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="merShortName != null">
+        #{merShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="merCertType != null">
+        #{merCertType,jdbcType=VARCHAR},
+      </if>
+      <if test="merCertNo != null">
+        #{merCertNo,jdbcType=VARCHAR},
+      </if>
+      <if test="legalName != null">
+        #{legalName,jdbcType=VARCHAR},
+      </if>
+      <if test="legalIdCard != null">
+        #{legalIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="merLegalPhone != null">
+        #{merLegalPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="merLegalEmail != null">
+        #{merLegalEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="merLevel1No != null">
+        #{merLevel1No,jdbcType=VARCHAR},
+      </if>
+      <if test="merLevel2No != null">
+        #{merLevel2No,jdbcType=VARCHAR},
+      </if>
+      <if test="merProvince != null">
+        #{merProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="merCity != null">
+        #{merCity,jdbcType=VARCHAR},
+      </if>
+      <if test="merDistrict != null">
+        #{merDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="merAddress != null">
+        #{merAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="merScope != null">
+        #{merScope,jdbcType=VARCHAR},
+      </if>
+      <if test="merContactPhone != null">
+        #{merContactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="merContactName != null">
+        #{merContactName,jdbcType=VARCHAR},
+      </if>
+      <if test="taxRegistCert != null">
+        #{taxRegistCert,jdbcType=VARCHAR},
+      </if>
+      <if test="accountLicense != null">
+        #{accountLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null">
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isOrgCodeLong != null">
+        #{isOrgCodeLong,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCodeExpiry != null and orgCodeExpiry != ''">
+        #{orgCodeExpiry,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null">
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="headBankCode != null">
+        #{headBankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankProvince != null">
+        #{bankProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCity != null">
+        #{bankCity,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null">
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productInfo != null">
+        #{productInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="fileInfo != null">
+        #{fileInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="businessFunction != null">
+        #{businessFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyUrl != null">
+        #{notifyUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="merAuthorizeType != null">
+        #{merAuthorizeType,jdbcType=VARCHAR},
+      </if>
+      <if test="merType != null">
+        #{merType,jdbcType=VARCHAR},
+      </if>
+      <if test="requestNo != null">
+        #{requestNo,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantNo != null">
+        #{merchantNo,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMerchantNo != null">
+        #{parentMerchantNo,jdbcType=VARCHAR},
+      </if>
+      <if test="externalId != null">
+        #{externalId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="agreementContent != null">
+        #{agreementContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dadao.merchants.entity.MerchantsInfo">
+    update yb_merchants_info
+    <set>
+      <if test="merFullName != null">
+        merFullName = #{merFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="merShortName != null">
+        merShortName = #{merShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="merCertType != null">
+        merCertType = #{merCertType,jdbcType=VARCHAR},
+      </if>
+      <if test="merCertNo != null">
+        merCertNo = #{merCertNo,jdbcType=VARCHAR},
+      </if>
+      <if test="legalName != null">
+        legalName = #{legalName,jdbcType=VARCHAR},
+      </if>
+      <if test="legalIdCard != null">
+        legalIdCard = #{legalIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="merLegalPhone != null">
+        merLegalPhone = #{merLegalPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="merLegalEmail != null">
+        merLegalEmail = #{merLegalEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="merLevel1No != null">
+        merLevel1No = #{merLevel1No,jdbcType=VARCHAR},
+      </if>
+      <if test="merLevel2No != null">
+        merLevel2No = #{merLevel2No,jdbcType=VARCHAR},
+      </if>
+      <if test="merProvince != null">
+        merProvince = #{merProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="merCity != null">
+        merCity = #{merCity,jdbcType=VARCHAR},
+      </if>
+      <if test="merDistrict != null">
+        merDistrict = #{merDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="merAddress != null">
+        merAddress = #{merAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="merScope != null">
+        merScope = #{merScope,jdbcType=VARCHAR},
+      </if>
+      <if test="merContactPhone != null">
+        merContactPhone = #{merContactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="merContactName != null">
+        merContactName = #{merContactName,jdbcType=VARCHAR},
+      </if>
+      <if test="taxRegistCert != null">
+        taxRegistCert = #{taxRegistCert,jdbcType=VARCHAR},
+      </if>
+      <if test="accountLicense != null">
+        accountLicense = #{accountLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null">
+        orgCode = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isOrgCodeLong != null">
+        isOrgCodeLong = #{isOrgCodeLong,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCodeExpiry != null and orgCodeExpiry!=''">
+        orgCodeExpiry = #{orgCodeExpiry,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardNo != null">
+        cardNo = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="headBankCode != null">
+        headBankCode = #{headBankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankProvince != null">
+        bankProvince = #{bankProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCity != null">
+        bankCity = #{bankCity,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null">
+        bankCode = #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productInfo != null">
+        productInfo = #{productInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="fileInfo != null">
+        fileInfo = #{fileInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="businessFunction != null">
+        businessFunction = #{businessFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyUrl != null">
+        notifyUrl = #{notifyUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="merAuthorizeType != null">
+        merAuthorizeType = #{merAuthorizeType,jdbcType=VARCHAR},
+      </if>
+      <if test="merType != null">
+        merType = #{merType,jdbcType=VARCHAR},
+      </if>
+      <if test="requestNo != null">
+        requestNo = #{requestNo,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantNo != null">
+        merchantNo = #{merchantNo,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMerchantNo != null">
+        parentMerchantNo = #{parentMerchantNo,jdbcType=VARCHAR},
+      </if>
+      <if test="externalId != null">
+        externalId = #{externalId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="agreementContent != null">
+        agreementContent = #{agreementContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dadao.merchants.entity.MerchantsInfo">
+    update yb_merchants_info
+    set merFullName = #{merFullName,jdbcType=VARCHAR},
+    merShortName = #{merShortName,jdbcType=VARCHAR},
+    merCertType = #{merCertType,jdbcType=VARCHAR},
+    merCertNo = #{merCertNo,jdbcType=VARCHAR},
+    legalName = #{legalName,jdbcType=VARCHAR},
+    legalIdCard = #{legalIdCard,jdbcType=VARCHAR},
+    merLegalPhone = #{merLegalPhone,jdbcType=VARCHAR},
+    merLegalEmail = #{merLegalEmail,jdbcType=VARCHAR},
+    merLevel1No = #{merLevel1No,jdbcType=VARCHAR},
+    merLevel2No = #{merLevel2No,jdbcType=VARCHAR},
+    merProvince = #{merProvince,jdbcType=VARCHAR},
+    merCity = #{merCity,jdbcType=VARCHAR},
+    merDistrict = #{merDistrict,jdbcType=VARCHAR},
+    merAddress = #{merAddress,jdbcType=VARCHAR},
+    merScope = #{merScope,jdbcType=VARCHAR},
+    merContactPhone = #{merContactPhone,jdbcType=VARCHAR},
+    merContactName = #{merContactName,jdbcType=VARCHAR},
+    taxRegistCert = #{taxRegistCert,jdbcType=VARCHAR},
+    accountLicense = #{accountLicense,jdbcType=VARCHAR},
+    orgCode = #{orgCode,jdbcType=VARCHAR},
+    isOrgCodeLong = #{isOrgCodeLong,jdbcType=VARCHAR},
+    orgCodeExpiry = #{orgCodeExpiry,jdbcType=TIMESTAMP},
+    cardNo = #{cardNo,jdbcType=VARCHAR},
+    headBankCode = #{headBankCode,jdbcType=VARCHAR},
+    bankProvince = #{bankProvince,jdbcType=VARCHAR},
+    bankCity = #{bankCity,jdbcType=VARCHAR},
+    bankCode = #{bankCode,jdbcType=VARCHAR},
+    productInfo = #{productInfo,jdbcType=VARCHAR},
+    fileInfo = #{fileInfo,jdbcType=VARCHAR},
+    businessFunction = #{businessFunction,jdbcType=VARCHAR},
+    notifyUrl = #{notifyUrl,jdbcType=VARCHAR},
+    merAuthorizeType = #{merAuthorizeType,jdbcType=VARCHAR},
+    merType = #{merType,jdbcType=VARCHAR},
+    requestNo = #{requestNo,jdbcType=VARCHAR},
+    merchantNo = #{merchantNo,jdbcType=VARCHAR},
+    parentMerchantNo = #{parentMerchantNo,jdbcType=VARCHAR},
+    externalId = #{externalId,jdbcType=VARCHAR},
+    createTime = #{createTime,jdbcType=TIMESTAMP},
+    agreementContent = #{agreementContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dadao.merchants.entity.MerchantsInfo">
+    update yb_merchants_info
+    set merFullName = #{merFullName,jdbcType=VARCHAR},
+      merShortName = #{merShortName,jdbcType=VARCHAR},
+      merCertType = #{merCertType,jdbcType=VARCHAR},
+      merCertNo = #{merCertNo,jdbcType=VARCHAR},
+      legalName = #{legalName,jdbcType=VARCHAR},
+      legalIdCard = #{legalIdCard,jdbcType=VARCHAR},
+      merLegalPhone = #{merLegalPhone,jdbcType=VARCHAR},
+      merLegalEmail = #{merLegalEmail,jdbcType=VARCHAR},
+      merLevel1No = #{merLevel1No,jdbcType=VARCHAR},
+      merLevel2No = #{merLevel2No,jdbcType=VARCHAR},
+      merProvince = #{merProvince,jdbcType=VARCHAR},
+      merCity = #{merCity,jdbcType=VARCHAR},
+      merDistrict = #{merDistrict,jdbcType=VARCHAR},
+      merAddress = #{merAddress,jdbcType=VARCHAR},
+      merScope = #{merScope,jdbcType=VARCHAR},
+      merContactPhone = #{merContactPhone,jdbcType=VARCHAR},
+      merContactName = #{merContactName,jdbcType=VARCHAR},
+      taxRegistCert = #{taxRegistCert,jdbcType=VARCHAR},
+      accountLicense = #{accountLicense,jdbcType=VARCHAR},
+      orgCode = #{orgCode,jdbcType=VARCHAR},
+      isOrgCodeLong = #{isOrgCodeLong,jdbcType=VARCHAR},
+      orgCodeExpiry = #{orgCodeExpiry,jdbcType=TIMESTAMP},
+      cardNo = #{cardNo,jdbcType=VARCHAR},
+      headBankCode = #{headBankCode,jdbcType=VARCHAR},
+      bankProvince = #{bankProvince,jdbcType=VARCHAR},
+      bankCity = #{bankCity,jdbcType=VARCHAR},
+      bankCode = #{bankCode,jdbcType=VARCHAR},
+      productInfo = #{productInfo,jdbcType=VARCHAR},
+      fileInfo = #{fileInfo,jdbcType=VARCHAR},
+      businessFunction = #{businessFunction,jdbcType=VARCHAR},
+      notifyUrl = #{notifyUrl,jdbcType=VARCHAR},
+      merAuthorizeType = #{merAuthorizeType,jdbcType=VARCHAR},
+      merType = #{merType,jdbcType=VARCHAR},
+      requestNo = #{requestNo,jdbcType=VARCHAR},
+      merchantNo = #{merchantNo,jdbcType=VARCHAR},
+      parentMerchantNo = #{parentMerchantNo,jdbcType=VARCHAR},
+      externalId = #{externalId,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <!--分页-->
+  <select id="selectByObject" parameterType="com.dadao.merchants.entity.MerchantsInfo" resultType="map">
+    SELECT
+    i.id,
+    i.merFullName,
+    i.merShortName,
+    i.merCertType,
+    i.merCertNo,
+    i.legalName,
+    i.legalIdCard,
+    i.merLegalPhone,
+    i.merLegalEmail,
+    s.sortName AS merLevel1No,
+    s1.sortName AS merLevel2No,
+    c.areaname AS merCity,
+    c1.areaname AS merProvince,
+    c2.areaname AS merDistrict,
+    i.merAddress,
+    i.merScope,
+    i.merContactPhone,
+    i.merContactName,
+    i.taxRegistCert,
+    i.accountLicense,
+    i.orgCode,
+    i.isOrgCodeLong,
+    i.orgCodeExpiry,
+    i.cardNo,
+    i.headBankCode,
+    i.bankProvince,
+    i.bankCity,
+    i.bankCode,
+    c3.areaname AS bankProvince1,
+    c4.areaname AS bankCity1,
+    b.bankName AS headBankCode1,
+    i.productInfo,
+    i.fileInfo,
+    i.businessFunction,
+    i.notifyUrl,
+    i.merAuthorizeType,
+    i.merType,
+    i.requestNo,
+    i.merchantNo,
+    i.parentMerchantNo,
+    i.externalId,
+    i.agreementContent,
+    i.createTime,
+    i.returnCode,
+    i.returnMsg,
+    i.merNetInStatus,
+    i.remark
+    FROM yb_merchants_info i
+    LEFT JOIN yb_merchants_sort s ON i.merLevel1No = s.sortCode
+    LEFT JOIN yb_merchants_sort s1 ON i.merLevel2No = s1.sortCode
+    LEFT JOIN city_area_county c ON i.merCity = c.id
+    LEFT JOIN city_area_county c1 ON i.merProvince = c1.id
+    LEFT JOIN city_area_county c2 ON i.merDistrict = c2.id
+    LEFT JOIN city_area_county c3 ON i.bankProvince = c3.id
+    LEFT JOIN city_area_county c4 ON i.bankCity = c4.id
+    LEFT JOIN yb_bank_shorthand b ON i.headBankCode = b.shorthand
+    <where>
+      <trim prefixOverrides="AND">
+        <if test="legalIdCard != null">
+          AND i.legalIdCard LIKE CONCAT('%',#{legalIdCard},'%')
+        </if>
+        <if test="legalName != null">
+          AND i.legalName LIKE CONCAT('%',#{legalName},'%')
+        </if>
+        <if test="merLegalEmail != null">
+          AND i.merLegalEmail LIKE CONCAT('%',#{merLegalEmail},'%')
+        </if>
+        <if test="merLegalPhone != null">
+          AND i.merLegalPhone LIKE CONCAT('%',#{merLegalPhone},'%')
+        </if>
+        <if test="merType != null">
+          AND i.merType=#{merType}
+        </if>
+      </trim>
+    </where>
+    LIMIT #{beginIndex},#{pageSize}
+  </select>
+  <select id="countRecordByObject" parameterType="com.dadao.merchants.entity.MerchantsInfo" resultType="long">
+    SELECT COUNT(*)
+    FROM yb_merchants_info
+    <where>
+      <trim prefixOverrides="AND">
+        <if test="legalIdCard != null">
+          AND legalIdCard LIKE CONCAT('%',#{legalIdCard},'%')
+        </if>
+        <if test="legalName != null">
+          AND legalName LIKE CONCAT('%',#{legalName},'%')
+        </if>
+        <if test="merLegalEmail != null">
+          AND merLegalEmail LIKE CONCAT('%',#{merLegalEmail},'%')
+        </if>
+        <if test="merLegalPhone != null">
+          AND merLegalPhone LIKE CONCAT('%',#{merLegalPhone},'%')
+        </if>
+        <if test="merType != null">
+          AND merType=#{merType}
+        </if>
+      </trim>
+    </where>
+  </select>
+  <!--根据请求号查询-->
+  <select id="selectIdByRequestNo" parameterType="java.lang.String" resultType="com.dadao.merchants.entity.MerchantsInfo">
+    SELECT <include refid="Base_Column_List"/> FROM yb_merchants_info WHERE requestNo = #{requestNo}
+  </select>
+  <!--根据请求号更新注册时返回的信息-->
+  <update id="updateRequestNotifyInfo" parameterType="com.dadao.merchants.entity.MerchantsInfo">
+      UPDATE yb_merchants_info set
+    <trim suffixOverrides=",">
+      <if test="externalId!=null">
+        externalId=#{externalId},
+      </if>
+      <if test="merNetInStatus!=null">
+        merNetInStatus = #{merNetInStatus},
+      </if>
+      <if test="merchantNo!=null">
+        merchantNo=#{merchantNo},
+      </if>
+      <if test="parentMerchantNo!=null">
+        parentMerchantNo=#{parentMerchantNo},
+      </if>
+      <if test="requestNo!=null">
+        requestNo=#{requestNo},
+      </if>
+      <if test="returnCode!=null">
+        returnCode=#{returnCode},
+      </if>
+      <if test="returnMsg!=null">
+        returnMsg=#{returnMsg},
+      </if>
+      <if test="agreementContent!=null">
+        agreementContent=#{agreementContent},
+      </if>
+      <if test="merLegalEmail!=null">
+        merLegalEmail=#{merLegalEmail},
+      </if>
+    </trim>
+
+    WHERE id=#{id}
+
+</update>
+  <update id="updateCallBackInfo" parameterType="com.dadao.merchants.entity.MerchantsInfo">
+    UPDATE yb_merchants_info SET
+    <trim suffixOverrides=",">
+      <if test="externalId!=null">
+        externalId = #{externalId},
+      </if>
+      <if test="requestNo!=null">
+        requestNo = #{requestNo},
+      </if>
+      <if test="merFullName!=null">
+        merFullName = #{merFullName},
+      </if>
+      <if test="merNetInStatus!=null">
+        merNetInStatus = #{merNetInStatus},
+      </if>
+      <if test="remark!=null">
+        remark = #{remark},
+      </if>
+    </trim>
+      WHERE merchantNo = #{merchantNo}
+  </update>
+  <!--保存账号-->
+  <insert id="saveUserAccount" useGeneratedKeys="true" keyProperty="userId" parameterType="com.dadao.user.entity.UserAccount">
+    INSERT INTO user_account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="payPassword != null">
+        payPassword,
+      </if>
+      <if test="gesturePassword != null">
+        gesturePassword,
+      </if>
+      <if test="token != null">
+        token,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="merchant != null">
+        merchant,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null">
+        #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="gesturePassword != null">
+        #{gesturePassword,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="merchant != null">
+        #{merchant,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="findByPhone" parameterType="com.dadao.user.entity.UserAccount" resultType="com.dadao.user.entity.UserAccount">
+    SELECT
+    *
+    FROM user_account
+    WHERE phone=#{phone} AND merchant=#{merchant}
+  </select>
+  <!-- 初始化用户钱包 -->
+  <insert id="saveUserWallet" parameterType="com.dadao.user.entity.UserWalletPO">
+    INSERT INTO user_wallet
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="balance != null">
+        balance,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId},
+      </if>
+      <if test="balance != null">
+        #{balance},
+      </if>
+      <if test="status != null">
+        #{status},
+      </if>
+    </trim>
+  </insert>
+  <select id="findMarketGradePOByEntity" parameterType="com.dadao.market.entity.MarketGradePO" resultType="com.dadao.market.entity.MarketGradePO">
+    SELECT marketId,grade,integralStyle,consumeLower,consumeUpper,cashbackPeriod,periodUnit,intervals,intervalsUnit,integralUpper,integralLower FROM gt_market
+    <where>
+      <trim prefixOverrides="AND">
+        <if test="marketId!=null">
+          AND marketId = #{marketId}
+        </if>
+        <if test="grade!=null">
+          AND  grade =  #{grade}
+        </if>
+        <if test="integralStyle!=null">
+          AND integralStyle = #{integralStyle}
+        </if>
+        <if test="consumeLower!=null">
+          AND consumeLower = #{consumeLower}
+        </if>
+        <if test="consumeUpper!=null">
+          AND consumeUpper = #{consumeUpper}
+        </if>
+        <if test="cashbackPeriod!=null">
+          AND cashbackPeriod = #{cashbackPeriod}
+        </if>
+        <if test="periodUnit!=null">
+          AND periodUnit =  #{periodUnit}
+        </if>
+        <if test="intervals!=null">
+          AND  intervals = #{intervals}
+        </if>
+        <if test="intervalsUnit!=null">
+          AND intervalsUnit = #{intervalsUnit}
+        </if>
+        <if test="integralUpper!=null">
+          AND  integralUpper = #{integralUpper}
+        </if>
+        <if test="integralLower!=null">
+          AND integralLower = #{integralLower}
+        </if>
+      </trim>
+    </where>
+
+  </select>
+
+  <insert id="saveUserInfo" parameterType="com.dadao.user.entity.UserInfo">
+    INSERT INTO gt_user_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId!=null and userId!=''">
+        userId,
+      </if>
+      <if test="nickname!=null and nickname!=''">
+        nickname,
+      </if>
+      <if test="phone!=null and phone!=''">
+        phone,
+      </if>
+      <if test="picture!=null and picture!=''">
+        picture,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId!=null and userId!=''">
+        #{userId},
+      </if>
+      <if test="nickname!=null and nickname!=''">
+        #{nickname},
+      </if>
+      <if test="phone!=null and phone!=''">
+        #{phone},
+      </if>
+      <if test="picture!=null and picture!=''">
+        #{picture},
+      </if>
+    </trim>
+  </insert>
+  <select id="findUserAccountByEntity" resultType="com.dadao.user.entity.UserAccount" parameterType="com.dadao.user.entity.UserAccount">
+    SELECT
+    userId, phone, password, payPassword, gesturePassword, token, status
+    FROM user_account
+    <where>
+      <trim prefix="(" suffix=")" prefixOverrides="and">
+        <if test="phone != null and phone != ''">
+          AND phone = #{phone}
+        </if>
+        <if test="token != null and token != ''">
+          AND token = #{token}
+        </if>
+        <if test="password != null and password != ''">
+          AND password = #{password}
+        </if>
+        <if test="payPassword != null and payPassword != ''">
+          AND payPassword = #{payPassword}
+        </if>
+        <if test="gesturePassword != null and gesturePassword != ''">
+          AND gesturePassword = #{gesturePassword}
+        </if>
+        AND status = 1
+        AND merchant = #{merchant}
+      </trim>
+    </where>
+  </select>
+  <insert id="saveUserInteger" parameterType="com.dadao.user.entity.UserIntegral">
+    INSERT INTO user_integral
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="integral != null">
+        integral,
+      </if>
+      <if test="marketId != null">
+        marketId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId},
+      </if>
+      <if test="integral != null">
+        #{integral},
+      </if>
+      <if test="marketId != null">
+        #{marketId},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.dadao.merchants.entity.MerchantsInfo">
+
+        UPDATE yb_merchants_info SET
+        <trim suffixOverrides=",">
+          <if test="merShortName!=null">
+            merShortName = #{merShortName},
+          </if>
+          <if test="merLegalPhone!=null">
+            merLegalPhone = #{merLegalPhone},
+          </if>
+          <if test="merLegalEmail!=null">
+            merLegalEmail = #{merLegalEmail},
+          </if>
+          <if test="merLevel1No!=null">
+            merLevel1No = #{merLevel1No},
+          </if>
+          <if test="merLevel2No!=null">
+            merLevel2No = #{merLevel2No},
+          </if>
+          <if test="merProvince!= null">
+            merProvince = #{merProvince},
+          </if>
+          <if test="merCity!=null">
+            merCity = #{merCity},
+          </if>
+          <if test="merDistrict!=null">
+            merDistrict = #{merDistrict},
+          </if>
+          <if test="merAddress!=null">
+            merAddress = #{merAddress},
+          </if>
+          <if test="merScope!=null">
+            merScope = #{merScope},
+          </if>
+          <if test="merContactName!=null">
+            merContactName = #{merContactName},
+          </if>
+          <if test="taxRegistCert!=null">
+            taxRegistCert = #{taxRegistCert},
+          </if>
+          <if test="accountLicense!=null">
+            accountLicense = #{accountLicense},
+          </if>
+          <if test="orgCode!=null">
+            orgCode = #{orgCode},
+          </if>
+          <if test="isOrgCodeLong!=null">
+            isOrgCodeLong = #{isOrgCodeLong},
+          </if>
+          <if test="orgCodeExpiry!=null">
+            orgCodeExpiry = #{orgCodeExpiry},
+          </if>
+          <if test="cardNo!=null">
+            cardNo = #{cardNo},
+          </if>
+          <if test="headBankCode!=null">
+            headBankCode = #{headBankCode},
+          </if>
+          <if test="bankProvince!=null">
+            bankProvince = #{bankProvince},
+          </if>
+          <if test="bankCity!=null">
+            bankCity = #{bankCity},
+          </if>
+          <if test="bankCode!=null">
+            bankCode = #{bankCode},
+          </if>
+          <if test="productInfo!=null">
+            productInfo = #{productInfo},
+          </if>
+          <if test="fileInfo!=null">
+            fileInfo = #{fileInfo},
+          </if>
+          <if test="businessFunction!=null">
+            businessFunction = #{businessFunction},
+          </if>
+          <if test="notifyUrl!=null">
+            notifyUrl = #{notifyUrl},
+          </if>
+          <if test="merAuthorizeType!=null">
+            merAuthorizeType = #{merAuthorizeType},
+          </if>
+          <if test="createTime!=null">
+            createTime = #{createTime},
+          </if>
+          <if test="merContactPhone!=null">
+            merContactPhone =#{merContactPhone},
+          </if>
+          <if test="merchantNo!=null">
+            merchantNo = #{merchantNo},
+          </if>
+          <if test="externalId!=null">
+            externalId = #{externalId},
+          </if>
+          <if test="agreementContent!=null">
+            agreementContent = #{agreementContent},
+          </if>
+          <if test="merLegalEmail!=null">
+            merLegalEmail = #{merLegalEmail},
+          </if>
+          <if test="returnCode!=null">
+            returnCode = #{returnCode},
+          </if>
+          <if test="returnMsg!=null">
+            returnMsg = #{returnMsg},
+          </if>
+          <if test="commissionRate!=null">
+            commissionRate = #{commissionRate},
+          </if>
+          <if test="merNetInStatus!=null">
+            merNetInStatus = #{merNetInStatus},
+          </if>
+          <if test="remark!=null">
+            remark = #{remark},
+          </if>
+        </trim>
+        WHERE requestNo = #{requestNo} AND merType = #{merType}
+
+  </update>
+  <update id="updateUserAccountPhone" parameterType="com.dadao.user.entity.UserAccount">
+    UPDATE user_account SET phone = #{phone} WHERE userId = #{userId}
+  </update>
+  <update id="updateUserInfoPhone" parameterType="com.dadao.user.entity.UserInfo">
+    UPDATE gt_user_info SET phone = #{phone} WHERE  userId = #{userId}
+  </update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

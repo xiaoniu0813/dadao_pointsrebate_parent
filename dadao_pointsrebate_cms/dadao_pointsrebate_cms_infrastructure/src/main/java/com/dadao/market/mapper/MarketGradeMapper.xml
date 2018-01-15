@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.market.mapper.MarketGradeMapper">
+    <sql id="Base_Column_List">
+       marketId,grade,integralStyle,consumeLower,consumeUpper,cashbackPeriod,periodUnit,intervals,intervalsUnit,integralUpper,integralLower
+    </sql>
+    <sql id="Base_Column_List_Value">
+        <trim suffixOverrides=",">
+
+            <if test="marketId!=null">
+                #{marketId},
+            </if>
+            <if test="grade!=null">
+                #{grade},
+            </if>
+            <if test="integralStyle!=null">
+                #{integralStyle},
+            </if>
+             <if test="consumeLower!=null">
+                #{consumeLower},
+            </if>
+            <if test="consumeUpper!=null">
+                #{consumeUpper},
+            </if>
+            <if test="cashbackPeriod!=null">
+                #{cashbackPeriod},
+            </if>
+             <if test="periodUnit!=null">
+                #{periodUnit},
+            </if>
+            <if test="intervals!=null">
+                #{intervals},
+            </if>
+            <if test="intervalsUnit!=null">
+                #{intervalsUnit},
+            </if>
+             <if test="integralUpper!=null">
+                #{integralUpper},
+            </if>
+            <if test="integralLower!=null">
+                #{integralLower},
+            </if>
+        </trim>
+
+    </sql>
+    <insert id="save" parameterType="com.dadao.market.entity.MarketGradePO">
+        INSERT INTO gt_market
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="marketId!=null">
+                marketId,
+            </if>
+            <if test="grade!=null">
+                grade,
+            </if>
+            <if test="integralStyle!=null">
+                integralStyle,
+            </if>
+            <if test="consumeLower!=null">
+                consumeLower,
+            </if>
+            <if test="consumeUpper!=null">
+                consumeUpper,
+            </if>
+            <if test="cashbackPeriod!=null">
+                cashbackPeriod,
+            </if>
+            <if test="periodUnit!=null">
+                periodUnit,
+            </if>
+            <if test="intervals!=null">
+                intervals,
+            </if>
+            <if test="intervalsUnit!=null">
+                intervalsUnit,
+            </if>
+            <if test="integralUpper!=null">
+                integralUpper,
+            </if>
+            <if test="integralLower!=null">
+                integralLower,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="marketId!=null">
+                #{marketId},
+            </if>
+            <if test="grade!=null">
+                #{grade},
+            </if>
+            <if test="integralStyle!=null">
+                #{integralStyle},
+            </if>
+            <if test="consumeLower!=null">
+                #{consumeLower},
+            </if>
+            <if test="consumeUpper!=null">
+                #{consumeUpper},
+            </if>
+            <if test="cashbackPeriod!=null">
+                #{cashbackPeriod},
+            </if>
+            <if test="periodUnit!=null">
+                #{periodUnit},
+            </if>
+            <if test="intervals!=null">
+                #{intervals},
+            </if>
+            <if test="intervalsUnit!=null">
+                #{intervalsUnit},
+            </if>
+            <if test="integralUpper!=null">
+                #{integralUpper},
+            </if>
+            <if test="integralLower!=null">
+                #{integralLower},
+            </if>
+        </trim>
+
+    </insert>
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.dadao.market.entity.MarketGradePO">
+        SELECT <include refid="Base_Column_List"/> FROM gt_market WHERE grade=#{grade}
+    </select>
+    <update id="update" parameterType="com.dadao.market.entity.MarketGradePO">
+        update gt_market
+
+        <set>
+            <trim suffixOverrides=",">
+            <if test="integralStyle!=null">
+                integralStyle=#{integralStyle},
+            </if>
+            <if test="consumeLower!=null">
+                consumeLower=#{consumeLower},
+            </if>
+            <if test="consumeUpper!=null">
+                consumeUpper=#{consumeUpper},
+            </if>
+            <if test="cashbackPeriod!=null">
+                cashbackPeriod=#{cashbackPeriod},
+            </if>
+            <if test="periodUnit!=null">
+                periodUnit=#{periodUnit},
+            </if>
+            <if test="intervals!=null">
+                intervals=#{intervals},
+            </if>
+            <if test="intervalsUnit!=null">
+                intervalsUnit=#{intervalsUnit},
+            </if>
+            <if test="integralUpper!=null">
+                integralUpper=#{integralUpper},
+            </if>
+            <if test="integralLower!=null">
+                integralLower=#{integralLower},
+            </if>
+            </trim>
+        </set>
+        WHERE grade=#{grade}
+    </update>
+
+    <select id="findByMarketId" parameterType="java.lang.Long" resultType="com.dadao.market.entity.MarketGradePO">
+        SELECT <include refid="Base_Column_List"/> FROM gt_market WHERE marketId=#{marketId}
+    </select>
+    <select id="findByEntity" parameterType="com.dadao.market.entity.MarketGradePO" resultType="com.dadao.market.entity.MarketGradePO">
+        SELECT <include refid="Base_Column_List"/> FROM gt_market
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="marketId!=null">
+                    AND marketId = #{marketId}
+                </if>
+                <if test="grade!=null">
+                    AND  grade =  #{grade}
+                </if>
+                <if test="integralStyle!=null">
+                    AND integralStyle = #{integralStyle}
+                </if>
+                <if test="consumeLower!=null">
+                    AND consumeLower = #{consumeLower}
+                </if>
+                <if test="consumeUpper!=null">
+                    AND consumeUpper = #{consumeUpper}
+                </if>
+                <if test="cashbackPeriod!=null">
+                    AND cashbackPeriod = #{cashbackPeriod}
+                </if>
+                <if test="periodUnit!=null">
+                    AND periodUnit =  #{periodUnit}
+                </if>
+                <if test="intervals!=null">
+                    AND  intervals = #{intervals}
+                </if>
+                <if test="intervalsUnit!=null">
+                    AND intervalsUnit = #{intervalsUnit}
+                </if>
+                <if test="integralUpper!=null">
+                    AND  integralUpper = #{integralUpper}
+                </if>
+                <if test="integralLower!=null">
+                    AND integralLower = #{integralLower}
+                </if>
+            </trim>
+        </where>
+
+    </select>
+</mapper>

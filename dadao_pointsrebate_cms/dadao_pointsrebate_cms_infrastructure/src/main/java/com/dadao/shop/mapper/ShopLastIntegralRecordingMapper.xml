@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.shop.mapper.ShopLastIntegralRecordingMapper">
+    <sql id="Base_Column_List">
+        id,userId,shopId,orderId,integral,marketId,createTime,status
+    </sql>
+    <insert id="save" parameterType="com.dadao.shop.entity.ShopLastIntegralRecordingPO">
+        INSERT INTO shop_last_integral_recording
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            <if test="id!=null">
+                id,
+            </if>
+            <if test="userId!=null">
+                userId,
+            </if>
+            <if test="shopId!=null">
+                shopId,
+            </if>
+            <if test="orderId!=null">
+                orderId,
+            </if>
+            <if test="integral!=null">
+                integral,
+            </if>
+            <if test="marketId!=null">
+                marketId,
+            </if>
+            <if test="createTime!=null">
+                createTime,
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+
+        </trim>
+        <trim prefix="VALUES("  suffix=")"  suffixOverrides=",">
+            <if test="id!=null">
+                #{id},
+            </if>
+            <if test="userId!=null">
+                #{userId},
+            </if>
+            <if test="shopId!=null">
+                #{shopId},
+            </if>
+            <if test="orderId!=null">
+                #{orderId},
+            </if>
+            <if test="integral!=null">
+                #{integral},
+            </if>
+            <if test="marketId!=null">
+                #{marketId},
+            </if>
+            <if test="createTime!=null">
+                #{createTime},
+            </if>
+            <if test="status!=null">
+                #{status},
+            </if>
+        </trim>
+    </insert>
+    <select id="findByEntity" parameterType="com.dadao.shop.entity.ShopLastIntegralRecordingPO" resultType="com.dadao.shop.entity.ShopLastIntegralRecordingPO">
+        SELECT <include refid="Base_Column_List"/> FROM shop_last_integral_recording
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="id!=null">
+                AND id = #{id}
+            </if>
+            <if test="shopId!=null">
+                AND shopId = #{shopId}
+            </if>
+            <if test="orderId!=null">
+                AND orderId = #{orderId}
+            </if>
+            <if test="integral!=null">
+                AND integral = #{integral}
+            </if>
+            <if test="marketId!=null">
+                AND marketId = #{marketId}
+            </if>
+            <if test="createTime!=null">
+                AND createTime = #{createTime}
+            </if>
+            <if test="status!=null">
+                AND status = #{status}
+            </if>
+            <if test="userId!=null">
+                AND userId = #{userId}
+            </if>
+        </trim>
+    </select>
+    <select id="findById" parameterType="java.lang.Long" resultType="com.dadao.shop.entity.ShopLastIntegralRecordingPO">
+        SELECT <include refid="Base_Column_List"/> FROM shop_last_integral_recording
+        WHERE userId = #{userId} AND status = #{status}
+    </select>
+    <select id="findShopIntegralRecording" resultType="com.dadao.shop.entity.ShopLastIntegralRecordingPO" parameterType="com.dadao.shop.entity.ShopLastIntegralRecordingPO">
+        SELECT <include refid="Base_Column_List"/> FROM shop_last_integral_recording
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="id!=null">
+                AND id = #{id}
+            </if>
+            <if test="shopId!=null">
+                AND shopId = #{shopId}
+            </if>
+            <if test="orderId!=null">
+                AND orderId = #{orderId}
+            </if>
+            <if test="integral!=null">
+                AND integral = #{integral}
+            </if>
+            <if test="marketId!=null">
+                AND marketId = #{marketId}
+            </if>
+            <if test="createTime!=null">
+                AND createTime = #{createTime}
+            </if>
+            <if test="status!=null">
+                AND status = #{status}
+            </if>
+            <if test="userId!=null">
+                AND userId = #{userId}
+            </if>
+        </trim>
+    </select>
+    <update id="update" parameterType="com.dadao.shop.entity.ShopLastIntegralRecordingPO">
+        update shop_last_integral_recording set status = #{status} where id=#{id}
+    </update>
+
+</mapper>

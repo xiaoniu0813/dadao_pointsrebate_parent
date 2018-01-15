@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="dadao_pointsrebate_business_application" />
+        <module name="dadao_pointsrebate_business_domain" />
+        <module name="dadao_pointsrebate_business_infrastructure" />
+        <module name="dadao_pointsrebate_business_userinterface" />
+        <module name="dadao_pointsrebate_business_web" />
+        <module name="dadao_pointsrebate_cms_application" />
+        <module name="dadao_pointsrebate_cms_domain" />
+        <module name="dadao_pointsrebate_cms_infrastructure" />
+        <module name="dadao_pointsrebate_cms_userinterface" />
+        <module name="dadao_pointsrebate_cms_web" />
+        <module name="dadao_pointsrebate_common" />
+        <module name="dadao_pointsrebate_consumer_application" />
+        <module name="dadao_pointsrebate_consumer_domain" />
+        <module name="dadao_pointsrebate_consumer_infrastructure" />
+        <module name="dadao_pointsrebate_consumer_userinterface" />
+        <module name="dadao_pointsrebate_consumer_web" />
+        <module name="dadao_pointsrebate_pay_application" />
+        <module name="dadao_pointsrebate_pay_infrastructure" />
+        <module name="dadao_pointsrebate_pay_userinterface" />
+        <module name="dadao_pointsrebate_pay_web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="dadao_pointsrebate_business" target="1.8" />
+      <module name="dadao_pointsrebate_business_api" target="1.8" />
+      <module name="dadao_pointsrebate_business_application" target="1.8" />
+      <module name="dadao_pointsrebate_business_domain" target="1.8" />
+      <module name="dadao_pointsrebate_business_infrastructure" target="1.8" />
+      <module name="dadao_pointsrebate_business_userinterface" target="1.6" />
+      <module name="dadao_pointsrebate_business_web" target="1.8" />
+      <module name="dadao_pointsrebate_cms" target="1.8" />
+      <module name="dadao_pointsrebate_cms_api" target="1.8" />
+      <module name="dadao_pointsrebate_cms_application" target="1.8" />
+      <module name="dadao_pointsrebate_cms_domain" target="1.8" />
+      <module name="dadao_pointsrebate_cms_infrastructure" target="1.8" />
+      <module name="dadao_pointsrebate_cms_userinterface" target="1.8" />
+      <module name="dadao_pointsrebate_cms_web" target="1.8" />
+      <module name="dadao_pointsrebate_common" target="1.8" />
+      <module name="dadao_pointsrebate_consumer" target="1.8" />
+      <module name="dadao_pointsrebate_consumer_api" target="1.8" />
+      <module name="dadao_pointsrebate_consumer_application" target="1.8" />
+      <module name="dadao_pointsrebate_consumer_domain" target="1.8" />
+      <module name="dadao_pointsrebate_consumer_infrastructure" target="1.8" />
+      <module name="dadao_pointsrebate_consumer_userinterface" target="1.8" />
+      <module name="dadao_pointsrebate_consumer_web" target="1.8" />
+      <module name="dadao_pointsrebate_parent" target="1.8" />
+      <module name="dadao_pointsrebate_pay" target="1.8" />
+      <module name="dadao_pointsrebate_pay_api" target="1.8" />
+      <module name="dadao_pointsrebate_pay_application" target="1.8" />
+      <module name="dadao_pointsrebate_pay_infrastructure" target="1.8" />
+      <module name="dadao_pointsrebate_pay_userinterface" target="1.8" />
+      <module name="dadao_pointsrebate_pay_web" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

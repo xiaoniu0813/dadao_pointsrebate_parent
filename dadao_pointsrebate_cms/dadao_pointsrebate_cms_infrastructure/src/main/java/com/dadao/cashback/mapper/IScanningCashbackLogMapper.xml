@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.cashback.mapper.IScanningCashbackLogMapper">
+
+    <sql id="Base_Column_List">
+        logId,startTime,endTime,description
+    </sql>
+
+    <select id="findById" parameterType="java.lang.Long" resultType="com.dadao.cashback.entity.ScanningCashbackLogVO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_scanning_cashback_log WHERE logId=#{logId}
+    </select>
+
+    <update id="update" parameterType="com.dadao.cashback.entity.ScanningCashbackLogPO">
+        UPDATE gt_scanning_cashback_log
+        <trim prefix="set" suffixOverrides=",">
+
+            <if test="startTime != null">
+                startTime=#{startTime},
+            </if>
+            <if test="endTime != null">
+                endTime=#{endTime},
+            </if>
+            <if test="description != null">
+                description=#{description},
+            </if>
+        </trim>
+        WHERE logId=#{logId}
+    </update>
+
+    <insert id="save" parameterType="com.dadao.cashback.entity.ScanningCashbackLogPO" keyProperty="logId">
+        INSERT INTO gt_scanning_cashback_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="startTime!=null">
+                startTime,
+            </if>
+            <if test="endTime!=null">
+                endTime,
+            </if>
+            <if test="description!=null">
+                description,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="startTime!=null">
+                #{startTime},
+            </if>
+            <if test="endTime!=null">
+                #{endTime},
+            </if>
+            <if test="description!=null">
+                #{description},
+            </if>
+        </trim>
+    </insert>
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.shop.mapper.RecommendPositionMapper">
+    <sql id="Base_Column_List">
+    recommendId, picture, description, type, sequence, status, createTime
+  </sql>
+    <select id="findById" resultType="com.dadao.shop.entity.RecommendPosition" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from gt_recommend_position
+        where recommendId = #{recommendId}
+    </select>
+    <insert id="save" parameterType="com.dadao.shop.entity.RecommendPosition">
+        INSERT INTO gt_recommend_position
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="picture != null">
+                picture,
+            </if>
+            <if test="description != null ">
+                description,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="sequence!=null">
+                sequence,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="picture != null">
+                #{picture},
+            </if>
+            <if test="description != null ">
+                #{description},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="sequence!=null">
+                #{sequence}
+            </if>
+        </trim>
+
+    </insert>
+    <update id="update" parameterType="com.dadao.shop.entity.RecommendPosition">
+        update gt_recommend_position
+        <set>
+            <if test="picture != null">
+                picture = #{picture,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="sequence != null">
+                sequence = #{sequence,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where recommendId = #{recommendId,jdbcType=INTEGER}
+    </update>
+    <select id="findByEntity" parameterType="com.dadao.shop.entity.RecommendPosition"
+            resultType="com.dadao.shop.entity.RecommendPosition">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_recommend_position
+        <where>
+            <trim prefixOverrides="and">
+                <if test="recommendId!=null">
+                    and recommendId=#{recommendId}
+                </if>
+                <if test="picture!=null">
+                    and picture=#{picture}
+                </if>
+                <if test="description != null">
+                    and description LIKE concat('%',#{description},'%')
+                </if>
+                <if test="createTime!=null">
+                    and createTime=#{createTime}
+                </if>
+                <if test="status != null">
+                    and status=#{status}
+                </if>
+                <if test="type != null">
+                    and type=#{type}
+                </if>
+            </trim>
+        </where>
+        ORDER BY sequence DESC
+    </select>
+    <select id="findMaxSequence" resultType="java.lang.String">
+        SELECT MAX(sequence) from gt_recommend_position
+    </select>
+
+    <select id="findTotalRecommend" resultType="java.lang.String"
+            parameterType="com.dadao.shop.entity.RecommendPosition">
+
+        select count(0) from gt_recommend_position
+        <where>
+            <trim prefixOverrides="and">
+
+                <if test="type != null">
+                    and type=#{type}
+                </if>
+                <if test="status != null">
+                    and status=#{status}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+</mapper>

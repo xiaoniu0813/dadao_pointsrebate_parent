@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.trade.mapper.RefundResultMapper">
+
+    <resultMap id="BaseResultMap" type="com.dadao.order.entity.OrderPO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="shopId" jdbcType="BIGINT" property="shopId" />
+        <result column="orderId" jdbcType="VARCHAR" property="orderId" />
+        <result column="userId" jdbcType="BIGINT" property="userId" />
+        <result column="amount" jdbcType="DECIMAL" property="amount" />
+        <result column="marketId" jdbcType="INTEGER" property="marketId" />
+        <result column="payMethod" jdbcType="INTEGER" property="payMethod" />
+        <result column="orderStatus" jdbcType="TINYINT" property="orderStatus" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="payTime" jdbcType="TIMESTAMP" property="payTime" />
+        <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="channelSequence" jdbcType="VARCHAR" property="channelSequence" />
+        <result column="channelRetCode" jdbcType="VARCHAR" property="channelRetCode" />
+        <result column="channelResponse" jdbcType="VARCHAR" property="channelResponse" />
+        <result column="refundSequence" jdbcType="VARCHAR" property="refundSequence" />
+        <result column="channelRefundSequence" jdbcType="VARCHAR" property="channelRefundSequence" />
+        <result column="merchantId" jdbcType="BIGINT" property="merchantId" />
+        <result column="product_name" jdbcType="VARCHAR" property="product_name" />
+        <result column="child_merchant_no" jdbcType="VARCHAR" property="child_merchant_no" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, shopId, orderId, userId, amount, marketId, payMethod, orderStatus, description,
+        updateTime, payTime, createTime, channelSequence, channelRetCode, channelResponse,
+        refundSequence, channelRefundSequence, merchantId, product_name, child_merchant_no
+    </sql>
+
+    <!--通过orderId拿到交易订单-->
+    <select id="selectByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from dadao_order
+        where orderId = #{orderId,jdbcType=INTEGER}
+    </select>
+
+    <!--保存退款通知信息-->
+    <update id="insertRefundResult" parameterType="com.dadao.order.entity.OrderPO">
+        update dadao_order
+        <set>
+            <if test="shopId != null">
+                shopId = #{shopId,jdbcType=BIGINT},
+            </if>
+            <if test="orderId != null">
+                orderId = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                userId = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="marketId != null">
+                marketId = #{marketId,jdbcType=INTEGER},
+            </if>
+            <if test="payMethod != null">
+                payMethod = #{payMethod,jdbcType=INTEGER},
+            </if>
+            <if test="orderStatus != null">
+                orderStatus = #{orderStatus,jdbcType=TINYINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="payTime != null">
+                payTime = #{payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="channelSequence != null">
+                channelSequence = #{channelSequence,jdbcType=VARCHAR},
+            </if>
+            <if test="channelRetCode != null">
+                channelRetCode = #{channelRetCode,jdbcType=VARCHAR},
+            </if>
+            <if test="channelResponse != null">
+                channelResponse = #{channelResponse,jdbcType=VARCHAR},
+            </if>
+            <if test="refundSequence != null">
+                refundSequence = #{refundSequence,jdbcType=VARCHAR},
+            </if>
+            <if test="channelRefundSequence != null">
+                channelRefundSequence = #{channelRefundSequence,jdbcType=VARCHAR},
+            </if>
+            <if test="merchantId != null">
+                merchantId = #{merchantId,jdbcType=BIGINT},
+            </if>
+            <if test="product_name != null">
+                product_name = #{product_name,jdbcType=VARCHAR},
+            </if>
+            <if test="child_merchant_no != null">
+                child_merchant_no = #{child_merchant_no,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where orderId = #{orderId,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

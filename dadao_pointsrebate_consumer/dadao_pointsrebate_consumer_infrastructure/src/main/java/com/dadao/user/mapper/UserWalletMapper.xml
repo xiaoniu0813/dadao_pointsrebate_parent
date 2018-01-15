@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.UserWalletMapper">
+
+    <select id="findBalance" parameterType="java.lang.String" resultType="com.dadao.cashback.entity.BalanceAndFreeze">
+        select (SELECT balance FROM user_wallet WHERE userId=a.userid AND status=1) as balance,
+        (select sum(cashbackMoney) from gt_cashback_details where userid=a.userid and `status`=0) as freezeMoney
+        from user_account a where a.token=#{token}
+    </select>
+
+    <!-- 初始化用户钱包 -->
+    <insert id="save" parameterType="com.dadao.user.entity.UserWalletPO">
+        INSERT INTO user_wallet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="balance != null">
+                balance,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="balance != null">
+                #{balance},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update"  parameterType="com.dadao.user.entity.UserWalletPO">
+      UPDATE user_wallet
+        <set>
+            <if test="balance!=null">
+                balance=#{balance},
+            </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
+        </set>
+        WHERE userId=#{userId}
+    </update>
+
+    <select id="findById" resultType="com.dadao.user.entity.UserWalletVO" parameterType="java.lang.Long">
+        SELECT * FROM user_wallet WHERE userId=#{userId}
+    </select>
+
+</mapper>

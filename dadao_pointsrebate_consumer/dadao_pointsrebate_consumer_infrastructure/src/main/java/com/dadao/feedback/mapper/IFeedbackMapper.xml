@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.feedback.mapper.IFeedbackMapper">
+
+    <insert id="save" parameterType="com.dadao.feedback.entity.FeedbackPO" keyProperty="id">
+        INSERT INTO gt_feedback
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="content != null">
+                content,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="userId != null">
+                userId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="content != null">
+                #{content},
+            </if>
+            <if test="title != null">
+                #{title},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findByPage" resultType="com.dadao.feedback.entity.FeedbackVO"
+            parameterType="com.dadao.feedback.entity.FeedbackPO">
+        SELECT
+        fk.id AS id,
+        fk.content AS content,
+        fk.title as title,
+        IFNULL(fk.treatDescription, '') AS treatDescription,
+        fk.`status` as status,
+        fk.createTime as createTime,
+        fk.treatTime as treatTime
+        FROM
+        gt_feedback fk
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="userId!=null">
+                    AND fk.userId = #{userId}
+                </if>
+                <if test="status!=null">
+                    AND fk.status = #{status}
+                </if>
+            </trim>
+        </where>
+        order by createTime desc
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long" parameterType="com.dadao.feedback.entity.FeedbackPO">
+        select count(0) from gt_feedback
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="userId!=null">
+                    AND userId = #{userId}
+                </if>
+                <if test="status!=null">
+                    AND status = #{status}
+                </if>
+            </trim>
+        </where>
+    </select>
+</mapper>

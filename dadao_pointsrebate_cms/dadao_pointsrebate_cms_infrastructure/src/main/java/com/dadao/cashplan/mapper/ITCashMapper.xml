@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.cashplan.mapper.ITCashMapper">
+    <sql id="Base_Column_List">
+         marketId,grade,integralStyle,consumeLower,consumeUpper,cashbackPeriod,periodUnit,intervals,intervalsUnit,integralUpper,integralLower
+    </sql>
+    <!--1、插入返现记录-->
+    <insert id="insertCashbackRecord" parameterType="com.dadao.cashback.entity.CashbackRecordPO">
+        insert into gt_cashback_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="recordId != null">
+                recordId,
+            </if>
+            <if test="recordCoding != null">
+                recordCoding,
+            </if>
+            <if test="marketID != null">
+                marketID,
+            </if>
+            <if test="currentIntegralUpper != null">
+                currentIntegralUpper,
+            </if>
+            <if test="cashbackSumMoney != null">
+                cashbackSumMoney,
+            </if>
+            <if test="cashbackNumber != null">
+                cashbackNumber,
+            </if>
+            <if test="cashbackMultiple != null">
+                cashbackMultiple,
+            </if>
+            <if test="cashbackPeriod != null">
+                cashbackPeriod,
+            </if>
+            <if test="periodUnit != null">
+                periodUnit,
+            </if>
+            <if test="intervals != null">
+                intervals,
+            </if>
+            <if test="intervalsUnit != null">
+                intervalsUnit,
+            </if>
+            <if test="cashbackSpecificDate != null">
+                cashbackSpecificDate,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="recordId != null">
+                #{recordId,jdbcType=BIGINT},
+            </if>
+            <if test="recordCoding != null">
+                #{recordCoding,jdbcType=VARCHAR},
+            </if>
+            <if test="marketID != null">
+                #{marketID,jdbcType=BIGINT},
+            </if>
+            <if test="currentIntegralUpper != null">
+                #{currentIntegralUpper,jdbcType=INTEGER},
+            </if>
+            <if test="cashbackSumMoney != null">
+                #{cashbackSumMoney,jdbcType=DOUBLE},
+            </if>
+            <if test="cashbackNumber != null">
+                #{cashbackNumber,jdbcType=INTEGER},
+            </if>
+            <if test="cashbackMultiple != null">
+                #{cashbackMultiple,jdbcType=INTEGER},
+            </if>
+            <if test="cashbackPeriod != null">
+                #{cashbackPeriod,jdbcType=INTEGER},
+            </if>
+            <if test="periodUnit != null">
+                #{periodUnit,jdbcType=INTEGER},
+            </if>
+            <if test="intervals != null">
+                #{intervals,jdbcType=INTEGER},
+            </if>
+            <if test="intervalsUnit != null">
+                #{intervalsUnit,jdbcType=INTEGER},
+            </if>
+            <if test="cashbackSpecificDate != null">
+                #{cashbackSpecificDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <!--2、根据marketId查询市场等级-->
+    <select id="findGradeByMarketId" resultType="Integer">
+        SELECT grade FROM gt_market WHERE marketId = #{marketId}
+    </select>
+
+    <!--根据市场等级查询市场信息-->
+    <select id="findById" resultType="com.dadao.market.entity.MarketGradePO" parameterType="java.lang.Integer">
+        SELECT <include refid="Base_Column_List"/> FROM gt_market WHERE grade = #{grade}
+    </select>
+
+    <!--3、根据市场等级查询当前等级市场最近返利时间-->
+    <select id="findMaxCashbackSpecificDateByGrade" resultType="java.util.Date">
+        SELECT
+            MAX(gcr.cashbackSpecificDate) AS cashbackSpecificDate
+        FROM
+            gt_cashback_record AS gcr,
+            gt_market AS gm
+        WHERE
+            gcr.marketID = gm.marketId
+        AND gm.grade = #{grade}
+    </select>
+
+    <!--4、查询所有可能达到积分上限的用户id集合-->
+    <select id="findAllUserId" resultType="long">
+        SELECT
+            ui.userId
+        FROM
+            user_integral AS ui INNER JOIN user_account AS ua ON ui.userId = ua.userId
+        WHERE
+            marketId = #{marketId}
+            AND
+            integral >= #{currentIntegralUpper}
+            AND ua.merchant = 0
+        ORDER BY
+            integral DESC
+    </select>
+
+    <!--5、查询一个用户带有效积分的积分信息-->
+    <select id="findEffectiveIntegralByUserId" resultType="com.dadao.cashplan.entity.TUserEffectiveIntegral">
+        SELECT
+        gm.grade,
+        ui.userId,
+        ui.integral as currentIntegral,
+        (
+        ui.integral - (
+        SELECT
+        COALESCE (SUM(uir.integral), 0)
+        FROM
+        user_integral_recording AS uir,
+        gt_market AS gm
+        WHERE
+        uir.marketId = gm.marketId
+        AND gm.marketId = #{marketId}
+        AND uir.direction = 0
+        AND uir.userId = #{userId}
+        AND uir.createTime &gt;= #{expirationDate}
+        AND uir.objectId NOT IN (
+        SELECT
+        objectId
+        FROM
+        user_integral_recording
+        WHERE
+        createTime &gt;= #{expirationDate}
+        AND userId = #{userId}
+        GROUP BY
+        objectId
+        HAVING
+        COUNT(objectId) > 1
+        )
+        )
+        ) AS effectiveIntegral
+        FROM
+        gt_market AS gm,
+        user_integral AS ui
+        WHERE
+        gm.marketId = ui.marketId
+        AND gm.marketId = #{marketId}
+        AND ui.userId = #{userId};
+    </select>
+
+    <!--6、查询资金池可用余额-->
+    <select id="findCapitalpoolAvailable" resultType="com.dadao.cashplan.entity.TCapitalpoolAvailable">
+        SELECT
+        gc.*, gc.money - (
+        SELECT
+        COALESCE (SUM(money), 0) AS money
+        FROM
+        gt_capitalpool_record AS gcr
+        WHERE
+        gcr.marketId = #{marketId}
+        AND STATUS = 0
+        AND gcr.createTime &gt;= #{expirationDate}
+        AND gcr.objectId NOT IN (
+        SELECT
+        objectId
+        FROM
+        gt_capitalpool_record
+        WHERE
+        createTime &gt;= #{expirationDate}
+        GROUP BY
+        objectId
+        HAVING
+        COUNT(objectId) > 1
+        )
+        ) AS availableMoney
+        FROM
+        gt_capitalpool AS gc
+        WHERE
+        gc.marketId = #{marketId};
+    </select>
+
+
+    <!--7、根据积分上限查询用户积分列表-->
+    <select id="findEffectiveIntegral" resultType="com.dadao.cashplan.entity.TUserEffectiveIntegral">
+        SELECT
+        gm.grade,
+        ui.userId,
+        (
+        ui.integral - (
+        SELECT
+        COALESCE (SUM(uir.integral), 0)
+        FROM
+        user_integral_recording AS uir,
+        gt_market AS gm
+        WHERE
+        uir.marketId = gm.marketId
+        AND gm.grade = #{grade}
+        AND direction = 0
+        AND uir.createTime >= (
+        SELECT
+        MAX(cashbackSpecificDate)
+        FROM
+        gt_cashback_record
+        )
+        AND uir.createTime &lt; #{cashbackSpecificDate}
+        )
+        ) AS integral
+        FROM
+        gt_market AS gm,
+        user_integral AS ui
+        WHERE
+        gm.marketId = ui.marketId
+        AND gm.grade = #{grade}
+        AND integral &gt;= #{integral}
+        ORDER BY
+        ui.integral DESC;
+    </select>
+
+    <!-- 8、查询多个用户带有效积分的积分信息 -->
+    <select id="findEffectiveIntegrals" resultType="com.dadao.cashplan.entity.TUserEffectiveIntegral">
+        SELECT
+        a.userId AS userId,
+        a.integral AS currentIntegral,
+        a.marketId AS marketId,
+        a.integral AS effectiveIntegral,
+        b.grade as grade
+        FROM
+        (
+        SELECT
+        a.userId,
+        (
+        a.integral - ifnull(b.integral, 0)
+        ) integral,
+        a.marketId
+        FROM
+        (
+        SELECT
+        a.userId,
+        sum(a.integral) integral,
+        a.marketId
+        FROM
+        user_integral_recording a
+        WHERE
+        AND DATE_FORMAT(a.createTime, '%Y-%m-%d') &lt;= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        AND a.direction = 0
+        AND a.marketId = 21
+        GROUP BY
+        a.userId,
+        a.marketId
+        ) a
+        LEFT JOIN (
+        SELECT
+        a.userId,
+        sum(a.integral) integral,
+        a.marketId
+        FROM
+        user_integral_recording a
+        WHERE
+        AND DATE_FORMAT(a.createTime, '%Y-%m-%d') &lt;= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        AND a.direction = 1
+        AND a.marketId = #{marketId}
+        GROUP BY
+        a.userId,
+        a.marketId
+        ) b ON (a.userId = b.userId)
+        ) a
+        LEFT JOIN gt_market b ON (a.marketId = b.marketId)
+        WHERE
+        a.integral &gt;= #{integralUpper}
+    </select>
+
+    <!--商户返利-->
+    <!--1、找到最近一次商户返利的时间-->
+    <select id="findMaxBusinessCashbackSpecificDate" resultType="java.util.Date">
+        SELECT
+            MAX(gcr.cashbackSpecificDate)
+        FROM
+            gt_cashback_record AS gcr
+        WHERE
+            status >= 5
+        AND
+            marketId = #{marketId}
+    </select>
+</mapper>

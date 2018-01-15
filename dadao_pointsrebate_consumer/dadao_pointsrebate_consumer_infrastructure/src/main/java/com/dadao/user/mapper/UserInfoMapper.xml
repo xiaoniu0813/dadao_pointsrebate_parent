@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.UserInfoMapper">
+
+    <!-- 查询字段列表 -->
+    <sql id="Base_Column_List">
+        userId, nickname, phone, picture, createTime
+    </sql>
+
+    <insert id="save" parameterType="com.dadao.user.entity.UserInfo">
+        INSERT INTO gt_user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null and userId!=''">
+                userId,
+            </if>
+            <if test="nickname!=null and nickname!=''">
+                nickname,
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone,
+            </if>
+            <if test="picture!=null and picture!=''">
+                picture,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId!=null and userId!=''">
+                #{userId},
+            </if>
+            <if test="nickname!=null and nickname!=''">
+                #{nickname},
+            </if>
+            <if test="phone!=null and phone!=''">
+                #{phone},
+            </if>
+            <if test="picture!=null and picture!=''">
+                #{picture},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.dadao.user.entity.UserInfo">
+        UPDATE gt_user_info
+        <set>
+            <if test="nickname!=null and nickname!=''">
+                nickname=#{nickname},
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone=#{phone},
+            </if>
+            <if test="picture!=null and picture!=''">
+                picture=#{picture},
+            </if>
+        </set>
+        WHERE userId=#{userId}
+    </update>
+
+    <select id="findByEntity" resultType="com.dadao.user.entity.UserInfo"
+            parameterType="com.dadao.user.entity.UserInfo">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_user_info
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="userId != null and userId != ''">
+                    AND userId = #{userId}
+                </if>
+                <if test="nickname != null and token != ''">
+                    AND nickname = LIKE concat('%',#{nickname},'%')
+                </if>
+                <if test="phone != null and phone != ''">
+                    AND phone = #{phone}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <select id="findById" resultType="com.dadao.user.entity.UserInfo"
+            parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_user_info
+        WHERE userId=#{userId}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dadao.merchants.mapper.IMerchantsDividedMapper">
+    <insert id="save" parameterType="com.dadao.merchants.entity.MerchantsDivided">
+        INSERT INTO yb_merchants_divided
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="divideRequestId != null">
+                divideRequestId,
+            </if>
+            <if test="orderId != null">
+                orderId,
+            </if>
+            <if test="uniqueOrderNo != null">
+                uniqueOrderNo,
+            </if>
+            <if test="contractNo != null">
+                contractNo,
+            </if>
+            <if test="ledgerNo != null">
+                ledgerNo,
+            </if>
+            <if test="ledgerName != null">
+                ledgerName,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="divideDetail != null">
+                divideDetail,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="divideRequestId != null">
+                #{divideRequestId},
+            </if>
+            <if test="orderId != null">
+                #{orderId},
+            </if>
+            <if test="uniqueOrderNo != null">
+                #{uniqueOrderNo},
+            </if>
+            <if test="contractNo != null">
+                #{contractNo},
+            </if>
+            <if test="ledgerNo != null">
+                #{ledgerNo},
+            </if>
+            <if test="ledgerName != null">
+                #{ledgerName},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="divideDetail != null">
+                #{divideDetail},
+            </if>
+            <if test="amount != null">
+                #{amount},
+            </if>
+        </trim>
+    </insert>
+</mapper>

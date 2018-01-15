@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.UserInfoMapper">
+    <sql id="Base_Column_List">
+        userId,nickname,phone,picture,createTime
+    </sql>
+    <select id="findUser" parameterType="com.dadao.user.entity.UserInfo" resultType="com.dadao.user.entity.UserInfo">
+        SELECT <include refid="Base_Column_List"/> FROM gt_user_info
+        <where>
+            <trim prefixOverrides="and">
+                <if test="userId!=null and userId!=''">
+                    AND userId=#{userId}
+                </if>
+                <if test="nickname!=null and nickname!=''">
+                    AND nickname=#{nickname}
+                </if>
+                <if test="phone!=null and phone!=''">
+                    AND phone=#{phone}
+                </if>
+                <if test="picture!=null and picture!=''">
+                    AND picture=#{picture}
+                </if>
+                <if test="createTime!=null and createTime!=''">
+                    AND createTime=#{createTime}
+                </if>
+            </trim>
+        </where>
+    </select>
+    <select id="findCount" resultType="java.lang.Long">
+        SELECT count(0) FROM gt_user_info
+        <where>
+            <trim prefixOverrides="and">
+                <if test="userId!=null and userId!=''">
+                    AND userId=#{userId}
+                </if>
+                <if test="nickname!=null and nickname!=''">
+                    AND nickname=#{nickname}
+                </if>
+                <if test="phone!=null and phone!=''">
+                    AND phone=#{phone}
+                </if>
+                <if test="picture!=null and picture!=''">
+                    AND picture=#{picture}
+                </if>
+                <if test="createTime!=null and createTime!=''">
+                    AND createTime=#{createTime}
+                </if>
+            </trim>
+        </where>
+    </select>
+    <select id="findCountByBankCard" resultType="java.lang.Long" parameterType="java.lang.Long">
+        SELECT count(0) FROM user_bankcard WHERE userId = #{userId}
+    </select>
+    <select id="findByPage" resultType="com.dadao.user.entity.UserInfo"
+            parameterType="com.dadao.user.entity.UserInfo">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_user_info
+        <where>
+            <trim prefixOverrides="and">
+                <if test="userId!=null and userId!=''">
+                    AND userId=#{userId}
+                </if>
+                <if test="nickname!=null and nickname!=''">
+                    AND nickname=#{nickname}
+                </if>
+                <if test="phone!=null and phone!=''">
+                    AND phone=#{phone}
+                </if>
+                <if test="picture!=null and picture!=''">
+                    AND picture=#{picture}
+                </if>
+                <if test="createTime!=null and createTime!=''">
+                    AND createTime=#{createTime}
+                </if>
+            </trim>
+        </where>
+        ORDER BY createTime desc
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+</mapper>

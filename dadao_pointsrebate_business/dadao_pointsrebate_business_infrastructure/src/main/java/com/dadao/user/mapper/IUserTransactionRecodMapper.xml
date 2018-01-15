@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.IUserTransactionRecodMapper">
+
+    <select id="findByPage" parameterType="com.dadao.user.entity.UserTransactionRecodPO"
+            resultType="com.dadao.user.entity.UserTransactionRecodVO">
+        SELECT *
+        FROM user_transaction_recod
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="userId!=null">
+                    AND userId=#{userId}
+                </if>
+                <if test="transactionType==2">
+                    AND transactionType!=3
+                </if>
+            </trim>
+        </where>
+        order by createtime DESC
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long" parameterType="com.dadao.user.entity.UserTransactionRecodPO">
+        SELECT COUNT(0)
+        FROM user_transaction_recod
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="userId!=null">
+                    AND userId=#{userId}
+                </if>
+                <if test="transactionType==2">
+                    AND transactionType!=3
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <select id="findById" resultType="com.dadao.user.entity.UserTransactionRecodVO" parameterType="java.lang.Long">
+        SELECT *
+        FROM user_transaction_recod
+        WHERE transactionId=#{transactionId}
+    </select>
+
+</mapper>

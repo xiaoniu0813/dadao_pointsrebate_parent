@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.weeksummary.mapper.IWeeklyMapper">
+
+    <!--查询本周数据-->
+    <select id="thisWeekSummary" resultType="com.dadao.weeksummary.entity.WeeklyVO" parameterType="java.lang.Long">
+        SELECT
+        sum(actualIncome) AS totalTurnover,
+        count(0) AS transactionNum,
+        sum(actualIncome)/7 AS averageAmount
+        FROM user_transaction_recod
+        WHERE userId=#{userId}
+        AND transactionType=1
+        AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= createtime
+    </select>
+
+    <!--查询上周数据-->
+    <select id="lastWeekSummary" resultType="com.dadao.weeksummary.entity.WeeklyVO" parameterType="java.lang.Long">
+        SELECT
+        sum(actualIncome) AS totalTurnover,
+        count(0) AS transactionNum,
+        sum(actualIncome)/7 AS averageAmount
+        FROM user_transaction_recod
+        WHERE userId=#{userId}
+        AND transactionType=1
+        AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &gt; createtime
+        AND DATE_SUB(CURDATE(), INTERVAL 14 DAY) &lt;=createtime
+    </select>
+
+    <select id="findLineChart" parameterType="com.dadao.weeksummary.entity.LineChartVO"
+            resultType="com.dadao.weeksummary.entity.LineChartVO">
+        SELECT CASE  WHEN SUM(a.dayData)  IS  NOT NULL THEN SUM(a.dayData) ELSE 0 END AS totalRevenue,
+        CASE  WHEN MAX(a.dayData) IS  NOT NULL THEN MAX(a.dayData) ELSE 0 END AS dayMaxIncome,
+        CASE  WHEN FORMAT(SUM(a.dayData)/#{statisticsDate},2) IS  NOT NULL THEN  FORMAT(SUM(a.dayData)/#{statisticsDate},2) ELSE '' END AS averageDailyIncome
+        FROM(
+        SELECT sum(actualIncome) AS dayData
+        FROM user_transaction_recod
+        WHERE createtime
+        BETWEEN  DATE_SUB(CURDATE(), INTERVAL #{statisticsDate} DAY)
+        AND NOW()
+        AND userId=#{userId} AND transactionType=1
+        GROUP BY DATE_FORMAT(createtime,'%Y-%m-%d')) a
+    </select>
+
+    <select id="findLineChartData" parameterType="com.dadao.weeksummary.entity.LineChartVO"
+            resultType="com.dadao.weeksummary.entity.LineChartDataVO">
+        SELECT DATE_FORMAT(createtime,'%Y-%m-%d') AS time,
+        sum(actualIncome) AS dayData
+        FROM user_transaction_recod
+        WHERE createtime
+        BETWEEN  DATE_SUB(CURDATE(), INTERVAL #{statisticsDate} DAY)
+        AND NOW()
+        AND userId=#{userId} AND transactionType=1
+        GROUP BY DATE_FORMAT(createtime,'%Y-%m-%d')
+        ORDER BY DATE_FORMAT(createtime,'%Y-%m-%d') ASC
+    </select>
+</mapper>

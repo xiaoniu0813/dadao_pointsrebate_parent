@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.trade.mapper.TradeMapper">
+
+    <!--减少用户积分-->
+    <update id="minusUserIntegral">
+        UPDATE user_integral
+        SET integral = integral - #{minusIntegral}
+        WHERE marketId = #{marketId}
+        AND userId = #{userId}
+    </update>
+
+    <!--产生一条积分流水记录-->
+    <insert id="createUserIntegralRecording" parameterType="com.dadao.user.entity.UserIntegralRecordingPO">
+        INSERT INTO user_integral_recording
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                userId,
+            </if>
+            <if test="direction!=null">
+                direction,
+            </if>
+            <if test="marketId!=null">
+                marketId,
+            </if>
+            <if test="objectId!=null">
+                objectId,
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+            <if test="integral!=null">
+                integral,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                #{userId},
+            </if>
+            <if test="direction!=null">
+                #{direction},
+            </if>
+            <if test="marketId!=null">
+                #{marketId},
+            </if>
+            <if test="objectId!=null">
+                #{objectId},
+            </if>
+            <if test="status!=null">
+                #{status},
+            </if>
+            <if test="integral!=null">
+                #{integral},
+            </if>
+        </trim>
+    </insert>
+
+    <!--消减商户钱包-->
+    <update id="minusUserWallet">
+        UPDATE user_wallet
+        SET balance = balance - #{minusMoney}
+        WHERE
+            userId = #{userId}
+    </update>
+
+    <!--并产生一条交易流水记录-->
+    <insert id="createUserTransactionRecod" parameterType="com.dadao.user.entity.UserTransactionRecodPO">
+        INSERT INTO user_transaction_recod
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="otherAccount!=null">
+                otherAccount,
+            </if>
+            <if test="transactionType!=null">
+                transactionType,
+            </if>
+            <if test="transactionAmount!=null">
+                transactionAmount,
+            </if>
+            <if test="transactionDetails!=null">
+                transactionDetails,
+            </if>
+            <if test="expenditureIncome!=null">
+                expenditureIncome,
+            </if>
+            <if test="userId!=null">
+                userId,
+            </if>
+            <if test="payMethod!=null">
+                payMethod,
+            </if>
+            <if test="payCanalFee!=null">
+                payCanalFee,
+            </if>
+            <if test="serialNumber!=null">
+                serialNumber,
+            </if>
+            <if test="commission!=null">
+                commission,
+            </if>
+            <if test="actualIncome!=null">
+                actualIncome,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="otherAccount!=null">
+                #{otherAccount},
+            </if>
+            <if test="transactionType!=null">
+                #{transactionType},
+            </if>
+            <if test="transactionAmount!=null">
+                #{transactionAmount},
+            </if>
+            <if test="transactionDetails!=null">
+                #{transactionDetails},
+            </if>
+            <if test="expenditureIncome!=null">
+                #{expenditureIncome},
+            </if>
+            <if test="userId!=null">
+                #{userId},
+            </if>
+            <if test="payMethod!=null">
+                #{payMethod},
+            </if>
+            <if test="payCanalFee!=null">
+                #{payCanalFee},
+            </if>
+            <if test="serialNumber!=null">
+                #{serialNumber},
+            </if>
+            <if test="commission!=null">
+                #{commission},
+            </if>
+            <if test="actualIncome!=null">
+                #{actualIncome},
+            </if>
+        </trim>
+    </insert>
+
+    <!--消减资金池余额-->
+    <update id="minusCapitalpool" parameterType="com.dadao.capitalpool.entity.CapitalpoolPO">
+        UPDATE gt_capitalpool AS gc
+        SET gc.money = gc.money - #{money}
+        WHERE
+        gc.marketId = #{marketId};
+    </update>
+
+    <!--并产生一条资金池流水记录-->
+    <insert id="createCapitalpoolRecord" parameterType="com.dadao.capitalpool.entity.CapitalpoolPO">
+        INSERT INTO gt_capitalpool_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="objectId!=null">
+                objectId,
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+            <if test="marketId!=null">
+                marketId,
+            </if>
+            <if test="money!=null">
+                money,
+            </if>
+            <if test="description!=null">
+                description,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="objectId!=null">
+                #{objectId},
+            </if>
+            <if test="status!=null">
+                #{status},
+            </if>
+            <if test="marketId!=null">
+                #{marketId},
+            </if><if test="money!=null">
+            #{money},
+        </if>
+            <if test="description!=null">
+                #{description},
+            </if>
+        </trim>
+    </insert>
+
+    <!--查询积分钱包ID-->
+    <select id="findIntegralId" resultType="Long">
+        SELECT id
+        FROM user_integral
+        WHERE userId = #{userId}
+        AND marketId = #{marketId}
+    </select>
+
+    <!--根据订单表id，查到该订单的积分信息-->
+    <select id="findUserIntegralRecordingByOrderId" resultType="com.dadao.user.entity.UserIntegralRecordingPO">
+        SELECT *
+        FROM user_integral_recording
+        WHERE orderId = #{objectId}
+    </select>
+
+    <!--根据订单表id，查到该订单的积分信息-->
+    <select id="selectUserTransactionRecodById" resultType="com.dadao.user.entity.UserTransactionRecodPO">
+        SELECT *
+        FROM user_transaction_recod
+        WHERE serialNumber = #{serialNumber}
+    </select>
+
+    <select id="selectOrderById" parameterType="long" resultType="com.dadao.order.entity.OrderPO">
+        SELECT
+            *
+        FROM
+            dadao_order
+        WHERE
+            id = #{id}
+    </select>
+
+    <update id="updateOrderById" parameterType="com.dadao.order.entity.OrderPO">
+        UPDATE dadao_order
+        <set>
+            <if test="orderStatus != null">
+                orderStatus = #{orderStatus},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime},
+            </if>
+            <if test="channelSequence != null">
+                channelSequence = #{channelSequence},
+            </if>
+            <if test="channelRetCode != null">
+                channelRetCode = #{channelRetCode},
+            </if>
+            <if test="channelResponse != null">
+                channelResponse = #{channelResponse},
+            </if>
+            <if test="refundSequence != null">
+                refundSequence = #{refundSequence},
+            </if>
+            <if test="channelRefundSequence != null">
+                channelRefundSequence = #{channelRefundSequence},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <update id="updateRefundsApplicationById" parameterType="com.dadao.refunds.entity.RefundsApplicationPO">
+        UPDATE refunds_application
+        <trim prefix="set" suffixOverrides=",">
+            <if test="refundsId != null">
+                refundsId=#{refundsId},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+            <if test="processDetails != null">
+                processDetails=#{processDetails},
+            </if>
+            <if test="userDescription != null">
+                userDescription=#{userDescription},
+            </if>
+            <if test="shopDescription != null">
+                shopDescription=#{shopDescription},
+            </if>
+            <if test="platformDescription != null">
+                platformDescription=#{platformDescription},
+            </if>
+            <if test="createTime != null">
+                createTime=#{createTime},
+            </if>
+        </trim>
+        WHERE orderId=#{orderId}
+    </update>
+
+    <select id="findMerchantNoByToken" resultType="String" parameterType="String">
+        SELECT
+            subMerchantNo
+        FROM
+            gt_shop
+        WHERE
+            fk_user_id = (
+                SELECT
+                    userId
+                FROM
+                    user_account
+                WHERE
+                    token = #{token}
+            )
+    </select>
+
+</mapper>

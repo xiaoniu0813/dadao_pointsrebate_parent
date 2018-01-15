@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.IUserTransactionRecodMapper">
+
+    <sql id="Base_Column_List">
+        transactionId, otherAccount, transactionType, transactionAmount, transactionDetails, createtime, expenditureIncome, userId, payMethod, payCanalFee, serialNumber
+    </sql>
+
+    <select id="findByPage" parameterType="com.dadao.user.entity.UserTransactionRecodVO"
+            resultType="com.dadao.user.entity.UserTransactionRecodVO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user_transaction_recod
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="AND">
+                <if test="transactionType!=null">
+                    AND transactionType=#{transactionType}
+                </if>
+                <if test="userId!=null">
+                    AND userId=#{userId}
+                </if>
+            </trim>
+            AND payMethod=#{payMethod}
+        </where>
+        order by createTime desc
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long" parameterType="com.dadao.user.entity.UserTransactionRecodVO">
+        select count(0) from user_transaction_recod
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="AND">
+                <if test="transactionType!=null">
+                    AND transactionType=#{transactionType}
+                </if>
+                <if test="userId!=null">
+                    AND userId=#{userId}
+                </if>
+            </trim>
+            AND payMethod=#{payMethod}
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.dadao.user.entity.UserTransactionRecodPO">
+        INSERT INTO user_transaction_recod
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="transactionType != null">
+                transactionType,
+            </if>
+            <if test="otherAccount != null">
+                otherAccount,
+            </if>
+            <if test="transactionAmount != null">
+                transactionAmount,
+            </if>
+            <if test="transactionDetails != null">
+                transactionDetails,
+            </if>
+            <if test="expenditureIncome != null">
+                expenditureIncome,
+            </if>
+            <if test="payMethod != null">
+                payMethod,
+            </if>
+            <if test="payCanalFee != null">
+                payCanalFee,
+            </if>
+            <if test="serialNumber != null">
+                serialNumber,
+            </if>
+            <if test="commission != null">
+                commission,
+            </if>
+            <if test="actualIncome != null">
+                actualIncome,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="transactionType != null">
+                #{transactionType},
+            </if>
+            <if test="otherAccount != null">
+                #{otherAccount},
+            </if>
+            <if test="transactionAmount != null">
+                #{transactionAmount},
+            </if>
+            <if test="transactionDetails != null">
+                #{transactionDetails},
+            </if>
+            <if test="expenditureIncome != null">
+                #{expenditureIncome},
+            </if>
+            <if test="payMethod != null">
+                #{payMethod},
+            </if>
+            <if test="payCanalFee != null">
+                #{payCanalFee},
+            </if>
+            <if test="serialNumber != null">
+                #{serialNumber},
+            </if>
+            <if test="commission != null">
+                #{commission},
+            </if>
+            <if test="actualIncome != null">
+                #{actualIncome},
+            </if>
+        </trim>
+    </insert>
+    <!-- 查询当月交易数量（付款、退款） -->
+    <select id="findMonthTransactionCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        SELECT count(0) FROM user_transaction_recod
+        WHERE DATE_FORMAT( createtime, '%Y-%m' ) = DATE_FORMAT(NOW(),'%Y-%m')
+        AND userId=#{userId}
+        AND transactionType in (4,5)
+    </select>
+</mapper>

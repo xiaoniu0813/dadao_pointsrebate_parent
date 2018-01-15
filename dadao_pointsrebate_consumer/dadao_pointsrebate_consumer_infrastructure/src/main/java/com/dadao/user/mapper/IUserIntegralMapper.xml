@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.IUserIntegralMapper">
+    <sql id="BASE_COULUMN_LIST">
+        id,userId,integral,marketId
+    </sql>
+    <!-- 根据用户UserAccount,用户token查询用户是否有记录 -->
+    <select id="ifIntegralNull" parameterType="com.dadao.user.entity.UserAccount" resultType="java.lang.Integer">
+        SELECT
+            COUNT(0)
+        FROM
+            user_integral
+        WHERE
+            userId = (
+                SELECT
+                    userId
+                FROM
+                    user_account
+                WHERE
+                    token = #{token}
+            );
+    </select>
+
+    <!-- 如果用户有积分记录 -->
+    <select id="findIntegralNotNull" parameterType="com.dadao.user.entity.UserAccount" resultType="hashmap">
+        SELECT
+            c.recordCoding,
+            c.cashbackSpecificDate,
+            m.integralStyle,
+            i.integral,
+            m.consumeLower,
+            m.consumeUpper
+        FROM
+            gt_cashback_record AS c,
+            user_integral AS i,
+            gt_market AS m
+        WHERE
+            i.marketId = c.marketID
+        AND c.marketID = m.marketId
+        AND userId = (
+            SELECT
+                userId
+            FROM
+                user_account
+            WHERE
+                token = #{token}
+        )
+        AND c.cashbackSpecificDate IN (
+            SELECT
+                MAX(cashbackSpecificDate)
+            FROM
+                gt_cashback_record AS gcr
+                WHERE gcr.status &lt;= 4
+            GROUP BY
+                marketID
+        )
+        AND c.cashbackSpecificDate > NOW()
+        AND c.status &lt;= 4
+        GROUP BY
+            recordCoding
+        ORDER BY
+            recordCoding;
+    </select>
+
+    <!-- 如果用户没有积分记录 -->
+    <select id="findIntegralIsNull" resultType="hashMap">
+        SELECT
+            c.recordCoding,
+            c.cashbackSpecificDate,
+            m.integralStyle,
+            m.consumeLower,
+            m.consumeUpper
+        FROM
+            gt_market AS m,
+            gt_cashback_record AS c
+        WHERE
+            m.marketId = c.marketID
+        AND c.recordId IN (
+            SELECT
+                recordId
+            FROM
+                gt_cashback_record
+            WHERE
+                cashbackSpecificDate IN (
+                    SELECT
+                        MAX(cashbackSpecificDate)
+                        WHERE gcr.status &lt;= 4
+                    FROM
+                        gt_cashback_record
+                    GROUP BY
+                        marketID
+                )
+        )
+        AND c.cashbackSpecificDate > NOW()
+        AND c.status &lt;= 4
+        GROUP BY
+            c.marketID
+        ORDER BY
+            c.recordCoding;
+    </select>
+
+    <insert id="save" parameterType="com.dadao.user.entity.UserIntegralVO">
+        INSERT INTO user_integral
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="integral != null">
+                integral,
+            </if>
+            <if test="marketId != null">
+                marketId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="integral != null">
+                #{integral},
+            </if>
+            <if test="marketId != null">
+                #{marketId},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findMarketIds" resultType="java.lang.Long">
+        SELECT
+            marketId
+        FROM
+            gt_market
+    </select>
+
+    <select id="findByUserID" resultType="com.dadao.user.entity.UserIntegralVO" parameterType="java.lang.Long">
+        SELECT
+        *
+        FROM
+        user_integral WHERE marketId=21 AND userId=#{userId}
+    </select>
+
+    <update id="update" parameterType="com.dadao.user.entity.UserIntegral">
+        UPDATE user_integral
+        SET integral=#{integral}
+        WHERE userId=#{userId} AND marketId=#{marketId}
+    </update>
+
+    <select id="findIntegral" parameterType="com.dadao.user.entity.UserIntegralVO" resultType="com.dadao.user.entity.UserIntegralVO">
+        SELECT <include refid="BASE_COULUMN_LIST"/> FROM user_integral
+        <where>
+            <trim>
+                <if test="id!=0">
+                    AND id=#{id}
+                </if>
+                <if test="userId!=0">
+                    AND userId=#{userId}
+                </if>
+                <if test="integral!=0">
+                    AND integral=#{integral}
+                </if>
+                <if test="marketId!=0">
+                    AND marketId=#{marketId}
+                </if>
+            </trim>
+        </where>
+    </select>
+    <select id="findByEntity" parameterType="com.dadao.user.entity.UserIntegral" resultType="com.dadao.user.entity.UserIntegral">
+        SELECT <include refid="BASE_COULUMN_LIST"/> FROM user_integral
+        <where>
+            <trim>
+                <if test="id!=null">
+                    AND id=#{id}
+                </if>
+                <if test="userId!=null">
+                    AND userId=#{userId}
+                </if>
+                <if test="integral!=null">
+                    AND integral=#{integral}
+                </if>
+                <if test="marketId!=null">
+                    AND marketId=#{marketId}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+
+</mapper>

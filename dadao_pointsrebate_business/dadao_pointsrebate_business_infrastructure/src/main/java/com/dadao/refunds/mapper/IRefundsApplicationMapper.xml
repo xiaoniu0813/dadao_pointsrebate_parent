@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.refunds.mapper.IRefundsApplicationMapper">
+
+    <!-- 查询字段列表 -->
+    <sql id="Base_Column_List">
+        refundsId, userId, orderId, status, processDetails, userDescription, shopDescription, platformDescription, createTime
+    </sql>
+
+    <select id="findByPage" resultType="com.dadao.refunds.entity.RefundsRecord" parameterType="com.dadao.shop.entity.ShopPO">
+        SELECT
+            o.id,
+            r.refundsId,
+            s.shopName,
+            o.amount,
+            r.`status`,
+            o.payMethod,
+            o.amount * 0 AS deduct,
+            o.orderId,
+            r.userDescription,
+            o.refundSequence,
+            o.createTime AS dealTime,
+	        r.createTime AS refundTime
+        FROM
+            gt_shop AS s,
+            dadao_order AS o,
+            refunds_application AS r
+        WHERE
+            s.shopId = o.shopId
+        AND r.orderId = o.id
+        AND o.shopId = #{shopId}
+        ORDER BY
+            r.createTime DESC
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long" parameterType="com.dadao.shop.entity.ShopPO">
+        SELECT
+            count(0)
+        FROM
+            gt_shop AS s,
+            dadao_order AS o,
+            refunds_application AS r
+        WHERE
+            s.shopId = o.shopId
+        AND r.orderId = o.id
+        AND o.shopId = #{shopId}
+    </select>
+
+    <update id="update"  parameterType="com.dadao.refunds.entity.RefundsApplicationPO">
+        UPDATE refunds_application
+        <trim prefix="set" suffixOverrides=",">
+            <if test="status!=null">status=#{status},</if>
+            <if test="processDetails!=null">processDetails=#{processDetails},</if>
+            <if test="userDescription!=null">userDescription=#{userDescription},</if>
+            <if test="shopDescription!=null">shopDescription=#{shopDescription},</if>
+            <if test="platformDescription!=null">platformDescription=#{platformDescription},</if>
+        </trim>
+        WHERE refundsId=#{refundsId}
+    </update>
+
+</mapper>

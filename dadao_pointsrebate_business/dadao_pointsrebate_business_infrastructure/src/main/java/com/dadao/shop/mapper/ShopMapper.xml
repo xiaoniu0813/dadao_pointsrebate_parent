@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.shop.mapper.ShopMapper">
+
+    <!-- 查询字段列表 -->
+    <sql id="Base_Column_List">
+        shopId, shopName,phone, picture, verticalVersionPicture, markPicture, longitude, latitude, address, integralRate, commissionRate, businessStartTime, businessEndTime, tags, createTime, perCapitaConsumption, fk_user_id
+    </sql>
+    <sql id="Shop_Column_List">
+        shopId,shopName
+    </sql>
+
+    <select id="findByPage" resultType="com.dadao.shop.vo.ShopVO"
+            parameterType="com.dadao.shop.entity.Shop">
+        select
+        <include refid="Shop_Column_List"/>
+        from
+        gt_shop
+        where fk_user_id = #{fk_user_id}
+        order by createTime desc
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long" parameterType="com.dadao.shop.vo.ShopVO">
+        select count(0) from gt_shop
+        where fk_user_id = #{fk_user_id}
+    </select>
+
+    <select id="findById" parameterType="java.lang.Long" resultType="com.dadao.shop.vo.ShopVO">
+        select
+        shopId, shopName,shopDescription, phone, picture, verticalVersionPicture, markPicture, longitude, latitude, address, integralRate, commissionRate, businessStartTime, businessEndTime, tags, createTime, perCapitaConsumption, fk_user_id
+        from gt_shop
+        where shopId = #{shopId}
+    </select>
+
+    <update id="update" parameterType="com.dadao.shop.entity.Shop">
+        update gt_shop
+        <trim suffixOverrides=",">
+            <set>
+                <if test="shopName != null">
+                    shopName = #{shopName},
+                </if>
+                <if test="shopDescription != null">
+                    shopDescription = #{shopDescription},
+                </if>
+                <if test="phone != null">
+                    phone = #{phone},
+                </if>
+                <if test="picture != null">
+                    picture = #{picture},
+                </if>
+                <if test="verticalVersionPicture != null">
+                    verticalVersionPicture = #{verticalVersionPicture},
+                </if>
+                <if test="markPicture != null">
+                    markPicture = #{markPicture},
+                </if>
+                <if test="longitude != null">
+                    longitude = #{longitude},
+                </if>
+                <if test="latitude != null">
+                    latitude = #{latitude},
+                </if>
+                <if test="address != null">
+                    address = #{address},
+                </if>
+                <if test="integralRate != null">
+                    integralRate = #{integralRate},
+                </if>
+                <if test="commissionRate != null">
+                    commissionRate = #{commissionRate},
+                </if>
+                <if test="businessStartTime != null">
+                    businessStartTime = #{businessStartTime},
+                </if>
+                <if test="businessEndTime != null">
+                    businessEndTime = #{businessEndTime},
+                </if>
+                <if test="tags != null">
+                    tags = #{tags},
+                </if>
+                <if test="perCapitaConsumption != null">
+                    perCapitaConsumption = #{perCapitaConsumption},
+                </if>
+            </set>
+        </trim>
+        where shopId = #{shopId}
+    </update>
+
+    <select id="findAmount" parameterType="java.lang.Long" resultType="com.dadao.shop.vo.AmountVO">
+        select a.shopId, a.shopName,a.subMerchantNo, IFNULL(sum(b.amount),0) amount, count(b.amount) orderCount from gt_shop a
+        left join dadao_order b on (a.shopId = b.shopId and b.orderStatus = 5 and date_format(b.payTime,'%Y-%m-%d') = curdate())
+        where a.fk_user_id = #{fk_user_id}
+        group by a.shopId
+    </select>
+
+    <select id="findShopIdByToken" parameterType="String" resultType="Long">
+        SELECT
+            shopId
+        FROM
+            gt_shop
+        WHERE
+            fk_user_id = (
+                SELECT
+                    userId
+                FROM
+                    user_account
+                WHERE
+                    token = #{token}
+            )
+    </select>
+</mapper>

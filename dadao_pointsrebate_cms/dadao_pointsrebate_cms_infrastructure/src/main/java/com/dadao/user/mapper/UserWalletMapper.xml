@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.UserWalletMapper">
+
+    <update id="update" parameterType="com.dadao.user.entity.UserWalletPO">
+        UPDATE user_wallet
+        SET balance=#{balance}
+        WHERE userId=#{userId}
+    </update>
+
+    <select id="findById" resultType="com.dadao.user.entity.UserWalletPO" parameterType="java.lang.Long">
+        SELECT * FROM user_wallet WHERE userId=#{userId}
+    </select>
+    <insert id="save" parameterType="com.dadao.user.entity.UserWalletPO">
+        INSERT INTO user_wallet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                userId,
+            </if>
+            <if test="balance!=null">
+                balance,
+            </if>
+            <if test="margin!=null">
+                margin,
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                #{userId},
+            </if>
+            <if test="balance!=null">
+                #{balance},
+            </if>
+            <if test="margin!=null">
+                #{margin},
+            </if>
+            <if test="status!=null">
+                #{status},
+            </if>
+        </trim>
+    </insert>
+
+    <!--增加用户钱包余额-->
+    <update id="updateUserWalletByUserId">
+        UPDATE user_wallet
+        SET balance = balance + #{balance}
+        WHERE
+            userId = #{userId}
+    </update>
+</mapper>

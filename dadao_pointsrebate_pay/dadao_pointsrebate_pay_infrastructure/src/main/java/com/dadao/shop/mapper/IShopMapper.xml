@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.shop.mapper.IShopMapper">
+    <select id="findByShopId" resultType="com.dadao.shop.entity.Shop" parameterType="java.lang.Long">
+        SELECT * FROM gt_shop WHERE shopId=#{shopId}
+    </select>
+</mapper>

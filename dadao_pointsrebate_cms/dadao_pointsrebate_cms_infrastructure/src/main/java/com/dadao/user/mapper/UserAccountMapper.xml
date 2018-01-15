@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.UserAccountMapper">
+
+    <!-- 查询字段列表 -->
+    <sql id="Base_Column_List">
+        userId,phone,password,payPassword,token,status,merchant
+    </sql>
+
+    <select id="findByLogin" resultType="com.dadao.user.entity.UserAccount" parameterType="com.dadao.user.entity.UserAccount">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user_account
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="phone != null">
+                    AND phone=#{phone}
+                </if>
+                <if test="password != null">
+                    AND password=#{password}
+                </if>
+            </trim>
+            AND merchant=2
+        </where>
+    </select>
+
+    <select id="findByPhon" resultType="com.dadao.user.entity.UserAccount" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user_account WHERE phone=#{phone}
+    </select>
+
+    <insert id="save" parameterType="com.dadao.user.entity.UserRole" keyProperty="userId">
+        INSERT INTO user_account
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                userId,
+            </if>
+            <if test="phone!=null">
+                phone,
+            </if>
+            <if test="password!=null">
+                password,
+            </if>
+            <if test="token!=null">
+                token,
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+            <if test="merchant!=null">
+                merchant,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                #{userId},
+            </if>
+            <if test="phone!=null">
+                #{phone},
+            </if>
+            <if test="password!=null">
+                #{password},
+            </if>
+            <if test="token!=null">
+                #{token},
+            </if>
+            <if test="status!=null">
+                #{status},
+            </if>
+            <if test="merchant!=null">
+                #{merchant},
+            </if>
+        </trim>
+    </insert>
+    <!--测试数据-->
+    <select id="findCount" parameterType="com.dadao.user.entity.UserAccount" resultType="java.lang.Long">
+        SELECT COUNT(0) FROM user_account WHERE userId &gt;= #{userId}
+    </select>
+    <!--最后一条数据-->
+    <select id="findByLastRecord" resultType="java.lang.Long">
+        SELECT userId FROM user_account ORDER BY userId DESC LIMIT 1
+    </select>
+
+    <select id="findByToken" parameterType="com.dadao.user.entity.UserAccount" resultType="com.dadao.user.entity.UserAccount">
+        SELECT
+        *
+        FROM user_account
+        WHERE token = #{token}
+    </select>
+</mapper>

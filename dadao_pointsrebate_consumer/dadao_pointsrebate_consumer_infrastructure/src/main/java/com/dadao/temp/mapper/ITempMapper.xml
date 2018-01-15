@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.temp.mapper.ITempMapper">
+
+    <delete id="delUserAccount" parameterType="hashMap">
+      DELETE FROM user_account WHERE phone = #{phone} AND merchant = #{merchant};
+    </delete>
+    <delete id="delUserIntegral" parameterType="hashMap">
+      DELETE FROM  user_integral WHERE userId IN (SELECT userId FROM user_account WHERE phone = #{phone} AND merchant = #{merchant});
+    </delete>
+    <delete id="delUserWallet" parameterType="hashMap">
+      DELETE FROM  user_wallet WHERE userId IN (SELECT userId FROM user_account WHERE phone =  #{phone} AND merchant = #{merchant});
+    </delete>
+    <delete id="delUserInfo" parameterType="hashMap">
+      DELETE FROM  gt_user_info WHERE userId IN (SELECT userId FROM user_account WHERE phone =  #{phone} AND merchant = #{merchant});
+    </delete>
+
+</mapper>

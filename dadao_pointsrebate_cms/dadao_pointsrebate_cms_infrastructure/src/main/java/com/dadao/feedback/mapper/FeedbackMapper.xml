@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.feedback.mapper.FeedbackMapper">
+
+    <select id="findByPage" resultType="com.dadao.feedback.entity.FeedbackEntity"
+            parameterType="com.dadao.feedback.entity.FeedbackPO">
+        SELECT
+        fk.id AS id,
+        fk.title as title,
+        fk.content AS content,
+        IFNULL(fk.treatDescription, '') AS treatDescription,
+        if1.nickname as nickname,
+        fk.userId as userId,
+        IFNULL(if2.nickname,'') as treatUserName,
+        fk.treatUserId as treatUserId,
+        if1.phone as userPhone,
+        fk.`status` as status,
+        fk.createTime as createTime,
+        fk.treatTime as treatTime
+        FROM
+        gt_feedback fk
+        LEFT JOIN gt_user_info if1 on fk.userId=if1.userId
+        LEFT JOIN gt_user_info if2 on fk.treatUserId=if2.userId
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="status!=null">
+                    AND fk.status = #{status}
+                </if>
+            </trim>
+        </where>
+        order by createTime desc
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long" parameterType="com.dadao.feedback.entity.FeedbackPO">
+        select count(0) from gt_feedback
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="status!=null">
+                    AND status = #{status}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <update id="update" parameterType="com.dadao.feedback.entity.FeedbackPO">
+        UPDATE gt_feedback
+        <trim prefix="set" suffixOverrides=",">
+            <if test="status != null">
+                status=#{status},
+            </if>
+            <if test="treatUserId != null">
+                treatUserId=#{treatUserId},
+            </if>
+            <if test="treatTime != null">
+                treatTime=#{treatTime},
+            </if>
+            <if test="treatDescription != null">
+                treatDescription=#{treatDescription},
+            </if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+</mapper>

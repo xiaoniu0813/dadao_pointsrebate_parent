@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.order.mapper.IOrderMapper">
+    <insert id="save" parameterType="com.dadao.order.entity.OrderPO" keyProperty="id">
+        INSERT INTO dadao_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shopId != null">
+                shopId,
+            </if>
+            <if test="orderId != null">
+                orderId,
+            </if>
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="marketId != null">
+                marketId,
+            </if>
+            <if test="payMethod != null">
+                payMethod,
+            </if>
+            <if test="orderStatus != null">
+                orderStatus,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="channelSequence != null">
+                channelSequence,
+            </if>
+            <if test="child_merchant_no != null">
+                child_merchant_no,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shopId != null">
+                #{shopId},
+            </if>
+            <if test="orderId != null">
+                #{orderId},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="amount != null">
+                #{amount},
+            </if>
+            <if test="marketId != null">
+                #{marketId},
+            </if>
+            <if test="payMethod != null">
+                #{payMethod},
+            </if>
+            <if test="orderStatus != null">
+                #{orderStatus},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="channelSequence != null">
+                #{channelSequence},
+            </if>
+            <if test="merchantId != null">
+                #{merchantId},
+            </if>
+            <if test="child_merchant_no != null">
+                #{child_merchant_no},
+            </if>
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.dadao.order.entity.OrderPO">
+        UPDATE dadao_order
+        <set>
+            <if test="orderStatus != null">
+                orderStatus = #{orderStatus},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime},
+            </if>
+            <if test="payTime != null">
+                payTime = #{payTime},
+            </if>
+        </set>
+        WHERE channelSequence=#{channelSequence}
+    </update>
+    <select id="findByCchannelSequence" parameterType="java.lang.String" resultType="com.dadao.order.entity.OrderVO">
+        SELECT * FROM dadao_order WHERE channelSequence=#{channelSequence}
+    </select>
+</mapper>

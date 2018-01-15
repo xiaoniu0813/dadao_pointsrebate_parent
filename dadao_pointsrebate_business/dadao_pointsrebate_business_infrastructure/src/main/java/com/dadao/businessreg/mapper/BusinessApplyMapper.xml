@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.businessreg.mapper.BusinessApplyMapper">
+    <!--将手机端注册的信息保存到数据库-->
+    <insert id="save" parameterType="com.dadao.businessreg.entity.BusinessApply">
+        INSERT INTO yb_merchants_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">
+                id,
+            </if>
+            <if test="merFullName!=null">
+                merFullName,
+            </if>
+            <if test="merContactEmail!=null">
+                merContactEmail,
+            </if>
+            <if test="merContactPhone!=null">
+                merContactPhone,
+            </if>
+            <if test="merShortName!=null">
+                merShortName,
+            </if>
+            <if test="merCertType!=null">
+                merCertType,
+            </if>
+            <if test="merCertNo!=null">
+                merCertNo,
+            </if>
+            <if test="legalName!=null">
+                legalName,
+            </if>
+            <if test="legalIdCard!=null">
+                legalIdCard,
+            </if>
+            <if test="merLegalPhone!=null">
+                merLegalPhone,
+            </if>
+            <if test="merLegalEmail!=null">
+                merLegalEmail,
+            </if>
+            <if test="merLevel1No!=null">
+                merLevel1No,
+            </if>
+            <if test="merLevel2No!=null">
+                merLevel2No,
+            </if>
+            <if test="merProvince!=null">
+                merProvince,
+            </if>
+            <if test="merCity!=null">
+                merCity,
+            </if>
+            <if test="merDistrict!=null">
+                merDistrict,
+            </if>
+            <if test="merAddress!=null">
+                merAddress,
+            </if>
+            <if test="merScope!=null">
+                merScope,
+            </if>
+            <if test="merContactName!=null">
+                merContactName,
+            </if>
+            <if test="taxRegistCert!=null">
+                taxRegistCert,
+            </if>
+            <if test="accountLicense!=null">
+                accountLicense,
+            </if>
+            <if test="orgCode!=null">
+                orgCode,
+            </if>
+            <if test="isOrgCodeLong!=null">
+                isOrgCodeLong,
+            </if>
+            <if test="orgCodeExpiry!=null">
+                orgCodeExpiry,
+            </if>
+            <if test="cardNo!=null">
+                cardNo,
+            </if>
+            <if test="headBankCode!=null">
+                headBankCode,
+            </if>
+            <if test="bankProvince!=null">
+                bankProvince,
+            </if>
+            <if test="bankCity!=null">
+                bankCity,
+            </if>
+            <if test="bankCode!=null">
+                bankCode,
+            </if>
+            <if test="productInfo!=null">
+                productInfo,
+            </if>
+            <if test="fileInfo!=null">
+                fileInfo,
+            </if>
+            <if test="businessFunction!=null">
+                businessFunction,
+            </if>
+            <if test="notifyUrl!=null">
+                notifyUrl,
+            </if>
+            <if test="merAuthorizeType!=null">
+                merAuthorizeType,
+            </if>
+            <if test="merType!=null">
+                merType,
+            </if>
+            <if test="createTime!=null">
+                createTime,
+            </if>
+            <if test="requestNo!=null">
+                requestNo,
+            </if>
+            <if test="parentMerchantNo!=null">
+                parentMerchantNo,
+            </if>
+            <if test="merchantNo!=null">
+                merchantNo,
+            </if>
+            <if test="externalId!=null">
+                externalId,
+            </if>
+            <if test="agreementContent!=null">
+                agreementContent,
+            </if>
+            <if test="returnCode!=null">
+                returnCode,
+            </if>
+            <if test="returnMsg!=null">
+                returnMsg,
+            </if>
+            <if test="commissionRate!=null">
+                commissionRate,
+            </if>
+            <if test="merNetInStatus!=null">
+                merNetInStatus,
+            </if>
+            <if test="remark!=null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">
+                #{id},
+            </if>
+            <if test="merFullName!=null">
+                #{merFullName},
+            </if>
+            <if test="merContactEmail!=null">
+                #{merContactEmail},
+            </if>
+            <if test="merContactPhone!=null">
+                #{merContactPhone},
+            </if>
+            <if test="merShortName!=null">
+                #{merShortName},
+            </if>
+            <if test="merCertType!=null">
+                #{merCertType},
+            </if>
+            <if test="merCertNo!=null">
+                #{merCertNo},
+            </if>
+            <if test="legalName!=null">
+                #{legalName},
+            </if>
+            <if test="legalIdCard!=null">
+                #{legalIdCard},
+            </if>
+            <if test="merLegalPhone!=null">
+                #{merLegalPhone},
+            </if>
+            <if test="merLegalEmail!=null">
+                #{merLegalEmail},
+            </if>
+            <if test="merLevel1No!=null">
+                #{merLevel1No},
+            </if>
+            <if test="merLevel2No!=null">
+                #{merLevel2No},
+            </if>
+            <if test="merProvince!=null">
+                #{merProvince},
+            </if>
+            <if test="merCity!=null">
+                #{merCity},
+            </if>
+            <if test="merDistrict!=null">
+                #{merDistrict},
+            </if>
+            <if test="merAddress!=null">
+                #{merAddress},
+            </if>
+            <if test="merScope!=null">
+                #{merScope},
+            </if>
+            <if test="merContactName!=null">
+                #{merContactName},
+            </if>
+            <if test="taxRegistCert!=null">
+                #{taxRegistCert},
+            </if>
+            <if test="accountLicense!=null">
+                #{accountLicense},
+            </if>
+            <if test="orgCode!=null">
+                #{orgCode},
+            </if>
+            <if test="isOrgCodeLong!=null">
+                #{isOrgCodeLong},
+            </if>
+            <if test="orgCodeExpiry!=null">
+                #{orgCodeExpiry},
+            </if>
+            <if test="cardNo!=null">
+                #{cardNo},
+            </if>
+            <if test="headBankCode!=null">
+                #{headBankCode},
+            </if>
+            <if test="bankProvince!=null">
+                #{bankProvince},
+            </if>
+            <if test="bankCity!=null">
+                #{bankCity},
+            </if>
+            <if test="bankCode!=null">
+                #{bankCode},
+            </if>
+            <if test="productInfo!=null">
+                #{productInfo},
+            </if>
+            <if test="fileInfo!=null">
+                #{fileInfo},
+            </if>
+            <if test="businessFunction!=null">
+                #{businessFunction},
+            </if>
+            <if test="notifyUrl!=null">
+                #{notifyUrl},
+            </if>
+            <if test="merAuthorizeType!=null">
+                #{merAuthorizeType},
+            </if>
+            <if test="merType!=null">
+                #{merType},
+            </if>
+            <if test="createTime!=null">
+                #{createTime},
+            </if>
+            <if test="requestNo!=null">
+                #{requestNo},
+            </if>
+            <if test="parentMerchantNo!=null">
+                #{parentMerchantNo},
+            </if>
+            <if test="merchantNo!=null">
+                #{merchantNo},
+            </if>
+            <if test="externalId!=null">
+                #{externalId},
+            </if>
+            <if test="agreementContent!=null">
+                #{agreementContent},
+            </if>
+            <if test="returnCode!=null">
+                #{returnCode},
+            </if>
+            <if test="returnMsg!=null">
+                #{returnMsg},
+            </if>
+            <if test="commissionRate!=null">
+                #{commissionRate},
+            </if>
+            <if test="merNetInStatus!=null">
+                #{merNetInStatus},
+            </if>
+            <if test="remark!=null">
+                #{remark},
+            </if>
+        </trim>
+    </insert>
+    <select id="findUserAccountByToken" parameterType="com.dadao.user.entity.UserAccount" resultType="com.dadao.user.entity.UserAccount">
+        SELECT * FROM user_account
+        <trim prefix="WHERE" prefixOverrides="AND">
+        <if test="token!=null">
+            AND token = #{token}
+        </if>
+        <if test="merchant!=null">
+            AND merchant=#{merchant}
+        </if>
+        </trim>
+    </select>
+    <select id="findMerchantsInfo" parameterType="com.dadao.businessreg.entity.BusinessApply"
+            resultType="com.dadao.businessreg.entity.BusinessApply">
+        SELECT * FROM  yb_merchants_info y LEFT JOIN  business_apply b ON y.id = b.yid
+         <trim prefix="WHERE" prefixOverrides="AND">
+             <if test="userId!=null">
+                 userId=#{userId}
+             </if>
+         </trim>
+    </select>
+    <insert id="saveBusinessApply" parameterType="com.dadao.businessreg.entity.BusinessApply">
+        INSERT INTO business_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">
+                id,
+            </if>
+            <if test="userId!=null">
+                userId,
+            </if>
+            <if test="commissionRate!=null">
+                commissionRate,
+            </if>
+            <if test="integralRate!=null">
+                integralRate,
+            </if>
+            <if test="yid!=null">
+                yid,
+            </if>
+            <if test="regInfo!=null">
+                regInfo,
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">
+                #{id},
+            </if>
+            <if test="userId!=null">
+                #{userId},
+            </if>
+            <if test="commissionRate!=null">
+                #{commissionRate},
+            </if>
+            <if test="integralRate!=null">
+                #{integralRate},
+            </if>
+            <if test="yid!=null">
+                #{yid},
+            </if>
+            <if test="regInfo!=null">
+                #{regInfo},
+            </if>
+            <if test="status!=null">
+                #{status},
+            </if>
+        </trim>
+    </insert>
+    <select id="findByUserId" parameterType="com.dadao.businessreg.entity.BusinessApply"
+            resultType="com.dadao.businessreg.entity.BusinessApply">
+        SELECT
+ybmi.merFullName,
+ybmi.merShortName,
+ybmi.merCertType,
+ybmi.merCertNo,
+ybmi.legalName,
+ybmi.legalIdCard,
+ybmi.merLegalPhone,
+ybmi.merLegalEmail,
+ybmi.merAddress,
+ybmi.merScope,
+ybmi.merContactPhone,
+ybmi.merContactName,
+ybmi.taxRegistCert,
+ybmi.accountLicense,
+ybmi.orgCode,
+ybmi.isOrgCodeLong,
+ybmi.orgCodeExpiry,
+ybmi.cardNo,
+ybmi.bankCode,
+ybmi.productInfo,
+ybmi.fileInfo,
+ybmi.businessFunction,
+ybmi.notifyUrl,
+ybmi.merAuthorizeType,
+ybmi.merType,
+ybmi.requestNo,
+ybmi.merchantNo,
+ybmi.parentMerchantNo,
+ybmi.externalId,
+ybmi.agreementContent,
+ybmi.createTime,
+ybmi.returnCode,
+ybmi.returnMsg,
+ybmi.merNetInStatus,
+ybmi.remark,
+y1.sortName AS merLevel1No,
+y2.sortName AS merLevel2No,
+c1.areaname AS merProvince,
+c2.areaname AS merCity,
+c3.areaname AS merDistrict,
+c4.areaname AS bankProvince,
+c5.areaname AS bankCity,
+ybs.bankName AS headBankCode,
+b.userId,
+b.commissionRate,
+b.integralRate,
+b.yid,
+b.regInfo,
+b.status
+
+FROM yb_merchants_info ybmi
+LEFT JOIN yb_merchants_sort AS y1 ON ybmi.merLevel1No = y1.sortCode
+LEFT JOIN yb_merchants_sort AS y2 ON ybmi.merLevel2No = y2.sortCode
+LEFT JOIN city_area_county AS c1 ON ybmi.merProvince = c1.id
+LEFT JOIN city_area_county AS c2 ON ybmi.merCity = c2.id
+LEFT JOIN city_area_county AS c3 ON ybmi.merDistrict = c3.id
+LEFT JOIN city_area_county AS c4 ON ybmi.bankProvince = c4.id
+LEFT JOIN city_area_county AS c5 ON ybmi.bankCity = c5.id
+LEFT JOIN business_apply b on ybmi.id = b.yid
+LEFT JOIN  yb_bank_shorthand AS ybs ON ybmi.headBankCode = ybs.shorthand
+WHERE userId = #{userId}
+ORDER BY yid desc limit 1
+    </select>
+<update id="updateMerchanrsInfo" parameterType="com.dadao.businessreg.entity.BusinessApply">
+    UPDATE yb_merchants_info
+    <trim prefix="SET" suffixOverrides=",">
+        <if test="id!=null">
+            id=#{id},
+        </if>
+        <if test="merFullName!=null">
+            merFullName=#{merFullName},
+        </if>
+        <if test="merShortName!=null">
+            merShortName=#{merShortName},
+        </if>
+        <if test="merCertType!=null">
+            merCertType=#{merCertType},
+        </if>
+        <if test="merCertNo!=null">
+            merCertNo=#{merCertNo},
+        </if>
+        <if test="legalName!=null">
+            legalName=#{legalName},
+        </if>
+        <if test="legalIdCard!=null">
+            legalIdCard=#{legalIdCard},
+        </if>
+        <if test="merLegalPhone!=null">
+            merLegalPhone=#{merLegalPhone},
+        </if>
+        <if test="merLegalEmail!=null">
+            merLegalEmail=#{merLegalEmail},
+        </if>
+        <if test="merLevel1No!=null">
+            merLevel1No=#{merLevel1No},
+        </if>
+        <if test="merLevel2No!=null">
+            merLevel2No=#{merLevel2No},
+        </if>
+        <if test="merProvince!=null">
+            merProvince=#{merProvince},
+        </if>
+        <if test="merCity!=null">
+            merCity=#{merCity},
+        </if>
+        <if test="merDistrict!=null">
+            merDistrict=#{merDistrict},
+        </if>
+        <if test="merAddress!=null">
+            merAddress=#{merAddress},
+        </if>
+        <if test="merScope!=null">
+            merScope=#{merScope},
+        </if>
+        <if test="merContactPhone!=null">
+            merContactPhone=#{merContactPhone},
+        </if>
+        <if test="merContactName!=null">
+            merContactName=#{merContactName},
+        </if>
+        <if test="taxRegistCert!=null">
+            taxRegistCert=#{taxRegistCert},
+        </if>
+        <if test="accountLicense!=null">
+            accountLicense=#{accountLicense},
+        </if>
+        <if test="orgCode!=null">
+            orgCode=#{orgCode},
+        </if>
+        <if test="isOrgCodeLong!=null">
+            isOrgCodeLong=#{isOrgCodeLong},
+        </if>
+        <if test="orgCodeExpiry!=null">
+            orgCodeExpiry=#{orgCodeExpiry},
+        </if>
+        <if test="cardNo!=null">
+            cardNo=#{cardNo},
+        </if>
+        <if test="headBankCode!=null">
+            headBankCode=#{headBankCode},
+        </if>
+        <if test="bankProvince!=null">
+            bankProvince=#{bankProvince},
+        </if>
+        <if test="bankCity!=null">
+            bankCity=#{bankCity},
+        </if>
+        <if test="bankCode!=null">
+            bankCode=#{bankCode},
+        </if>
+        <if test="productInfo!=null">
+            productInfo=#{productInfo},
+        </if>
+        <if test="fileInfo!=null">
+            fileInfo=#{fileInfo},
+        </if>
+        <if test="businessFunction!=null">
+            businessFunction=#{businessFunction},
+        </if>
+        <if test="notifyUrl!=null">
+            notifyUrl=#{notifyUrl},
+        </if>
+        <if test="merAuthorizeType!=null">
+            merAuthorizeType=#{merAuthorizeType},
+        </if>
+        <if test="merType!=null">
+            merType=#{merType},
+        </if>
+        <if test="requestNo!=null">
+            requestNo=#{requestNo},
+        </if>
+        <if test="merchantNo!=null">
+            merchantNo=#{merchantNo},
+        </if>
+        <if test="parentMerchantNo!=null">
+            parentMerchantNo=#{parentMerchantNo},
+        </if>
+        <if test="externalId!=null">
+            externalId=#{externalId},
+        </if>
+        <if test="agreementContent!=null">
+            agreementContent=#{agreementContent},
+        </if>
+        <if test="createTime!=null">
+            createTime=#{createTime},
+        </if>
+        <if test="returnCode!=null">
+            returnCode=#{returnCode},
+        </if>
+        <if test="returnMsg!=null">
+            returnMsg=#{returnMsg},
+        </if>
+        <if test="merNetInStatus!=null">
+            merNetInStatus=#{merNetInStatus},
+        </if>
+        <if test="remark!=null">
+            remark=#{remark},
+        </if>
+        <if test="commissionRate!=null">
+            commissionRate=#{commissionRate},
+        </if>
+    </trim>
+    <trim prefix="WHERE" prefixOverrides="AND">
+        <if test="yid!=null">
+            AND id=#{yid}
+        </if>
+    </trim>
+</update>
+    <update id="updateBusinessApply" parameterType="com.dadao.businessreg.entity.BusinessApply">
+          UPDATE business_apply
+          <trim prefix="SET" suffixOverrides=",">
+              <if test="id!=null">
+                  id=#{id},
+              </if>
+              <if test="userId!=null">
+                  userId=#{userId},
+              </if>
+              <if test="commissionRate!=null">
+                  commissionRate=#{commissionRate},
+              </if>
+              <if test="integralRate!=null">
+                  integralRate=#{integralRate},
+              </if>
+              <if test="yid!=null">
+                  yid=#{yid},
+              </if>
+              <if test="regInfo!=null">
+                  regInfo=#{regInfo},
+              </if>
+              <if test="status!=null">
+                  status=#{status},
+              </if>
+          </trim>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="yid!=null">
+                AND yid=#{yid}
+            </if>
+        </trim>
+    </update>
+    <select id="findByMerchantInfo" parameterType="java.lang.Long" resultType="com.dadao.merchants.entity.MerchantsInfo">
+        SELECT * FROM yb_merchants_info WHERE id = #{id}
+    </select>
+    <select id="findBusinessApplyByUserId" parameterType="java.lang.Long" resultType="com.dadao.businessreg.entity.BusinessApply">
+        SELECT * FROM business_apply WHERE userId = #{userId}
+    </select>
+    <select id="findByRequestNo" parameterType="java.lang.String" resultType="com.dadao.merchants.entity.MerchantsInfo">
+        SELECT * FROM yb_merchants_info WHERE requestNo = #{requestNo}
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

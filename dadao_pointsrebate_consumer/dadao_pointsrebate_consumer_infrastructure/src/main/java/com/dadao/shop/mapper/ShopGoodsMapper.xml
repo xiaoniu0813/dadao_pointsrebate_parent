@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.shop.mapper.ShopGoodsMapper">
+    <sql id="BASE_COLUMN_LIST">
+        shopId,shopName,shopDescription,phone,picture,verticalVersionPicture,markPicture,longitude,latitude,address,integralRate,commissionRate,businessStartTime,businessEndTime,tags,createTime,perCapitaConsumption,fk_user_id,subMerchantNo,categoryId
+    </sql>
+    <sql id="GOODS_COLUMN_LIST">
+        id,goodsName,goodsImg,goodsPrice,description,shopId,createTime,status,updateTime,payMode
+    </sql>
+    <!--根据shopId查找单个店铺-->
+    <select id="findById" resultType="com.dadao.shop.entity.ShopPO" parameterType="java.lang.Long">
+          SELECT <include refid="BASE_COLUMN_LIST"/> FROM gt_shop WHERE shopId = #{shopId}
+    </select>
+    <!--分页查询-->
+    <select id="findByPage" parameterType="com.dadao.shop.entity.ShopGoodsPO" resultType="com.dadao.shop.entity.ShopGoodsPO">
+          SELECT <include refid="GOODS_COLUMN_LIST"/> FROM gt_shop_goods
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id!=null">
+                AND id = #{id}
+            </if>
+            <if test="goodsName != null">
+                AND goodsName = #{goodsName}
+            </if>
+            <if test="goodsImg!=null">
+                AND goodsImg = #{goodsImg}
+            </if>
+            <if test="goodsPrice!=null">
+                AND goodsPrice = #{goodsPrice}
+            </if>
+            <if test="description!=null">
+                AND description = #{description}
+            </if>
+            <if test="shopId!=null">
+                AND shopId = #{shopId}
+            </if>
+            <if test="createTime!=null">
+                AND createTime = #{createTime}
+            </if>
+            <if test="status!=null">
+                AND status = #{status}
+            </if>
+            <if test="updateTime!=null">
+                AND  updateTime = #{updateTime}
+            </if>
+            <if test="payMode!=null">
+                AND payMode = #{payMode}
+            </if>
+        </trim>
+        ORDER BY createTime DESC limit #{beginIndex},#{pageSize}
+
+    </select>
+    <select id="total" parameterType="com.dadao.shop.entity.ShopGoodsPO" resultType="java.lang.Long">
+        SELECT COUNT(0) FROM gt_shop_goods
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id!=null">
+                AND id = #{id}
+            </if>
+            <if test="goodsName != null">
+                AND goodsName = #{goodsName}
+            </if>
+            <if test="goodsImg!=null">
+                AND goodsImg = #{goodsImg}
+            </if>
+            <if test="goodsPrice!=null">
+                AND goodsPrice = #{goodsPrice}
+            </if>
+            <if test="description!=null">
+                AND description = #{description}
+            </if>
+            <if test="shopId!=null">
+                AND shopId = #{shopId}
+            </if>
+            <if test="createTime!=null">
+                AND createTime = #{createTime}
+            </if>
+            <if test="status!=null">
+                AND status = #{status}
+            </if>
+            <if test="updateTime!=null">
+                AND  updateTime = #{updateTime}
+            </if>
+            <if test="payMode!=null">
+                AND payMode = #{payMode}
+            </if>
+        </trim>
+    </select>
+    <select id="findGoodsById" resultType="com.dadao.shop.entity.ShopGoodsPO" parameterType="java.lang.Long">
+        SELECT id,goodsName,goodsImg,goodsPrice,description,shopId,createTime,status,updateTime,payMode FROM gt_shop_goods WHERE  id = #{id}
+    </select>
+<!--/*c.goodsImg,c.createTime,c.goodsName,c.goodsPrice,b.goodsId,b.orderId,b.quantity,a.marketId,a.orderId,a.payMethod,a.shopId,a.userId*/-->
+    <select id="queryGoods" resultType="java.util.HashMap">
+      select *
+      from
+      (dadao_order a RIGHT JOIN dadao_order_details b on a.id=b.orderId) LEFT JOIN gt_shop_goods c ON  b.goodsId=c.id
+      <trim prefix="WHERE" prefixOverrides="AND">
+          <if test="payMode!=null">
+              AND payMode = #{payMode}
+          </if>
+          <if test="userId!=null">
+              AND userId = #{userId}
+          </if>
+          <if test="status!=null">
+              AND status = #{status}
+          </if>
+          <if test="orderStatus!=null">
+              AND orderStatus = #{orderStatus}
+          </if>
+      </trim>
+        ORDER BY a.createTime DESC limit #{beginIndex},#{pageSize}
+    </select>
+    <select id="totalGoods" resultType="java.lang.Long">
+        select COUNT(0)
+        from
+        (dadao_order a RIGHT JOIN dadao_order_details b on a.id=b.orderId) LEFT JOIN gt_shop_goods c ON  b.goodsId=c.id
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="payMode!=null">
+                AND payMode = #{payMode}
+            </if>
+            <if test="userId!=null">
+                AND userId = #{userId}
+            </if>
+            <if test="status!=null">
+                AND status = #{status}
+            </if>
+            <if test="orderStatus!=null">
+                AND orderStatus = #{orderStatus}
+            </if>
+        </trim>
+    </select>
+    <select id="findUserIdByToken" parameterType="java.lang.String" resultType="com.dadao.user.entity.UserAccount">
+        SELECT * FROM user_account WHERE token = #{token}
+    </select>
+
+    <select id="findGoodsByObject" parameterType="com.dadao.shop.entity.ShopGoodsPO" resultType="com.dadao.shop.entity.ShopGoodsPO">
+        SELECT id,goodsName,goodsImg,goodsPrice,description,
+        shopId,createTime,status,updateTime,payMode
+
+            <if test="payMode == 1">
+                ,browseLinks,browseKey
+            </if>
+
+
+        FROM gt_shop_goods
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id!=null">
+                AND id = #{id}
+            </if>
+            <if test="payMode!=null">
+                AND payMode = #{payMode}
+            </if>
+        </trim>
+    </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

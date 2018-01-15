@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_business" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_business/dadao_pointsrebate_business_api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_business/dadao_pointsrebate_business_api/dadao_pointsrebate_business_userinterface" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_business/dadao_pointsrebate_business_api/dadao_pointsrebate_business_web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_business/dadao_pointsrebate_business_application" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_business/dadao_pointsrebate_business_domain" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_business/dadao_pointsrebate_business_infrastructure" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_cms" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_cms/dadao_pointsrebate_cms_api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_cms/dadao_pointsrebate_cms_api/dadao_pointsrebate_cms_userinterface" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_cms/dadao_pointsrebate_cms_api/dadao_pointsrebate_cms_web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_cms/dadao_pointsrebate_cms_application" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_cms/dadao_pointsrebate_cms_domain" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_cms/dadao_pointsrebate_cms_infrastructure" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_consumer" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_consumer/dadao_pointsrebate_consumer_api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_consumer/dadao_pointsrebate_consumer_api/dadao_pointsrebate_consumer_userinterface" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_consumer/dadao_pointsrebate_consumer_api/dadao_pointsrebate_consumer_web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_consumer/dadao_pointsrebate_consumer_application" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_consumer/dadao_pointsrebate_consumer_domain" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_consumer/dadao_pointsrebate_consumer_infrastructure" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_pay" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_pay/dadao_pointsrebate_pay_api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_pay/dadao_pointsrebate_pay_api/dadao_pointsrebate_pay_userinterface" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_pay/dadao_pointsrebate_pay_api/dadao_pointsrebate_pay_web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_pay/dadao_pointsrebate_pay_application" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dadao_pointsrebate_pay/dadao_pointsrebate_pay_infrastructure" charset="UTF-8" />
+  </component>
+</project>

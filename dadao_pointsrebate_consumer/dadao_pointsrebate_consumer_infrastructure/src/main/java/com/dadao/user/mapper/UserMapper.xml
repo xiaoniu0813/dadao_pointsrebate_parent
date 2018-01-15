@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.UserMapper">
+
+    <!-- 查询字段列表 -->
+    <sql id="Base_Column_List">
+        userId, phone, password, payPassword, gesturePassword, token, status
+    </sql>
+
+    <!-- 条件查询 -->
+    <select id="findByEntity" resultType="com.dadao.user.entity.UserAccount" parameterType="com.dadao.user.entity.UserAccount">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user_account
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="phone != null and phone != ''">
+                    AND phone = #{phone}
+                </if>
+                <if test="token != null and token != ''">
+                    AND token = #{token}
+                </if>
+                <if test="password != null and password != ''">
+                    AND password = #{password}
+                </if>
+                <if test="payPassword != null and payPassword != ''">
+                    AND payPassword = #{payPassword}
+                </if>
+                <if test="gesturePassword != null and gesturePassword != ''">
+                    AND gesturePassword = #{gesturePassword}
+                </if>
+                AND status = 1
+                AND merchant = #{merchant}
+            </trim>
+        </where>
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="userId" parameterType="com.dadao.user.entity.UserAccount">
+        INSERT INTO user_account
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="payPassword != null">
+                payPassword,
+            </if>
+            <if test="gesturePassword != null">
+                gesturePassword,
+            </if>
+            <if test="token != null">
+                token,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="merchant != null">
+                merchant,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="payPassword != null">
+                #{payPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="gesturePassword != null">
+                #{gesturePassword,jdbcType=VARCHAR},
+            </if>
+            <if test="token != null">
+                #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="merchant != null">
+                #{merchant,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.dadao.user.entity.UserAccount">
+      UPDATE user_account
+      <set>
+          <if test="password!=null and password!=''">
+              password=#{password},
+          </if>
+          <if test="payPassword!=null and payPassword!=''">
+              payPassword=#{payPassword},
+          </if>
+          <if test="phone!=null and phone!=''">
+              phone=#{phone},
+          </if>
+      </set>
+       WHERE userId=#{userId} AND merchant=#{merchant}
+    </update>
+
+    <select id="findByToken" parameterType="com.dadao.user.entity.UserAccount" resultType="com.dadao.user.entity.UserAccount">
+        SELECT
+        *
+        FROM user_account
+        WHERE token = #{token}
+    </select>
+
+    <select id="findById" parameterType="long" resultType="com.dadao.user.entity.UserAccount">
+        SELECT
+        *
+        FROM user_account
+        WHERE userId = #{userId}
+    </select>
+
+
+
+    <select id="findByPhone" parameterType="com.dadao.user.entity.UserAccount" resultType="com.dadao.user.entity.UserAccount">
+        SELECT
+        *
+        FROM user_account
+        WHERE phone=#{phone} AND merchant=#{merchant}
+    </select>
+
+    <select id="findBusinessShop" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            yb_merchants_info
+        WHERE
+            id = (
+                SELECT
+                    yid
+                FROM
+                    business_apply
+                WHERE
+                    userId = (
+                        SELECT
+                            userId
+                        FROM
+                            user_account
+                        WHERE
+                            phone = #{phone}
+                        AND merchant = 1
+                        AND status = 1
+                    )
+            )
+        AND merNetInStatus = 'PROCESS_SUCCESS'
+    </select>
+
+    <select id="findBusinessShopByUserId" resultType="com.dadao.shop.entity.BusinessApply">
+        SELECT * FROM business_apply
+        WHERE userId=#{userId}
+    </select>
+</mapper>

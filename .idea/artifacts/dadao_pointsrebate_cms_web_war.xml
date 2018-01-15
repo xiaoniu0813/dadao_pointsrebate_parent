@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="dadao_pointsrebate_cms_web:war">
+    <output-path>$PROJECT_DIR$/dadao_pointsrebate_cms/dadao_pointsrebate_cms_api/dadao_pointsrebate_cms_web/target</output-path>
+    <root id="archive" name="dadao_pointsrebate_cms_web.war">
+      <element id="artifact" artifact-name="dadao_pointsrebate_cms_web:war exploded" />
+    </root>
+  </artifact>
+</component>

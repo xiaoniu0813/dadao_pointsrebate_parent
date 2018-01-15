@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.IUserWalletMapper">
+    <!-- 查询字段列表 -->
+    <sql id="Base_Column_List">
+        userId, balance, margin,status
+    </sql>
+
+    <!--查询商户钱包-->
+    <select id="findUserWallet" parameterType="java.lang.Long" resultType="com.dadao.user.entity.UserWalletVO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user_wallet WHERE userId=#{userId} AND status=1
+    </select>
+</mapper>

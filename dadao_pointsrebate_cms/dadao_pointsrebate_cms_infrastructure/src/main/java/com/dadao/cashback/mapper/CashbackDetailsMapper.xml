@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.cashback.mapper.CashbackDetailsMapper">
+
+    <sql id="Base_Column_List">
+        detailsId,recordId,userId,cashbackSpecificDate,cashbackMoney,taxPayment,really,status,createTime
+    </sql>
+    <select id="findByPage" resultType="com.dadao.cashback.entity.CashbackDetailsPO"
+            parameterType="com.dadao.cashback.entity.CashbackDetailsPO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_cashback_details
+        <where>
+            <trim prefixOverrides="and">
+                <if test="startTime!= null and endTime!=null">
+                    AND cashbackSpecificDate &gt;= #{startTime} AND cashbackSpecificDate &lt;= #{endTime}
+                </if>
+                <if test="startTime!= null and endTime==null">
+                    AND cashbackSpecificDate &gt;= #{startTime}
+                </if>
+                <if test="startTime == null and endTime!=null">
+                    AND cashbackSpecificDate &lt;= #{endTime}
+                </if>
+
+                AND status=#{status}
+            </trim>
+        </where>
+        order by createTime desc
+        LIMIT #{beginIndex},#{pageSize}
+
+    </select>
+    <select id="findCount" parameterType="com.dadao.cashback.entity.CashbackDetailsPO" resultType="java.lang.Long">
+        SELECT COUNT(0) FROM gt_cashback_details
+        <where>
+            <trim prefixOverrides="and">
+                <if test="startTime!= null and endTime!=null">
+                    AND cashbackSpecificDate &gt;= #{startTime} AND cashbackSpecificDate &lt;= #{endTime}
+                </if>
+                <if test="startTime!= null and endTime==null">
+                    AND cashbackSpecificDate &gt;= #{startTime}
+                </if>
+                <if test="startTime == null and endTime!=null">
+                    AND cashbackSpecificDate &lt;= #{endTime}
+                </if>
+                AND status=#{status}
+            </trim>
+        </where>
+    </select>
+    <select id="findByEntity" parameterType="com.dadao.cashback.entity.CashbackDetailsPO"
+            resultType="com.dadao.cashback.entity.CashbackDetailsPO">
+
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_cashback_details
+        <where>
+            <trim prefixOverrides="and">
+                <if test="startTime!= null and endTime!=null">
+                    AND cashbackSpecificDate &gt;= #{startTime} AND cashbackSpecificDate &lt;= #{endTime}
+                </if>
+                <if test="startTime!= null and endTime==null">
+                    AND cashbackSpecificDate &gt;= #{startTime}
+                </if>
+                <if test="startTime == null and endTime!=null">
+                    AND cashbackSpecificDate &lt;= #{endTime}
+                </if>
+                <if test="status != null">
+                    AND status=#{status}
+                </if>
+
+            </trim>
+        </where>
+        order by createTime desc
+
+    </select>
+    <select id="findById" parameterType="java.lang.Long" resultType="com.dadao.cashback.entity.CashbackDetailsPO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_cashback_details WHERE recordId = #{recordId}
+    </select>
+    <!--根据recordId查询出不重复的userId-->
+    <select id="findEntityByUserId" parameterType="java.lang.Long" resultType="com.dadao.cashback.entity.CashbackList">
+        SELECT DISTINCT userId,recordId FROM  gt_cashback_details WHERE  recordId = #{recordId}
+    </select>
+    <!--根据条件查询相同用户的数量即在指定条件下该用户的返利份数-->
+    <select id="findUserIdCount" resultType="java.lang.Long" parameterType="com.dadao.cashback.entity.CashbackList">
+        SELECT COUNT(userId) FROM gt_cashback_details WHERE recordId = #{recordId} AND userId=#{userId}
+    </select>
+    <!--该用户的返利金额-->
+    <select id="findUserCashBackMoney" parameterType="com.dadao.cashback.entity.CashbackList"
+            resultType="java.lang.Double">
+        SELECT SUM(cashbackMoney) FROM gt_cashback_details WHERE recordId = #{recordId} AND userId=#{userId}
+    </select>
+    <insert id="save" parameterType="com.dadao.cashback.entity.CashbackDetailsPO">
+        INSERT INTO gt_cashback_details
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="recordId!=null">
+                recordId,
+            </if>
+            <if test="userId!=null">
+                userId,
+            </if>
+            <if test="cashbackSpecificDate!=null">
+                cashbackSpecificDate,
+            </if>
+            <if test="cashbackMoney!=null">
+                cashbackMoney,
+            </if>
+            <if test="taxPayment!=null">
+                taxPayment,
+            </if>
+            <if test="really!=null">
+                really,
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="recordId!=null">
+                #{recordId},
+            </if>
+            <if test="userId!=null">
+                #{userId},
+            </if>
+            <if test="cashbackSpecificDate!=null">
+                #{cashbackSpecificDate},
+            </if>
+            <if test="cashbackMoney!=null">
+                #{cashbackMoney},
+            </if>
+            <if test="taxPayment!=null">
+                #{taxPayment},
+            </if>
+            <if test="really!=null">
+                #{really},
+            </if>
+            <if test="status!=null">
+                #{status},
+            </if>
+        </trim>
+    </insert>
+    <!-- 查询返利日期为今天的返利明细 -->
+    <select id="findThedayCashback" resultType="com.dadao.cashback.entity.CashbackDetailsVO">
+        select * from gt_cashback_details where DATE_FORMAT(cashbackSpecificDate,'%Y-%m-%d')=CURDATE() AND status=0
+    </select>
+    <!-- 查询同一返现计划下其他未返利的条数 -->
+    <select id="findTobebackCashbackCount" resultType="java.lang.Long" parameterType="java.lang.Long">
+        SELECT count(0) FROM gt_cashback_details WHERE recordId=#{recordId} AND status=0
+    </select>
+    <!-- 修改返现状态 -->
+    <update id="update" parameterType="com.dadao.cashback.entity.CashbackDetailsPO">
+        UPDATE gt_cashback_details
+        <trim prefix="set" suffixOverrides=",">
+            <if test="status != null">
+                status=#{status},
+            </if>
+        </trim>
+        WHERE detailsId=#{detailsId}
+    </update>
+
+</mapper>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.UserIntegralRecordingMapper">
+
+    <!-- 查询字段列表 -->
+    <sql id="Base_Column_List">
+       IRid,userId,direction,marketId,objectId,integral,status,createTime
+    </sql>
+    <!--分页查询-->
+    <select id="findByPage" resultType="com.dadao.user.entity.UserIntegralRecordingPO"
+            parameterType="com.dadao.user.entity.UserIntegralRecordingPO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user_integral_recording
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="IRid != null and IRid!=''">
+                    and IRid =#{IRid}
+                </if>
+
+                <if test="direction != null and direction!=''">
+                    and direction=#{direction}
+                </if>
+
+                <if test="userId != null and userId!=''">
+                    and userId=#{userId}
+                </if>
+                <if test="marketId != null and marketId!=''">
+                    and marketId=#{marketId}
+                </if>
+                <if test="objectId != null and objectId!=''">
+                    and objectId=#{objectId}
+                </if>
+                <if test="integral != null and integral!=''">
+                    and integral=#{integral}
+                </if>
+
+                <if test="integralStartTime != null and integralStartTime != '' ">
+                    and createtime &gt; #{integralStartTime}
+                </if>
+
+                <if test="integralEndTime != null and integralEndTime != ''">
+                    and createtime &lt; #{integralEndTime}
+                </if>
+            </trim>
+            and 1 = 1
+        </where>
+        ORDER BY createTime DESC
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long" parameterType="com.dadao.user.entity.UserIntegralRecordingPO">
+        select count(0) from user_integral_recording
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="IRid != null and IRid!=''">
+                    and IRid =#{IRid}
+                </if>
+
+                <if test="direction != null and direction!=''">
+                    and direction=#{direction}
+                </if>
+
+                <if test="userId != null and userId!=''">
+                    and userId=#{userId}
+                </if>
+                <if test="marketId != null and marketId!=''">
+                    and marketId=#{marketId}
+                </if>
+                <if test="objectId != null and objectId!=''">
+                    and objectId=#{objectId}
+                </if>
+                <if test="integral != null and integral!=''">
+                    and integral=#{integral}
+                </if>
+
+                <if test="integralStartTime != null and integralStartTime != '' ">
+                    and createtime &gt; #{integralStartTime}
+                </if>
+
+                <if test="integralEndTime != null and integralEndTime != ''">
+                    and createtime &lt; #{integralEndTime}
+                </if>
+            </trim>
+            and 1 = 1
+        </where>
+    </select>
+
+    <select id="findByEntity" parameterType="com.dadao.user.entity.UserIntegralRecordingPO"
+            resultType="com.dadao.user.entity.UserIntegralRecordingPO">
+
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user_integral_recording
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="IRid != null">
+                    and IRid =#{IRid}
+                </if>
+
+                <if test="direction != null">
+                    and direction=#{direction}
+                </if>
+
+                <if test="userId != null">
+                    and userId=#{userId}
+                </if>
+                <if test="marketId != null">
+                    and marketId=#{marketId}
+                </if>
+                <if test="objectId != null">
+                    and objectId=#{objectId}
+                </if>
+                <if test="integral != null">
+                    and integral=#{integral}
+                </if>
+
+                <if test="integralStartTime != null ">
+                    and createtime &gt; #{integralStartTime}
+                </if>
+
+                <if test="integralEndTime != null">
+                    and createtime &lt; #{integralEndTime}
+                </if>
+            </trim>
+            and 1 = 1
+        </where>
+        ORDER BY createTime ASC
+    </select>
+
+    <!--详情-->
+    <select id="findById" parameterType="java.lang.Long" resultType="com.dadao.user.entity.UserIntegralRecordingPO">
+
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user_integral_recording WHERE IRid = #{IRid}
+
+    </select>
+
+    <insert id="save" parameterType="com.dadao.user.entity.UserIntegralRecordingPO" keyProperty="IRid">
+        INSERT INTO user_integral_recording
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                userId,
+            </if>
+            <if test="direction!=null">
+                direction,
+            </if>
+            <if test="marketId!=null">
+                marketId,
+            </if>
+            <if test="objectId!=null">
+                objectId,
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+            <if test="integral!=null">
+                integral,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                #{userId},
+            </if>
+            <if test="direction!=null">
+                #{direction},
+            </if>
+            <if test="marketId!=null">
+                #{marketId},
+            </if>
+            <if test="objectId!=null">
+                #{objectId},
+            </if>
+            <if test="status!=null">
+                #{status},
+            </if>
+            <if test="integral!=null">
+                #{integral},
+            </if>
+        </trim>
+    </insert>
+    <select id="findByObject" parameterType="com.dadao.user.entity.UserIntegralRecordingPO" resultType="com.dadao.user.entity.UserIntegralRecordingPO">
+        SELECT * FROM user_integral_recording
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="IRid != null and IRid!=''">
+                    and IRid =#{IRid}
+                </if>
+
+                <if test="direction != null and direction != ''">
+                    and direction=#{direction}
+                </if>
+
+                <if test="userId != null and userId!=''">
+                    and userId=#{userId}
+                </if>
+                <if test="marketId != null and marketId!=''">
+                    and marketId=#{marketId}
+                </if>
+                <if test="objectId != null and objectId!=''">
+                    and objectId=#{objectId}
+                </if>
+                <if test="integral != null and integral!=''">
+                    and integral=#{integral}
+                </if>
+
+                <if test="integralStartTime != null and integralStartTime != '' ">
+                    and createtime &gt; #{integralStartTime}
+                </if>
+
+                <if test="integralEndTime != null and integralEndTime != ''">
+                    and createtime &lt; #{integralEndTime}
+                </if>
+            </trim>
+        </where>
+
+    </select>
+
+</mapper>

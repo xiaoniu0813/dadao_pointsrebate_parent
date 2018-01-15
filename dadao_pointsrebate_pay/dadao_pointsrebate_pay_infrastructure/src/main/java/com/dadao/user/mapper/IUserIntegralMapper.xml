@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.IUserIntegralMapper">
+    <!-- 根据用户id和市场ID查用户积分 -->
+    <select id="findByUserId" resultType="com.dadao.user.entity.UserIntegral" parameterType="com.dadao.user.entity.UserIntegral">
+        SELECT * FROM user_integral WHERE userId=#{userId} and marketId=#{marketId}
+    </select>
+    <!-- 根据用户ID和市场ID更新用户积分-->
+    <update id="update" parameterType="com.dadao.user.entity.UserIntegral">
+        UPDATE user_integral
+        SET integral=#{integral}
+        WHERE userId=#{userId} AND marketId=#{marketId}
+    </update>
+
+</mapper>

@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.order.mapper.OrderMapper">
+
+    <sql id="Base_Column_List">
+        id,shopId,orderId,userId,amount,marketId,payMethod,orderStatus,description,updateTime,payTime,createTime,channelSequence,channelRetCode,channelResponse,refundSequence,channelRefundSequence,merchantId,product_name,child_merchant_no
+    </sql>
+    <select id="findByPage" parameterType="com.dadao.order.entity.OrderPO" resultType="com.dadao.order.entity.OrderPO">
+        SELECT <include refid="Base_Column_List"/> FROM dadao_order
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="id!=null">
+                    AND  id = #{dadao_order}
+                </if>
+                <if test="shopId!=null">
+                    AND shopId = #{shopId}
+                </if>
+                <if test="orderId!=null">
+                    AND orderId = #{orderId}
+                </if>
+                <if test="userId!=null">
+                    AND userId = #{userId}
+                </if>
+                <if test="amount!=null">
+                    AND amount = #{amount}
+                </if>
+                <if test="marketId!=null">
+                    AND marketId = #{marketId}
+                </if>
+                <if test="payMethod!=null">
+                    AND payMethod = #{payMethod}
+                </if>
+                <if test="orderStatus!=null">
+                    AND orderStatus = #{orderStatus}
+                </if>
+                <if test="description!=null">
+                    AND description = #{description}
+                </if>
+                <if test="updateTime!=null">
+                    AND updateTime = #{updateTime}
+                </if>
+                <if test="payTime!=null">
+                    AND payTime = #{payTime}
+                </if>
+                <if test="createTime!=null">
+                    AND createTime = #{createTime}
+                </if>
+                <if test="channelSequence!=null">
+                    AND channelSequence = #{channelSequence}
+                </if>
+                <if test="channelRetCode!=null">
+                     AND channelRetCode = #{channelRetCode}
+                </if>
+                <if test="channelResponse!=null">
+                    AND channelResponse = #{channelResponse}
+                </if>
+                <if test="refundSequence!=null">
+                    AND refundSequence = #{refundSequence}
+                </if>
+                <if test="channelRefundSequence!=null">
+                    AND channelRefundSequence = #{channelRefundSequence}
+                </if>
+                <if test="merchantId!=null">
+                    AND  merchantId = #{merchantId}
+                </if>
+                <if test="product_name!=null">
+                    AND product_name = #{product_name}
+                </if>
+                <if test="child_merchant_no!=null">
+                    AND child_merchant_no = #{child_merchant_no}
+                </if>
+            </trim>
+        </where>
+        ORDER BY updateTime DESC
+        limit #{beginIndex},#{pageSize}
+
+    </select>
+
+    <select id="findByEntity" parameterType="com.dadao.order.entity.OrderPO"
+            resultType="com.dadao.order.entity.OrderPO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dadao_order
+        <where>
+            <trim prefixOverrides="and">
+                <if test="id != null">
+                    AND id=#{id}
+                </if>
+                <if test="shopId != null">
+                    AND shopId=#{shopId}
+                </if>
+                <if test="orderId != null">
+                    AND orderId=#{orderId}
+                </if>
+                <if test="userId != null">
+                    AND userId=#{userId}
+                </if>
+                <if test="amount != null">
+                    AND amount=#{amount}
+                </if>
+                <if test="marketId != null">
+                    AND marketId=#{marketId}
+                </if>
+                <if test="payMethod != null">
+                    AND payMethod=#{payMethod}
+                </if>
+                <if test="orderStatus != null">
+                    AND orderStatus=#{orderStatus}
+                </if>
+                <if test="description != null">
+                    AND description=#{description}
+                </if>
+                <if test="updateTime != null">
+                    AND updateTime=#{updateTime}
+                </if>
+                <if test="payTime != null">
+                    AND payTime=#{payTime}
+                </if>
+                <if test="createTime != null">
+                    AND createTime=#{createTime}
+                </if>
+                <if test="channelSequence != null">
+                    AND channelSequence=#{channelSequence}
+                </if>
+                <if test="channelRetCode != null">
+                    AND channelRetCode=#{channelRetCode}
+                </if>
+                <if test="channelResponse != null">
+                    AND channelResponse=#{channelResponse}
+                </if>
+                <if test="refundSequence != null">
+                    AND refundSequence=#{refundSequence}
+                </if>
+                <if test="channelRefundSequence != null">
+                    AND channelRefundSequence=#{channelRefundSequence}
+                </if>
+            </trim>
+        </where>
+        ORDER BY id DESC
+    </select>
+    <select id="findById" parameterType="java.lang.Long" resultType="com.dadao.order.entity.OrderPO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dadao_order WHERE id=#{id}
+
+    </select>
+    <update id="update" parameterType="com.dadao.order.entity.OrderPO">
+        UPDATE dadao_order
+        <trim prefix="set" suffixOverrides=",">
+
+            <if test="shopId != null">
+                shopId=#{shopId},
+            </if>
+            <if test="userId != null">
+                userId=#{userId},
+            </if>
+            <if test="amount != null">
+                amount=#{amount},
+            </if>
+            <if test="marketId != null">
+                marketId=#{marketId},
+            </if>
+            <if test="payMethod != null">
+                payMethod=#{payMethod},
+            </if>
+            <if test="orderStatus != null">
+                orderStatus=#{orderStatus},
+            </if>
+            <if test="description != null">
+                description=#{description},
+            </if>
+            <if test="updateTime != null">
+                updateTime=#{updateTime},
+            </if>
+            <if test="payTime != null">
+                payTime=#{payTime},
+            </if>
+            <if test="createTime != null">
+                createTime=#{createTime},
+            </if>
+            <if test="channelSequence != null">
+                channelSequence=#{channelSequence},
+            </if>
+            <if test="channelRetCode != null">
+                channelRetCode=#{channelRetCode},
+            </if>
+            <if test="channelResponse != null">
+                channelResponse=#{channelResponse},
+            </if>
+            <if test="refundSequence != null">
+                refundSequence=#{refundSequence},
+            </if>
+            <if test="channelRefundSequence != null">
+                channelRefundSequence=#{channelRefundSequence},
+            </if>
+        </trim>
+
+        WHERE orderId=#{orderId}
+
+    </update>
+
+    <insert id="save" parameterType="com.dadao.order.entity.OrderPO">
+        INSERT INTO dadao_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shopId!=null">
+                shopId,
+            </if>
+            <if test="orderId!=null">
+                orderId,
+            </if>
+            <if test="userId!=null">
+                userId,
+            </if>
+            <if test="amount!=null">
+                amount,
+            </if>
+            <if test="marketId!=null">
+                marketId,
+            </if>
+            <if test="payMethod!=null">
+                payMethod,
+            </if>
+            <if test="orderStatus!=null">
+                orderStatus,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="shopId!=null">
+                #{shopId},
+            </if>
+            <if test="orderId!=null">
+                #{orderId},
+            </if>
+            <if test="userId!=null">
+                #{userId},
+            </if>
+            <if test="amount!=null">
+                #{amount},
+            </if>
+            <if test="marketId!=null">
+                #{marketId},
+            </if>
+            <if test="payMethod!=null">
+                #{payMethod},
+            </if>
+            <if test="orderStatus!=null">
+                #{orderStatus},
+            </if>
+        </trim>
+    </insert>
+    <select id="findTotalSize" parameterType="com.dadao.order.entity.OrderPO" resultType="java.lang.Long">
+        SELECT count(0) FROM dadao_order
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="id!=null">
+                    AND  id = #{dadao_order}
+                </if>
+                <if test="shopId!=null">
+                    AND shopId = #{shopId}
+                </if>
+                <if test="orderId!=null">
+                    AND orderId = #{orderId}
+                </if>
+                <if test="userId!=null">
+                    AND userId = #{userId}
+                </if>
+                <if test="amount!=null">
+                    AND amount = #{amount}
+                </if>
+                <if test="marketId!=null">
+                    AND marketId = #{marketId}
+                </if>
+                <if test="payMethod!=null">
+                    AND payMethod = #{payMethod}
+                </if>
+                <if test="orderStatus!=null">
+                    AND orderStatus = #{orderStatus}
+                </if>
+                <if test="description!=null">
+                    AND description = #{description}
+                </if>
+                <if test="updateTime!=null">
+                    AND updateTime = #{updateTime}
+                </if>
+                <if test="payTime!=null">
+                    AND payTime = #{payTime}
+                </if>
+                <if test="createTime!=null">
+                    AND createTime = #{createTime}
+                </if>
+                <if test="channelSequence!=null">
+                    AND channelSequence = #{channelSequence}
+                </if>
+                <if test="channelRetCode!=null">
+                    AND channelRetCode = #{channelRetCode}
+                </if>
+                <if test="channelResponse!=null">
+                    AND channelResponse = #{channelResponse}
+                </if>
+                <if test="refundSequence!=null">
+                    AND refundSequence = #{refundSequence}
+                </if>
+                <if test="channelRefundSequence!=null">
+                    AND channelRefundSequence = #{channelRefundSequence}
+                </if>
+                <if test="merchantId!=null">
+                    AND  merchantId = #{merchantId}
+                </if>
+                <if test="product_name!=null">
+                    AND product_name = #{product_name}
+                </if>
+                <if test="child_merchant_no!=null">
+                    AND child_merchant_no = #{child_merchant_no}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+</mapper>

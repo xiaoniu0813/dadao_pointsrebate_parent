@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.refunds.mapper.RefundsApplicationMapper">
+
+    <sql id="Base_Column_List">
+        refundsId,userId,orderId,status,processDetails,userDescription,shopDescription,platformDescription,createTime
+    </sql>
+    <select id="findById" parameterType="java.lang.Long" resultType="com.dadao.refunds.entity.RefundsApplicationPO">
+        SELECT <include refid="Base_Column_List"/> FROM refunds_application where orderId=#{orderId}
+    </select>
+    <update id="update" parameterType="com.dadao.refunds.entity.RefundsApplicationPO">
+        UPDATE refunds_application
+        <trim prefix="set" suffixOverrides=",">
+            <if test="refundsId != null">
+                refundsId=#{refundsId},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+            <if test="processDetails != null">
+                processDetails=#{processDetails},
+            </if>
+            <if test="userDescription != null">
+                userDescription=#{userDescription},
+            </if>
+            <if test="shopDescription != null">
+                shopDescription=#{shopDescription},
+            </if>
+            <if test="platformDescription != null">
+                platformDescription=#{platformDescription},
+            </if>
+            <if test="createTime != null">
+                createTime=#{createTime},
+            </if>
+        </trim>
+        WHERE orderId=#{orderId}
+    </update>
+
+    <select id="findByConditions" parameterType="com.dadao.refunds.mapper.entity.RefundsMessage" resultType="com.dadao.refunds.mapper.entity.RefundsMessage">
+        SELECT
+        a.*, b.businessPhone
+        FROM
+        (
+        SELECT
+        ra.*, ua.phone AS consumerPhone,
+        ddo.amount,
+        ddo.shopId
+        FROM
+        refunds_application AS ra
+        LEFT JOIN user_account AS ua ON ra.userId = ua.userId
+        LEFT JOIN dadao_order AS ddo ON ddo.id = ra.orderId
+        ) AS a
+        LEFT JOIN (
+        SELECT
+        ra.refundsId,
+        ua.phone AS businessPhone
+        FROM
+        refunds_application AS ra
+        LEFT JOIN dadao_order AS ddo ON ddo.id = ra.orderId
+        LEFT JOIN gt_shop AS gs ON gs.shopId = ddo.shopId
+        LEFT JOIN user_account AS ua ON ua.userId = gs.fk_user_id
+        ) AS b ON a.refundsId = b.refundsId
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="refundsId != null">
+                    AND refundsId = #{refundsId}
+                </if>
+                <if test="userId != null">
+                    AND userId = #{userId}
+                </if>
+                <if test="orderId != null">
+                    AND orderId = #{orderId}
+                </if>
+                <if test="status != null">
+                    AND status = #{status}
+                </if>
+                <if test="processDetails != null">
+                    AND processDetails = #{processDetails}
+                </if>
+                <if test="userDescription != null">
+                    AND userDescription LIKE CONCAT('%','${userDescription}','%' )
+                </if>
+                <if test="shopDescription != null">
+                    AND shopDescription LIKE CONCAT('%','${shopDescription}','%' )
+                </if>
+                <if test="platformDescription != null">
+                    AND platformDescription LIKE CONCAT('%','${platformDescription}','%' )
+                </if>
+                <if test="businessPhone != null">
+                    AND businessPhone = #{businessPhone}
+                </if>
+                <if test="consumerPhone != null">
+                    AND consumerPhone = #{consumerPhone}
+                </if>
+                <if test="createTime != null">
+                    AND createTime = #{createTime}
+                </if>
+            </trim>
+        </where>
+        order by createTime desc
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+    <select id="findByConditionsCount" parameterType="com.dadao.refunds.mapper.entity.RefundsMessage" resultType="long">
+        SELECT COUNT(*)
+        FROM refunds_application
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="refundsId != null">
+                    AND refundsId = #{refundsId}
+                </if>
+                <if test="userId != null">
+                    AND userId = #{userId}
+                </if>
+                <if test="orderId != null">
+                    AND orderId = #{orderId}
+                </if>
+                <if test="status != null">
+                    AND status = #{status}
+                </if>
+                <if test="processDetails != null">
+                    AND processDetails = #{processDetails}
+                </if>
+                <if test="userDescription != null">
+                    AND userDescription LIKE CONCAT('%','${userDescription}','%' )
+                </if>
+                <if test="shopDescription != null">
+                    AND shopDescription LIKE CONCAT('%','${shopDescription}','%' )
+                </if>
+                <if test="platformDescription != null">
+                    AND platformDescription LIKE CONCAT('%','${platformDescription}','%' )
+                </if>
+                <if test="createTime != null">
+                    AND createTime = #{createTime}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+
+</mapper>

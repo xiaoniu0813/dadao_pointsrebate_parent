@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.capitalpool.mapper.ICapitalpoolMapper">
+
+    <!--查询市场等级对应的资金池-->
+    <select id="findByMarketId" resultType="com.dadao.capitalpool.entity.CapitalpoolVO" parameterType="java.lang.Long">
+        SELECT id,money,spareMoney,marketId,toBeBackMoney FROM gt_capitalpool WHERE marketId=#{marketId}
+    </select>
+    <!--更新市场等级对应的资金池-->
+    <update id="updateMoneyByMarketId" parameterType="com.dadao.capitalpool.entity.CapitalpoolPO">
+        UPDATE gt_capitalpool
+        <set>
+            <trim suffixOverrides=",">
+                <if test="money != null">
+                    money = #{money},
+                </if>
+                <if test="spareMoney != null">
+                    spareMoney = #{spareMoney},
+                </if>
+                <if test="toBeBackMoney != null">
+                    toBeBackMoney = #{toBeBackMoney},
+                </if>
+            </trim>
+        </set>
+        WHERE marketId=#{marketId}
+    </update>
+
+    <!--消减备用资金池待返金额-->
+    <update id="minusCapitalpoolById">
+        UPDATE gt_capitalpool AS gc
+        SET gc.toBeBackMoney = gc.toBeBackMoney - #{money}
+        WHERE
+        gc.id = #{id};
+    </update>
+
+</mapper>

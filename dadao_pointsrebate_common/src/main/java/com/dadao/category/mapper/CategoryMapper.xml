@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.category.mapper.CategoryMapper">
+
+    <!-- 查询字段列表 -->
+    <sql id="Base_Column_List">
+        categoryId, categoryName, picture
+    </sql>
+
+    <select id="findByPage" resultType="com.dadao.category.entity.Category"
+            parameterType="com.dadao.category.entity.Category">
+        select
+        <include refid="Base_Column_List"/>
+        from gt_category
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="type != null">
+                    and type = #{type}
+                </if>
+                <if test="parentId != null">
+                    and parentId = #{parentId}
+                </if>
+            </trim>
+            and status = 1
+        </where>
+        order by sequence
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long" parameterType="com.dadao.category.entity.Category">
+        select count(0) from gt_category
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="type != null">
+                    and type = #{type}
+                </if>
+                <if test="parentId != null">
+                    and parentId = #{parentId}
+                </if>
+            </trim>
+            and status = 1
+        </where>
+    </select>
+
+</mapper>

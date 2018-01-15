@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.UserAccountMapper">
+
+    <!-- 查询字段列表 -->
+    <sql id="Base_Column_List">
+        userId, phone, token
+    </sql>
+
+    <select id="findByToken" parameterType="java.lang.String"
+            resultType="com.dadao.user.entity.UserAccount">
+        select
+        <include refid="Base_Column_List"/>
+        from user_account where token = #{token}
+    </select>
+</mapper>

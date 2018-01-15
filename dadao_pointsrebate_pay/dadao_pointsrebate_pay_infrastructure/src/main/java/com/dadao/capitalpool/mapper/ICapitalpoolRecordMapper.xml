@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.capitalpool.mapper.ICapitalpoolRecordMapper">
+    <insert id="save" parameterType="com.dadao.capitalpool.entity.CapitalpoolRecordPO">
+        INSERT INTO gt_capitalpool_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="objectId != null">
+                objectId,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="money != null">
+                money,
+            </if>
+            <if test="marketId != null">
+                marketId,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="objectId != null">
+                #{objectId},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="money != null">
+                #{money},
+            </if>
+            <if test="marketId != null">
+                #{marketId},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+        </trim>
+    </insert>
+</mapper>

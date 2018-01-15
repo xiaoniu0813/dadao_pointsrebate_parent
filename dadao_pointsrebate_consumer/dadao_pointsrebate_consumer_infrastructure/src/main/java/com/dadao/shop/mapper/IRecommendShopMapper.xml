@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.shop.mapper.IRecommendShopMapper">
+    <select id="listRecommendShop" resultType="com.dadao.shop.entity.vo.Shop"
+            parameterType="com.dadao.shop.entity.Shop">
+          SELECT a.*
+          FROM gt_shop a
+          INNER JOIN gt_recommend_shop b
+          ON (a.shopId=b.shopId)
+          where b.endTime>now()
+          AND (ACOS(SIN((#{latitude} * 3.1415) / 180 )
+                    *SIN((a.latitude * 3.1415) / 180 ) +COS((#{latitude} * 3.1415) / 180 )
+                    * COS((a.latitude * 3.1415) / 180 ) *COS((#{longitude}* 3.1415) /
+                    180 -
+                    (a.longitude * 3.1415) / 180 ) ) * 6380) &lt; #{scope}
+          ORDER BY b.sequence
+          LIMIT 0,10
+    </select>
+
+</mapper>

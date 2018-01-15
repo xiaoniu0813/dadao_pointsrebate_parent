@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.IUserIntegralMapper">
+    <sql id="BASE_COLUMN">
+      integral,marketId,userId
+    </sql>
+    <select id="findByPage" resultType="com.dadao.user.entity.UserIntegral"
+            parameterType="com.dadao.user.entity.UserIntegral">
+        SELECT a.integral-(
+        SELECT CASE WHEN SUM(integral) IS NULL THEN 0 ELSE SUM(integral) END
+        FROM user_integral_recording
+        WHERE userid=a.userId
+        AND createTime >=DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND createTime &lt;= NOW()
+        AND direction=0
+        AND marketid=a.marketid
+        ) AS integral,b.nickname,a.marketid,a.userId
+        FROM user_integral a LEFT JOIN gt_user_info b ON a.userid=b.userid
+        <where>
+            <trim prefixOverrides="and">
+                <if test="marketId!=null">
+                    AND a.marketid=#{marketId}
+                </if>
+                <if test="integral!=null">
+                    AND integral &gt;= #{integral}
+                </if>
+            </trim>
+        </where>
+        ORDER BY integral DESC
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long" parameterType="com.dadao.user.entity.UserIntegral">
+         SELECT
+         COUNT(0)
+         FROM user_integral
+         WHERE marketid=#{marketId}
+    </select>
+
+    <select id="findCountByStandardNum" resultType="java.lang.Integer"
+            parameterType="com.dadao.user.entity.UserIntegral">
+        SELECT COUNT(c.integral) AS integral FROM (
+        SELECT a.integral-(
+        SELECT CASE WHEN SUM(integral) IS NULL THEN 0 ELSE SUM(integral) END
+        FROM user_integral_recording
+        WHERE userid=a.userId
+        AND createTime >=DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND createTime &lt;= NOW()
+        AND direction=0
+        AND marketid=a.marketid
+        ) AS integral,b.nickname,a.marketid
+        FROM user_integral a LEFT JOIN gt_user_info b ON a.userid=b.userid
+        WHERE a.marketid=#{marketId}
+        ) c WHERE c.integral &gt;= #{integral}
+    </select>
+
+    <update id="update" parameterType="com.dadao.user.entity.UserIntegral">
+        UPDATE user_integral
+        SET integral=#{integral}
+        WHERE userId=#{userId} AND marketId=#{marketId}
+    </update>
+
+    <select id="findUserIntegralByMarketId" parameterType="com.dadao.user.entity.UserIntegral" resultType="com.dadao.user.entity.UserIntegral">
+        SELECT <include refid="BASE_COLUMN"/> FROM user_integral WHERE userId=#{userId} AND marketId=#{marketId}
+    </select>
+    <insert id="save" parameterType="com.dadao.user.entity.UserIntegral">
+        INSERT INTO user_integral
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                userId,
+            </if>
+            <if test="integral!=null">
+                integral,
+            </if>
+            <if test="marketId!=null">
+                marketId,
+            </if>
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                #{userId},
+            </if>
+            <if test="integral!=null">
+                #{integral},
+            </if>
+            <if test="marketId!=null">
+                #{marketId},
+            </if>
+        </trim>
+    </insert>
+
+    <!--1、商户返利：查询商户积分信息-->
+    <select id="findBusinessesIntegral" resultType="com.dadao.user.entity.BusinessCashIntegral">
+        SELECT
+            ui.id,
+            ui.userId,
+            ua.phone,
+            ui.integral,
+            ui.marketId,
+            (SELECT `value` FROM sys_const WHERE constId = 1) AS businessCashRate
+        FROM
+            user_integral AS ui
+        JOIN user_account AS ua ON ui.userId = ua.userId
+        WHERE
+            ua.merchant = 1
+        AND ui.integral >= #{currentIntegralUpper}
+        AND ua.status = 1
+        AND ui.marketId = #{marketId}
+        LIMIT #{beginIndex},#{pageSize}
+    </select>
+    <select id="findBusinessesIntegralCount" resultType="long">
+        SELECT
+            COUNT(*)
+        FROM
+            user_integral AS ui
+        JOIN user_account AS ua ON ui.userId = ua.userId
+        WHERE
+            ua.merchant = 1
+        AND ui.integral >= #{currentIntegralUpper}
+        AND ua.status = 1
+        AND ui.marketId = #{marketId}
+    </select>
+
+    <select id="findIntegralById" resultType="com.dadao.user.entity.BusinessCashIntegral">
+        SELECT
+            ui.id,
+            ui.userId,
+            ua.phone,
+            ui.integral,
+            ui.marketId,
+            (SELECT `value` FROM sys_const WHERE constId = 1) AS businessCashRate
+        FROM
+            user_integral AS ui
+        JOIN user_account AS ua ON ui.userId = ua.userId
+        WHERE
+            ua.merchant = 1
+        AND ui.integral >= 0
+        AND ua.status = 1
+        AND ui.id = #{id}
+    </select>
+
+    <!--消减商户钱包积分-->
+    <update id="minusIntegralById">
+        UPDATE user_integral AS ui
+        SET ui.integral = ui.integral - #{integral}
+        WHERE
+            ui.id = #{id};
+    </update>
+</mapper>

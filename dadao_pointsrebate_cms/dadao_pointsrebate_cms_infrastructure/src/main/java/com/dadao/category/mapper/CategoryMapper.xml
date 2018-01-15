@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.category.mapper.CategoryMapper">
+
+    <!-- 查询字段列表 -->
+    <sql id="Base_Column_List">
+        categoryId,categoryName,sequence,parentId,picture,type,status
+    </sql>
+
+
+    <select id="findByPage" resultType="com.dadao.category.entity.Category"
+            parameterType="com.dadao.category.entity.Category">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gt_category
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="categoryId != 0">
+                    and categoryId =#{categoryId}
+                </if>
+                <if test="parentId != -2">
+                    and parentId =#{parentId}
+                </if>
+                <if test="categoryName != null and categoryName != ''">
+                    and categoryName LIKE concat('%',#{categoryName},'%')
+                </if>
+                <if test="status != null and status != '' and status != -2">
+                    and status = #{status}
+                </if>
+                <if test="type != null and status != '' and type != -2">
+                    and type = #{type}
+                </if>
+            </trim>
+            and 1 = 1
+        </where>
+        ORDER BY sequence,categoryId ASC
+        LIMIT
+        #{beginIndex},#{pageSize}
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long" parameterType="com.dadao.category.entity.Category">
+        select count(0) from gt_category
+        <where>
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <if test="categoryId != 0">
+                    and categoryId =#{categoryId}
+                </if>
+                <if test="parentId != -2">
+                    and parentId =#{parentId}
+                </if>
+                <if test="categoryName != null and categoryName != ''">
+                    and categoryName LIKE concat('%',#{categoryName},'%')
+                </if>
+                <if test="status != null and status != '' and status != -2">
+                    and status = #{status}
+                </if>
+                <if test="type != null and status != '' and type != -2">
+                    and type = #{type}
+                </if>
+            </trim>
+            and 1 = 1
+        </where>
+    </select>
+
+    <update id="update" parameterType="com.dadao.category.entity.Category">
+        UPDATE gt_category
+        <set>
+            <if test="categoryName != null and categoryName != ''">
+                categoryName = #{categoryName},
+            </if>
+            <if test="sequence != null and sequence != -2">
+                sequence = #{sequence},
+            </if>
+            <if test="parentId != null and parentId != -2">
+                parentId = #{parentId},
+            </if>
+            <if test="picture != null and picture != ''">
+                picture = #{picture},
+            </if>
+            <if test="type != null and type != -2">
+                type = #{type},
+            </if>
+            <if test="status != null and type != -2">
+                status = #{status}
+            </if>
+        </set>
+        WHERE categoryId = #{categoryId}
+    </update>
+    <insert id="save" parameterType="com.dadao.category.entity.CategoryPO">
+        INSERT INTO gt_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryId!=null">
+                categoryId,
+            </if>
+            <if test="categoryName!=null">
+                categoryName,
+            </if>
+            <if test="sequence!=null">
+                sequence,
+            </if>
+            <if test="parentId!=null">
+                parentId,
+            </if>
+            <if test="picture!=null">
+                picture,
+            </if>
+            <if test="type!=null">
+                type,
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">
+                #{categoryId},
+            </if>
+            <if test="categoryName!=null">
+                #{categoryName},
+            </if>
+            <if test="sequence!=null">
+                #{sequence},
+            </if>
+
+            <if test="parentId!=null">
+                #{parentId},
+            </if>
+            <if test="picture!=null">
+                #{picture},
+            </if>
+            <if test="type!=null">
+                #{type},
+            </if>
+            <if test="status!=null">
+                #{status}
+            </if>
+
+        </trim>
+
+    </insert>
+    <update id="updateCategoryPicture" parameterType="com.dadao.category.entity.Category">
+        UPDATE gt_category SET picture=#{picture} WHERE categoryId = #{categoryId}
+    </update>
+    <update id="updateCategorySequence" parameterType="com.dadao.category.entity.Category">
+        UPDATE  gt_category SET sequence=#{sequence} WHERE categoryId = #{categoryId}
+    </update>
+    <select id="findCategoryBySequence" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT sequence FROM gt_category WHERE categoryId = #{categoryId}
+    </select>
+    <select id="findCategoryByCategoryId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT categoryId FROM gt_category WHERE sequence=#{sequence}
+    </select>
+    <select id="MaxSequence" parameterType="com.dadao.category.entity.CategoryPO" resultType="java.lang.Integer">
+        SELECT MAX(sequence) FROM gt_category
+          <where>
+              <if test="parentId!=null">
+                  parentId = #{parentId}
+              </if>
+          </where>
+
+    </select>
+</mapper>

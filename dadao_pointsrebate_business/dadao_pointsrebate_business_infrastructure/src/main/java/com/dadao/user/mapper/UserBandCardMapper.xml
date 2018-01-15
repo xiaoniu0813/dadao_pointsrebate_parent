@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.user.mapper.UserBandCardMapper">
+
+    <!--绑定银行卡-->
+    <insert id="save" parameterType="com.dadao.user.entity.UserBandCard">
+        insert into user_bankcard
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="expiryDate != null">
+                expiryDate,
+            </if>
+            <if test="idCard != null">
+                idCard,
+            </if>
+            <if test="bankName != null">
+                bankName,
+            </if>
+            <if test="bankCardNumber != null">
+                bankCardNumber,
+            </if>
+            <if test="bankCardType != null">
+                bankCardType,
+            </if>
+            <if test="bankCardLogo != null">
+                bankCardLogo,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="securityCode != null">
+                securityCode,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="expiryDate != null">
+                #{expiryDate},
+            </if>
+            <if test="idCard != null">
+                #{idCard},
+            </if>
+            <if test="bankName != null">
+                #{bankName},
+            </if>
+            <if test="bankCardNumber != null">
+                #{bankCardNumber},
+            </if>
+            <if test="bankCardType != null">
+                #{bankCardType},
+            </if>
+            <if test="bankCardLogo != null">
+                #{bankCardLogo},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="securityCode != null">
+                #{securityCode},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateStatus" parameterType="java.lang.Long">
+       update user_bankcard set status = 0 where cardId = #{cardId}
+    </update>
+</mapper>

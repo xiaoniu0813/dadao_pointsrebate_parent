@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/dadao_pointsrebate_business/dadao_pointsrebate_business_api/dadao_pointsrebate_business_web" />
+    <file type="web" url="file://$PROJECT_DIR$/dadao_pointsrebate_cms/dadao_pointsrebate_cms_api/dadao_pointsrebate_cms_web" />
+    <file type="web" url="file://$PROJECT_DIR$/dadao_pointsrebate_consumer/dadao_pointsrebate_consumer_api/dadao_pointsrebate_consumer_web" />
+    <file type="web" url="file://$PROJECT_DIR$/dadao_pointsrebate_pay/dadao_pointsrebate_pay_api/dadao_pointsrebate_pay_web" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+</project>

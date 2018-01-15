@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.merchant.mapper.MerchantRegisterMapper">
+    <!--根据子商户号查找生成二维码的条件-->
+    <select id="findBySubMerchantNo" parameterType="java.lang.String"
+            resultType="com.dadao.merchant.entity.ReturnSweepCode">
+        SELECT merchantName,shortName,merchantAddress,subMerchantNo FROM merchant_register WHERE subMerchantNo=#{subMerchantNo}
+    </select>
+
+</mapper>

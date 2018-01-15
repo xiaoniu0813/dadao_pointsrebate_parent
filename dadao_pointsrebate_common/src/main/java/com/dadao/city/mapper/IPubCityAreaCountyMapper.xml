@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dadao.city.mapper.IPubCityAreaCountyMapper">
+
+    <sql id="Base_Column_List">
+     id,areaname,parentid,shortname,lng,lat
+    </sql>
+
+    <select id="findAllCityList" resultType="com.dadao.city.entity.CityAreaCountyVO">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        city_area_county where level=2
+    </select>
+
+    <select id="findAllProvinceList" resultType="com.dadao.city.entity.CityAreaCountyVO">
+        select
+        id,areaname
+        from
+        city_area_county where level=1
+    </select>
+
+    <select id="findLowerCityByName" parameterType="com.dadao.city.entity.CityAreaCountyPO" resultType="com.dadao.city.entity.CityAreaCountyVO">
+        SELECT
+            id,areaname,parentid,shortname,lng,lat
+        FROM
+            city_area_county
+        WHERE
+            parentid = (
+                SELECT
+                    id
+                FROM
+                    city_area_county
+                WHERE
+                    areaname LIKE  '${areaname}%'
+                AND LEVEL = 2
+            )
+    </select>
+
+    <select id="findLowerCityById" parameterType="com.dadao.city.entity.CityAreaCountyPO" resultType="com.dadao.city.entity.CityAreaCountyVO">
+        SELECT
+            id,areaname,parentid,shortname,lng,lat
+        FROM
+            city_area_county
+        WHERE
+            parentid = #{id}
+    </select>
+
+</mapper>
